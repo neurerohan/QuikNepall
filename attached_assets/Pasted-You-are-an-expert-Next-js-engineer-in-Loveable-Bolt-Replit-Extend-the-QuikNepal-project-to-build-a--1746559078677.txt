@@ -1,0 +1,48 @@
+You are an expert Next.js engineer in Loveable/Bolt/Replit. Extend the QuikNepal project to build a Next.js 13 App Router frontend with:
+
+1. Environment & Theming
+   - `.env.local`:
+     NEXT_PUBLIC_API_BASE_URL=https://api.kalimatirate.nyure.com.np/api/
+   - `tailwind.config.js`: custom green theme
+     * primary:   { DEFAULT: '#006400', dark: '#388E3C', light: '#81C784' }
+     * secondary: '#A5D6A7'
+     * accent:    '#CDDC39'
+     * neutral:   '#333333'
+     * background:'#FFFFFF'
+
+2. Layout & Navigation
+   - `/app/layout.js` with `<Header>` and `<Footer>` components.
+   - Header: QuikNepal logo/text, nav links: Home, Calendar, Converter, Vegetables, Metals, Rashifal, Forex.
+   - Footer: © QuikNepal, “Powered by QuikNepal”, social icons.
+
+3. Pages & Routing
+   - **Home** (`/app/page.js`): today’s BS/AD CalendarWidget, feature cards to each page.
+   - **Calendar** (`/app/calendar/[year]/[month]/page.js`): fetch monthly JSON from `/calendar/{year}/{month}`, render grid.
+   - **Date Converter** (`/app/date-converter/page.js`): AD/BS form calling `/calendar/convert`.
+   - **Vegetables** (`/app/vegetables/page.js`): fetch `/vegetables/`, table of items and prices.
+   - **Metals** (`/app/metals/page.js`): fetch `/metals/`, cards for gold/silver rates.
+   - **Rashifal** (`/app/rashifal/page.js`): fetch `/rashifal/`, 3×4 grid of zodiac signs with modals.
+   - **FOREX** (`/app/forex/page.js`): date‑range picker, fetch `/forex?from=&to=&page=1&per_page=100`, paginated table.
+
+4. Data Fetching
+   - Use React Query (`@tanstack/react-query`) with `QueryClientProvider`.
+   - Centralize API calls in `lib/api.js` via `axios.create({ baseURL: process.env.NEXT_PUBLIC_API_BASE_URL })`.
+
+5. Components & Styling
+   - Build reusable UI in `components/ui`: Header, Footer, CalendarWidget, FeatureCard, DataTable, DateConverterForm, ZodiacModal.
+   - Style with Tailwind and follow Dribbble’s “Green Dashboard” tag inspiration for modern, clean layouts :contentReference[oaicite:13]{index=13}.
+
+6. Animations & Interactions
+   - Use Loveable’s `<FadeIn>` for page transitions and `<Bounce>` on CTA buttons.
+   - Ensure high contrast: CTA buttons stand out against dark green backgrounds :contentReference[oaicite:14]{index=14}.
+
+7. SEO & Accessibility
+   - Add `<Metadata>` per page: `<title>`, `<meta name="description">`, Open Graph tags.
+   - ARIA labels on all interactive elements.
+   - Mobile‑first, responsive via Tailwind’s breakpoints.
+
+8. Delivery
+   - Provide full `app/` folder, `tailwind.config.js`, `lib/api.js`, and custom hooks.
+   - Confirm `npm run dev` builds without errors and pages fetch real data.
+
+Ensure the generated code matches the darker green aesthetic, uses varied shades for hierarchy, integrates the `/api/` root discovery, and follows modern UI/UX best practices.
