@@ -1,0 +1,231 @@
+GET /api/vegetables/
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Authorization, Accept
+
+{
+    "count": 177,
+    "next": "https://api.kalimatirate.nyure.com.np/api/vegetables/?page=2",
+    "previous": null,
+    "results": [
+        {
+            "id": 158,
+            "name": "अंगुर",
+            "name_nepali": "अंगुर",
+            "unit": "(हरियो) )",
+            "min_price": "180.00",
+            "max_price": "200.00",
+            "avg_price": "190.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.662282+05:45"
+        },
+        {
+            "id": 176,
+            "name": "अदुवा",
+            "name_nepali": "अदुवा",
+            "unit": "(के.जी.)",
+            "min_price": "90.00",
+            "max_price": "100.00",
+            "avg_price": "95.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.663035+05:45"
+        },
+        {
+            "id": 157,
+            "name": "अनार",
+            "name_nepali": "अनार",
+            "unit": "(के.जी.)",
+            "min_price": "300.00",
+            "max_price": "350.00",
+            "avg_price": "326.67",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.662223+05:45"
+        },
+        {
+            "id": 171,
+            "name": "अम्बा",
+            "name_nepali": "अम्बा",
+            "unit": "(के.जी.)",
+            "min_price": "110.00",
+            "max_price": "120.00",
+            "avg_price": "115.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.662833+05:45"
+        },
+        {
+            "id": 175,
+            "name": "आभोकाडो",
+            "name_nepali": "आभोकाडो",
+            "unit": "(के.जी)",
+            "min_price": "600.00",
+            "max_price": "650.00",
+            "avg_price": "627.50",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.662995+05:45"
+        },
+        {
+            "id": 90,
+            "name": "आलु रातो",
+            "name_nepali": "आलु रातो",
+            "unit": "(के.जी.)",
+            "min_price": "30.00",
+            "max_price": "32.00",
+            "avg_price": "31.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.658202+05:45"
+        },
+        {
+            "id": 149,
+            "name": "इमली",
+            "name_nepali": "इमली",
+            "unit": "(के.जी.)",
+            "min_price": "160.00",
+            "max_price": "170.00",
+            "avg_price": "165.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.661880+05:45"
+        },
+        {
+            "id": 172,
+            "name": "उखु",
+            "name_nepali": "उखु",
+            "unit": "(प्रति वटा)",
+            "min_price": "70.00",
+            "max_price": "80.00",
+            "avg_price": "75.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.662874+05:45"
+        },
+        {
+            "id": 97,
+            "name": "काउली स्थानिय",
+            "name_nepali": "काउली स्थानिय",
+            "unit": "(के.जी.)",
+            "min_price": "40.00",
+            "max_price": "50.00",
+            "avg_price": "45.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.658853+05:45"
+        },
+        {
+            "id": 165,
+            "name": "काक्रो",
+            "name_nepali": "काक्रो",
+            "unit": "(लोकल) )",
+            "min_price": "60.00",
+            "max_price": "70.00",
+            "avg_price": "65.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.662588+05:45"
+        },
+        {
+            "id": 156,
+            "name": "कागती",
+            "name_nepali": "कागती",
+            "unit": "(के.जी.)",
+            "min_price": "260.00",
+            "max_price": "280.00",
+            "avg_price": "270.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.662179+05:45"
+        },
+        {
+            "id": 174,
+            "name": "किवि",
+            "name_nepali": "किवि",
+            "unit": "(केजी)",
+            "min_price": "400.00",
+            "max_price": "450.00",
+            "avg_price": "428.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.662956+05:45"
+        },
+        {
+            "id": 135,
+            "name": "कुरीलो",
+            "name_nepali": "कुरीलो",
+            "unit": "(के.जी.)",
+            "min_price": "300.00",
+            "max_price": "600.00",
+            "avg_price": "450.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.661238+05:45"
+        },
+        {
+            "id": 155,
+            "name": "केरा",
+            "name_nepali": "केरा",
+            "unit": "(दर्जन)",
+            "min_price": "140.00",
+            "max_price": "160.00",
+            "avg_price": "150.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.662134+05:45"
+        },
+        {
+            "id": 140,
+            "name": "कोइरालो",
+            "name_nepali": "कोइरालो",
+            "unit": "(के.जी.)",
+            "min_price": "170.00",
+            "max_price": "210.00",
+            "avg_price": "187.50",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.661472+05:45"
+        },
+        {
+            "id": 179,
+            "name": "खुर्सानी हरियो",
+            "name_nepali": "खुर्सानी हरियो",
+            "unit": "(बुलेट) )",
+            "min_price": "50.00",
+            "max_price": "60.00",
+            "avg_price": "55.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.663154+05:45"
+        },
+        {
+            "id": 177,
+            "name": "खु्र्सानी सुकेको",
+            "name_nepali": "खु्र्सानी सुकेको",
+            "unit": "(के.जी.)",
+            "min_price": "300.00",
+            "max_price": "420.00",
+            "avg_price": "364.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.663076+05:45"
+        },
+        {
+            "id": 178,
+            "name": "खु्र्सानी हरियो",
+            "name_nepali": "खु्र्सानी हरियो",
+            "unit": "(के.जी.)",
+            "min_price": "60.00",
+            "max_price": "70.00",
+            "avg_price": "65.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.663116+05:45"
+        },
+        {
+            "id": 93,
+            "name": "गाजर",
+            "name_nepali": "गाजर",
+            "unit": "(लोकल) )",
+            "min_price": "40.00",
+            "max_price": "60.00",
+            "avg_price": "51.25",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.658457+05:45"
+        },
+        {
+            "id": 148,
+            "name": "गान्टे मूला",
+            "name_nepali": "गान्टे मूला",
+            "unit": "(के.जी.)",
+            "min_price": "40.00",
+            "max_price": "50.00",
+            "avg_price": "45.00",
+            "scrape_date": "2025-05-05",
+            "timestamp": "2025-05-06T01:11:03.661838+05:45"
+        },

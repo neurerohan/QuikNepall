@@ -1,0 +1,319 @@
+Django REST framework
+Api Root Nepali Date List
+
+Nepali Date List
+API endpoint that allows Nepali calendar dates to be viewed.
+
+GET /api/calendar/
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Authorization, Accept
+
+{
+    "count": 30,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 30,
+            "ad_date": "2025-06-04",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 30,
+            "tithi": "Tithi 1",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339418+05:45"
+        },
+        {
+            "id": 29,
+            "ad_date": "2025-06-03",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 29,
+            "tithi": "Tithi 15",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339396+05:45"
+        },
+        {
+            "id": 28,
+            "ad_date": "2025-06-02",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 28,
+            "tithi": "Tithi 14",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339374+05:45"
+        },
+        {
+            "id": 27,
+            "ad_date": "2025-06-01",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 27,
+            "tithi": "Tithi 13",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339351+05:45"
+        },
+        {
+            "id": 26,
+            "ad_date": "2025-05-31",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 26,
+            "tithi": "Tithi 12",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339329+05:45"
+        },
+        {
+            "id": 25,
+            "ad_date": "2025-05-30",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 25,
+            "tithi": "Tithi 11",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339306+05:45"
+        },
+        {
+            "id": 24,
+            "ad_date": "2025-05-29",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 24,
+            "tithi": "Tithi 10",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339284+05:45"
+        },
+        {
+            "id": 23,
+            "ad_date": "2025-05-28",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 23,
+            "tithi": "Tithi 9",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339262+05:45"
+        },
+        {
+            "id": 22,
+            "ad_date": "2025-05-27",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 22,
+            "tithi": "Tithi 8",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339237+05:45"
+        },
+        {
+            "id": 21,
+            "ad_date": "2025-05-26",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 21,
+            "tithi": "Tithi 7",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339214+05:45"
+        },
+        {
+            "id": 20,
+            "ad_date": "2025-05-25",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 20,
+            "tithi": "Tithi 6",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339191+05:45"
+        },
+        {
+            "id": 19,
+            "ad_date": "2025-05-24",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 19,
+            "tithi": "Tithi 5",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339169+05:45"
+        },
+        {
+            "id": 18,
+            "ad_date": "2025-05-23",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 18,
+            "tithi": "Tithi 4",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339147+05:45"
+        },
+        {
+            "id": 17,
+            "ad_date": "2025-05-22",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 17,
+            "tithi": "Tithi 3",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339124+05:45"
+        },
+        {
+            "id": 16,
+            "ad_date": "2025-05-21",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 16,
+            "tithi": "Tithi 2",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339102+05:45"
+        },
+        {
+            "id": 15,
+            "ad_date": "2025-05-20",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 15,
+            "tithi": "Tithi 1",
+            "festival": "Buddha Jayanti",
+            "timestamp": "2025-05-06T01:14:37.339078+05:45"
+        },
+        {
+            "id": 14,
+            "ad_date": "2025-05-19",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 14,
+            "tithi": "Tithi 15",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339055+05:45"
+        },
+        {
+            "id": 13,
+            "ad_date": "2025-05-18",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 13,
+            "tithi": "Tithi 14",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339032+05:45"
+        },
+        {
+            "id": 12,
+            "ad_date": "2025-05-17",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 12,
+            "tithi": "Tithi 13",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.339008+05:45"
+        },
+        {
+            "id": 11,
+            "ad_date": "2025-05-16",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 11,
+            "tithi": "Tithi 12",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338983+05:45"
+        },
+        {
+            "id": 10,
+            "ad_date": "2025-05-15",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 10,
+            "tithi": "Tithi 11",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338944+05:45"
+        },
+        {
+            "id": 9,
+            "ad_date": "2025-05-14",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 9,
+            "tithi": "Tithi 10",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338921+05:45"
+        },
+        {
+            "id": 8,
+            "ad_date": "2025-05-13",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 8,
+            "tithi": "Tithi 9",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338898+05:45"
+        },
+        {
+            "id": 7,
+            "ad_date": "2025-05-12",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 7,
+            "tithi": "Tithi 8",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338875+05:45"
+        },
+        {
+            "id": 6,
+            "ad_date": "2025-05-11",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 6,
+            "tithi": "Tithi 7",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338851+05:45"
+        },
+        {
+            "id": 5,
+            "ad_date": "2025-05-10",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 5,
+            "tithi": "Tithi 6",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338829+05:45"
+        },
+        {
+            "id": 4,
+            "ad_date": "2025-05-09",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 4,
+            "tithi": "Tithi 5",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338806+05:45"
+        },
+        {
+            "id": 3,
+            "ad_date": "2025-05-08",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 3,
+            "tithi": "Tithi 4",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338783+05:45"
+        },
+        {
+            "id": 2,
+            "ad_date": "2025-05-07",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 2,
+            "tithi": "Tithi 3",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338758+05:45"
+        },
+        {
+            "id": 1,
+            "ad_date": "2025-05-06",
+            "bs_year": 2081,
+            "bs_month": 5,
+            "bs_day": 1,
+            "tithi": "Tithi 2",
+            "festival": "",
+            "timestamp": "2025-05-06T01:14:37.338720+05:45"
+        }
+    ]
+}
