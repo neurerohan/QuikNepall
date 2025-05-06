@@ -1,0 +1,91 @@
+🎨 Design a clean, modern, and responsive homepage for a Nepali utility platform called **QuikNepal**. The purpose is to provide tools like the Nepali calendar, vegetable rates, metal prices, rashifal, and forex rates — all fetched via a working Django backend.
+
+This design should be visually aesthetic, highly usable on mobile, and convey trust and clarity. DO NOT focus on implementation — only on the UI visuals in Figma or compatible design tools.
+
+---
+
+🔗 Brand Name: **QuikNepal**
+
+🎨 Theme:
+• Use **dark shades of green** as the primary color (main: `#006400`, alternate: `#388E3C`, soft green highlights: `#A5D6A7`)
+• Use **accent color** for CTAs: `#CDDC39` (light yellow-green)
+• Font: Use clean sans-serif (e.g., Inter, Manrope, or DM Sans)
+• Background: White or very soft green for cards
+• Border radius: Large (rounded-2xl), modern
+• Elevation: Gentle shadows for cards, not too harsh
+
+---
+
+🧩 Layout Structure:
+
+1. **Header (Sticky)**  
+   • Logo on the left  
+   • Navigation: [Calendar] [Veg Prices] [Date Converter] [Metals] [Forex] [Rashifal]  
+   • Right: Search icon, Language switcher, Theme toggle, social icons  
+
+2. **Hero Section**  
+   • Widget-style box with:
+     – Today’s Nepali Date (e.g., "23 बैशाख 2082")  
+     – Current Time & Temperature (API-fetched but mock for now)  
+   • Clean layout: Two columns or centered block  
+   • Below that, three rounded buttons linking to:
+     – View Calendar  
+     – Check Veg Prices  
+     – Use Date Converter  
+
+3. **Core Tools Preview Section**  
+   • Three to four cards laid out in a grid  
+     – Card 1: Nepali Calendar  
+     – Card 2: Vegetable Prices (Kalimati)  
+     – Card 3: Date Converter  
+     – Card 4: Metal & Forex Rates (optional combined card)  
+   • Each card has: icon, 1-line description, CTA
+
+4. **Market Highlights Section**  
+   • 2-Column layout (or stacked for mobile)  
+   • Column 1: Most searched vegetables (from API)  
+   • Column 2: Best value items today  
+   • Use light green/gray cards with icons or emojis for each item
+
+5. **Nepali Calendar Deep Section**  
+   • Banner-style or card explaining the features of QuikNepal’s full Nepali Calendar  
+   • Include buttons: “Nepali Date Today”, “Full Calendar”, “Events & Holidays”
+
+6. **Informational Cards (Optional)**  
+   • Left: Market Status (open/closed, hours)  
+   • Right: Tips using Hamro Patro style calendars  
+   • Use icons and subtle shadow cards here
+
+7. **FAQ Accordion Section**  
+   • Minimal accordion with 6–8 questions about using the calendar and platform  
+   • Highlight keywords like “Nepali Date Today” and “Mero Patro” alternative  
+
+8. **Explore More Tools**  
+   • Grid of rounded icon buttons for extra tools:
+     – All Face Checker  
+     – Shake for Reward  
+     – Loot Catch Game  
+   • Use colorful pill-style buttons
+
+9. **Footer**  
+   • Logo + short description of QuikNepal  
+   • Columns: [Quick Links], [Alchi Fun Games], [Contact Info]  
+   • Include social icons (TikTok, Facebook, YouTube)  
+   • Show © 2025 and Privacy links
+
+---
+
+🧠 Psychological Notes:
+• CTA buttons should stand out with yellow-green accent (`#CDDC39`) — use hover animation (e.g., grow or glow)
+• Use a visual hierarchy — large headings, readable spacing, soft background dividers
+• Use consistency in spacing: e.g., 24px padding in cards, 16px margin between elements
+• Mobile-first design: collapse columns, stack cards, and use hamburger for header nav
+
+---
+
+🧪 Deliverables:
+• Figma / Sketch design file or export
+• Desktop (1440px), Tablet (768px), Mobile (375px) breakpoints
+• Exportable SVG icons or font-based
+• Color palette + typography guide
+
