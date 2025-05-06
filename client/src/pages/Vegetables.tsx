@@ -10,13 +10,33 @@ const Vegetables = () => {
   const [searchTerm, setSearchTerm] = useState('');
   
   const { data, isLoading, error } = useQuery({
-    queryKey: ['/vegetables/'],
+    queryKey: ['/api/vegetables'],
+    queryFn: getVegetables,
     staleTime: 3600000 // 1 hour
   });
 
   const filteredData = data?.filter((item: any) => 
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.name_nepali?.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
+
+  // Map API data to our component expected format
+  const formattedData = filteredData.map((item: any) => ({
+    name: item.name_nepali ? `${item.name} (${item.name_nepali})` : item.name,
+    unit: item.unit,
+    minPrice: parseFloat(item.min_price),
+    maxPrice: parseFloat(item.max_price),
+    avgPrice: parseFloat(item.avg_price),
+    priceTrend: calculateTrend(parseFloat(item.min_price), parseFloat(item.max_price))
+  }));
+
+  function calculateTrend(min: number, max: number): string {
+    // Simple placeholder logic - could be replaced with actual trend data
+    const diff = max - min;
+    if (diff > 20) return 'up';
+    if (diff < 10) return 'down';
+    return 'stable';
+  }
 
   const vegetableColumns = [
     { header: 'Item', accessor: 'name' },
@@ -78,7 +98,7 @@ const Vegetables = () => {
             ) : (
               <DataTable
                 columns={vegetableColumns}
-                data={filteredData}
+                data={formattedData}
                 isLoading={isLoading}
               />
             )}

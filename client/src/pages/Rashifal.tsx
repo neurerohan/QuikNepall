@@ -21,7 +21,8 @@ const zodiacSigns = [
 
 const Rashifal = () => {
   const { data, isLoading, error } = useQuery({
-    queryKey: ['/rashifal/'],
+    queryKey: ['/api/rashifal'],
+    queryFn: getRashifal,
     staleTime: 3600000 // 1 hour
   });
 

@@ -6,7 +6,8 @@ import FadeIn from '@/components/ui/FadeIn';
 
 const Metals = () => {
   const { data, isLoading, error } = useQuery({
-    queryKey: ['/metals/'],
+    queryKey: ['/api/metals'],
+    queryFn: getMetals,
     staleTime: 3600000 // 1 hour
   });
 

@@ -11,19 +11,22 @@ import { getVegetables, getMetals, getRashifal } from '@/lib/api';
 const Home = () => {
   // Get sample vegetable data for the preview
   const vegetablesQuery = useQuery({
-    queryKey: ['/vegetables/'],
+    queryKey: ['/api/vegetables'],
+    queryFn: getVegetables,
     staleTime: 3600000 // 1 hour
   });
 
   // Get sample metal data for the preview
   const metalsQuery = useQuery({
-    queryKey: ['/metals/'],
+    queryKey: ['/api/metals'],
+    queryFn: getMetals,
     staleTime: 3600000 // 1 hour
   });
 
   // Get sample rashifal data for the preview
   const rashifalQuery = useQuery({
-    queryKey: ['/rashifal/'],
+    queryKey: ['/api/rashifal'],
+    queryFn: getRashifal,
     staleTime: 3600000 // 1 hour
   });
 
@@ -200,7 +203,13 @@ const Home = () => {
                 title="Today's Vegetable Prices"
                 subtitle={`Last updated: ${formattedDate}`}
                 columns={vegetableColumns}
-                data={vegetablesQuery.data?.slice(0, 5) || []}
+                data={(vegetablesQuery.data || []).slice(0, 5).map((item: any) => ({
+                  name: item.name_nepali ? `${item.name} (${item.name_nepali})` : item.name,
+                  unit: item.unit,
+                  minPrice: parseFloat(item.min_price),
+                  maxPrice: parseFloat(item.max_price),
+                  avgPrice: parseFloat(item.avg_price)
+                }))}
                 isLoading={vegetablesQuery.isLoading}
               />
             </div>
