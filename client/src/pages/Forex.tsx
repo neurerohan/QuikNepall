@@ -23,7 +23,8 @@ const Forex = () => {
   const [perPage, setPerPage] = useState(10);
 
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['/forex', { from: fromDate, to: toDate, page: currentPage, per_page: perPage }],
+    queryKey: ['/api/forex', { from: fromDate, to: toDate, page: currentPage, per_page: perPage }],
+    queryFn: () => getForex({ from: fromDate, to: toDate, page: currentPage, per_page: perPage }),
     enabled: false, // Don't fetch on component mount
     staleTime: 3600000 // 1 hour
   });

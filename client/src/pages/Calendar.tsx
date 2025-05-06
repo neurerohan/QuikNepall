@@ -30,7 +30,8 @@ const Calendar = () => {
   const month = params.month || (new Date().getMonth() + 1).toString();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: [`/calendar/${year}/${month}`],
+    queryKey: [`/api/calendar/${year}/${month}`],
+    queryFn: () => getCalendar(year, month),
     enabled: !!year && !!month
   });
 

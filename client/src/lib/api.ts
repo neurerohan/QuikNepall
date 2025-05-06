@@ -9,8 +9,56 @@ const api = axios.create({
 
 export const getCalendar = async (year: string, month: string) => {
   const response = await api.get(`/calendar/${year}/${month}`);
-  return response.data;
+  
+  // Add transformation for calendar data
+  if (response.data && response.data.results) {
+    const calendarData = response.data.results;
+    
+    // Format the data to match component expectations
+    return {
+      days: calendarData.map((day: any) => ({
+        bs: {
+          year: day.bs_year,
+          month: day.bs_month,
+          day: day.bs_day
+        },
+        ad: {
+          year: parseInt(day.ad_date.split('-')[0]),
+          month: parseInt(day.ad_date.split('-')[1]),
+          day: parseInt(day.ad_date.split('-')[2]),
+          monthName: new Date(day.ad_date).toLocaleString('default', { month: 'long' })
+        },
+        isHoliday: !!day.festival,
+        events: day.festival ? [day.festival] : [],
+        dayOfWeek: new Date(day.ad_date).getDay() // 0 = Sunday, 1 = Monday, etc.
+      })),
+      monthDetails: {
+        bs: {
+          monthName: getMonthName(parseInt(month)),
+          year: parseInt(year),
+          month: parseInt(month)
+        },
+        ad: {
+          monthName: new Date(`${year}-${month}-01`).toLocaleString('default', { month: 'long' }),
+          year: new Date(`${year}-${month}-01`).getFullYear(),
+          month: new Date(`${year}-${month}-01`).getMonth() + 1
+        }
+      }
+    };
+  }
+  
+  return { days: [], monthDetails: {} };
 };
+
+// Helper function to get Nepali month name
+function getMonthName(month: number): string {
+  const nepaliMonths = [
+    'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
+    'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
+    'Poush', 'Magh', 'Falgun', 'Chaitra'
+  ];
+  return nepaliMonths[month - 1] || '';
+}
 
 export const convertDate = async (params: { from: string; date: string }) => {
   const response = await api.get(`/calendar/convert`, { params });
