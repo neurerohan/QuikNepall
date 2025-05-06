@@ -32,7 +32,8 @@ const Calendar = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: [`/api/calendar/${year}/${month}`],
     queryFn: () => getCalendar(year, month),
-    enabled: !!year && !!month
+    enabled: !!year && !!month,
+    retry: 1
   });
 
   const handlePreviousMonth = () => {
