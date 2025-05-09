@@ -13,7 +13,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/calendar/:year/:month", async (req, res) => {
     try {
       const { year, month } = req.params;
-      const response = await axios.get(`${API_BASE_URL}calendar/${year}/${month}`);
+      // Convert month number to Nepali month name
+      const nepaliMonths = [
+        'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
+        'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
+        'Poush', 'Magh', 'Falgun', 'Chaitra'
+      ];
+      const monthName = nepaliMonths[parseInt(month) - 1] || 'Baishakh';
+      
+      // Use the detailed-calendar endpoint with year and month_name parameters
+      const response = await axios.get(`${API_BASE_URL}detailed-calendar/`, {
+        params: {
+          year: year,
+          month_name: monthName
+        }
+      });
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching calendar:", error);

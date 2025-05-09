@@ -9,76 +9,89 @@ const api = axios.create({
 
 export const getCalendar = async (year: string, month: string) => {
   try {
-    // Try to get data from API - it's currently failing with 404 errors
-    try {
-      const response = await api.get(`/calendar/${year}/${month}`);
+    // Convert month number to Nepali month name for the API
+    const nepaliMonths = [
+      'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
+      'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
+      'Poush', 'Magh', 'Falgun', 'Chaitra'
+    ];
+    const monthName = nepaliMonths[parseInt(month) - 1] || 'Baishakh';
+    
+    // Use the detailed-calendar endpoint with year and month_name parameters
+    const response = await api.get(`/calendar/${year}/${month}`);
+    
+    if (response.data && response.data.days) {
+      const calendarData = response.data.days;
       
-      if (response.data && response.data.results) {
-        const calendarData = response.data.results;
-        
-        // Format the data to match component expectations
-        return {
-          days: calendarData.map((day: any) => ({
+      // Format the data to match component expectations
+      return {
+        days: calendarData.map((day: any) => {
+          // Check if the day has events
+          const events = day.events_raw?.length ? day.events_raw : [];
+          
+          return {
             bs: {
-              year: day.bs_year,
-              month: day.bs_month,
-              day: day.bs_day
-            },
-            ad: {
-              year: parseInt(day.ad_date.split('-')[0]),
-              month: parseInt(day.ad_date.split('-')[1]),
-              day: parseInt(day.ad_date.split('-')[2]),
-              monthName: new Date(day.ad_date).toLocaleString('default', { month: 'long' })
-            },
-            isHoliday: !!day.festival,
-            events: day.festival ? [day.festival] : [],
-            dayOfWeek: new Date(day.ad_date).getDay() // 0 = Sunday, 1 = Monday, etc.
-          })),
-          monthDetails: {
-            bs: {
-              monthName: getMonthName(parseInt(month)),
               year: parseInt(year),
-              month: parseInt(month)
+              month: parseInt(month),
+              day: parseInt(day.bs_date)
             },
             ad: {
-              monthName: new Date(`${year}-${month}-01`).toLocaleString('default', { month: 'long' }),
-              year: new Date(`${year}-${month}-01`).getFullYear(),
-              month: new Date(`${year}-${month}-01`).getMonth() + 1
-            }
+              year: day.ad_year,
+              month: getMonthNumberFromName(day.ad_month_name),
+              day: day.ad_date,
+              monthName: day.ad_month_name
+            },
+            isHoliday: events.length > 0 || day.day_of_week === 'Saturday',
+            events: events,
+            dayOfWeek: getDayOfWeekNumber(day.day_of_week)
+          };
+        }),
+        monthDetails: {
+          bs: {
+            monthName: monthName,
+            year: parseInt(year),
+            month: parseInt(month)
+          },
+          ad: {
+            monthName: calendarData[0]?.ad_month_name || 'Unknown',
+            year: calendarData[0]?.ad_year || new Date().getFullYear(),
+            month: getMonthNumberFromName(calendarData[0]?.ad_month_name) || new Date().getMonth() + 1
           }
-        };
-      }
-    } catch (apiError) {
-      console.warn("API call failed, generating calendar structure", apiError);
-      // Continue to generate fallback data
+        }
+      };
     }
     
-    // Generate calendar data for the current month
     console.log("Generating calendar data for", year, month);
-    const currentDate = new Date(`${year}-${month}-01`);
-    const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
-    const firstDay = new Date(`${year}-${month}-01`).getDay();
+    
+    // Generate calendar data for the current month as fallback
+    const currentDate = new Date();
+    const bsYear = parseInt(year);
+    const bsMonth = parseInt(month);
+    
+    // In BS calendar, months typically have 29-32 days
+    const daysInBSMonth = 30; // Approximation
     
     // Generate days for the month
-    const days = Array.from({ length: daysInMonth }, (_, i) => {
+    const days = Array.from({ length: daysInBSMonth }, (_, i) => {
       const day = i + 1;
-      const date = new Date(`${year}-${month}-${day}`);
+      // Approximate AD date (not accurate, just for display)
+      const adDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
       
       return {
         bs: {
-          year: parseInt(year),
-          month: parseInt(month),
+          year: bsYear,
+          month: bsMonth,
           day: day
         },
         ad: {
-          year: date.getFullYear(),
-          month: date.getMonth() + 1,
-          day: date.getDate(),
-          monthName: date.toLocaleString('default', { month: 'long' })
+          year: adDate.getFullYear(),
+          month: adDate.getMonth() + 1,
+          day: adDate.getDate(),
+          monthName: adDate.toLocaleString('default', { month: 'long' })
         },
-        isHoliday: date.getDay() === 0, // Sunday is a holiday
-        events: date.getDay() === 0 ? ["Weekend"] : [],
-        dayOfWeek: date.getDay()
+        isHoliday: adDate.getDay() === 0 || adDate.getDay() === 6, // Saturday and Sunday are holidays
+        events: adDate.getDay() === 0 ? ["Weekend"] : [],
+        dayOfWeek: adDate.getDay()
       };
     });
     
@@ -86,9 +99,9 @@ export const getCalendar = async (year: string, month: string) => {
       days,
       monthDetails: {
         bs: {
-          monthName: getMonthName(parseInt(month)),
-          year: parseInt(year),
-          month: parseInt(month)
+          monthName: nepaliMonths[bsMonth - 1],
+          year: bsYear,
+          month: bsMonth
         },
         ad: {
           monthName: currentDate.toLocaleString('default', { month: 'long' }),
@@ -117,6 +130,25 @@ export const getCalendar = async (year: string, month: string) => {
       }
     };
   }
+};
+
+// Helper function to get month number from name
+function getMonthNumberFromName(monthName: string): number {
+  const months = {
+    'January': 1, 'February': 2, 'March': 3, 'April': 4,
+    'May': 5, 'June': 6, 'July': 7, 'August': 8,
+    'September': 9, 'October': 10, 'November': 11, 'December': 12
+  };
+  return months[monthName as keyof typeof months] || 1;
+}
+
+// Helper function to get day of week number
+function getDayOfWeekNumber(dayName: string): number {
+  const days = {
+    'Sunday': 0, 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3,
+    'Thursday': 4, 'Friday': 5, 'Saturday': 6
+  };
+  return days[dayName as keyof typeof days] || 0;
 };
 
 // Helper function to get Nepali month name
@@ -163,24 +195,31 @@ export const getMetals = async () => {
 
 export const getRashifal = async () => {
   try {
-    // Try to get data from the API - might fail with 404
-    try {
-      const response = await api.get('/rashifal');
-      if (response.data && response.data.results) {
+    // Get data from the updated API format for rashifal
+    const response = await api.get('/rashifal');
+    
+    if (response.data && response.data.rashifal) {
+      // Use the new format where data is in the 'rashifal' property
+      const mappedPredictions = response.data.rashifal.map((item: any) => {
+        // Extract English sign name from sign_nepali (e.g., "वृश्चिक Scorpio" -> "Scorpio")
+        const englishSign = item.sign_nepali ? 
+          item.sign_nepali.split(' ').pop() : 
+          mapSignToEnglish(item.sign);
+          
         return {
-          predictions: response.data.results.map((item: any) => ({
-            sign: item.sign,
-            prediction: item.prediction
-          })),
-          todayEvent: ""  // Default empty event
+          sign: englishSign,
+          prediction: item.prediction,
+          date: item.date
         };
-      }
-    } catch (apiError) {
-      console.warn("API call for rashifal failed, providing fallback data", apiError);
-      // Continue to the fallback data
+      });
+      
+      return {
+        predictions: mappedPredictions,
+        todayEvent: response.data.source || "Daily Rashifal"
+      };
     }
     
-    // Generate basic predictions for the zodiac signs as fallback
+    // If we don't have the expected format, return a structured response
     console.log("Generating rashifal fallback data");
     const zodiacSigns = [
       { sign: 'Aries', prediction: 'A favorable day for new beginnings and personal projects.' },
@@ -224,6 +263,26 @@ export const getRashifal = async () => {
     };
   }
 };
+
+// Helper function to map Nepali sign names to English
+function mapSignToEnglish(nepaliSign: string): string {
+  const signMap: {[key: string]: string} = {
+    'mesh': 'Aries',
+    'brish': 'Taurus',
+    'mithun': 'Gemini',
+    'karkat': 'Cancer',
+    'simha': 'Leo',
+    'kanya': 'Virgo',
+    'tula': 'Libra',
+    'brischik': 'Scorpio',
+    'dhanu': 'Sagittarius',
+    'makar': 'Capricorn',
+    'kumbha': 'Aquarius',
+    'meen': 'Pisces'
+  };
+  
+  return signMap[nepaliSign] || nepaliSign;
+}
 
 export const getForex = async (params: { from?: string; to?: string; page?: number; per_page?: number }) => {
   try {
