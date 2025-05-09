@@ -112,45 +112,41 @@ const Home = () => {
         </div>
         
         <div className="container relative z-10 mx-auto px-4 text-center text-white">
-          <FadeIn>
-            <div className="inline-block relative mb-4">
-              <span className="text-lg md:text-xl font-medium bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full border border-white/10 shadow-lg">
-                <span className="text-yellow-200 font-semibold">नमस्ते</span> नेपाल
-              </span>
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold font-poppins mb-8 text-shadow-md tracking-tight">
-              Essential Nepali Information Hub
-            </h1>
-          </FadeIn>
+          {/* Header without FadeIn components */}
+          <div className="inline-block animate-fadeIn relative mb-4">
+            <span className="text-lg md:text-xl font-medium bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full border border-white/10 shadow-lg">
+              <span className="text-yellow-200 font-semibold">नमस्ते</span> नेपाल
+            </span>
+          </div>
           
-          <FadeIn delay={0.1}>
-            <p className="text-xl md:text-2xl max-w-3xl mx-auto font-light mb-14 text-white/90 leading-relaxed">
-              Your comprehensive resource for Nepali calendars, vegetable rates, metal prices, rashifal readings and more
-            </p>
-          </FadeIn>
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold font-poppins mb-8 text-shadow-md tracking-tight animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+            Essential Nepali Information Hub
+          </h1>
           
-          <FadeIn delay={0.2}>
-            <div className="flex flex-wrap justify-center gap-6">
-              <Link 
-                href="/calendar" 
-                className="bg-white text-primary font-bold py-4 px-10 rounded-xl transform hover:scale-105 hover:shadow-xl transition-all duration-300 flex items-center shadow-md" 
-                aria-label="Explore Nepali Calendar"
-              >
-                <i className="ri-calendar-2-line mr-3 text-xl"></i> 
-                <span>Explore Calendar</span>
-              </Link>
-              
-              <Link 
-                href="#features" 
-                className="bg-primary-dark/20 text-white backdrop-blur-lg font-medium py-4 px-10 rounded-xl hover:bg-primary-dark/40 transition-all duration-300 flex items-center border border-white/20 shadow-md group" 
-                aria-label="Discover Features"
-              >
-                <i className="ri-apps-line mr-3 text-xl"></i> 
-                <span>Discover Features</span>
-                <i className="ri-arrow-right-line ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300"></i>
-              </Link>
-            </div>
-          </FadeIn>
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto font-light mb-14 text-white/90 leading-relaxed animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+            Your comprehensive resource for Nepali calendars, vegetable rates, metal prices, rashifal readings and more
+          </p>
+          
+          <div className="flex flex-wrap justify-center gap-6 animate-fadeIn" style={{ animationDelay: '0.3s' }}>
+            <Link 
+              href="/calendar" 
+              className="bg-white text-primary font-bold py-4 px-10 rounded-xl hover:scale-105 hover:shadow-xl transition-all duration-300 flex items-center shadow-md" 
+              aria-label="Explore Nepali Calendar"
+            >
+              <i className="ri-calendar-2-line mr-3 text-xl"></i> 
+              <span>Explore Calendar</span>
+            </Link>
+            
+            <Link 
+              href="#features" 
+              className="bg-primary-dark/20 text-white backdrop-blur-lg font-medium py-4 px-10 rounded-xl hover:bg-primary-dark/40 transition-all duration-300 flex items-center border border-white/20 shadow-md group" 
+              aria-label="Discover Features"
+            >
+              <i className="ri-apps-line mr-3 text-xl"></i> 
+              <span>Discover Features</span>
+              <i className="ri-arrow-right-line ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300"></i>
+            </Link>
+          </div>
           
           {/* Wave effect at bottom */}
           <div className="absolute bottom-0 left-0 w-full overflow-hidden">

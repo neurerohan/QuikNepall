@@ -212,14 +212,16 @@ const CalendarWidget = () => {
                       
                       {/* Event indicator with better styling */}
                       {day.events?.length > 0 && (
-                        <div className="mt-auto text-[10px] md:text-xs text-primary-dark font-medium truncate px-1 py-0.5 text-center bg-primary-light/10 rounded-sm mt-1">
-                          {day.events[0]}
+                        <div className="mt-auto text-[10px] md:text-xs text-primary-dark font-medium truncate px-1 py-0.5 text-center bg-primary-light/10 rounded-sm mt-1 flex items-center justify-center">
+                          <span>{day.events[0]}</span>
+                          
+                          {/* Multiple events count indicator */}
+                          {day.events?.length > 1 && (
+                            <span className="ml-1 px-1 bg-orange-500 text-white rounded-full text-[8px] flex items-center justify-center min-w-[14px] h-3">
+                              +{day.events.length - 1}
+                            </span>
+                          )}
                         </div>
-                      )}
-                      
-                      {/* Multiple events indicator - using orange/red instead of green */}
-                      {day.events?.length > 1 && (
-                        <div className="absolute bottom-1 right-1 w-2 h-2 bg-orange-500 rounded-full"></div>
                       )}
                     </div>
                   </div>

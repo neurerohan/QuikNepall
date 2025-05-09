@@ -45,6 +45,11 @@
     animation: twinkle 4s ease-in-out infinite;
   }
   
+  .animate-fadeIn {
+    animation: fadeIn 0.6s ease-out forwards;
+    opacity: 0;
+  }
+  
   /* Custom ease curves */
   .ease-smooth-out {
     transition-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
@@ -101,6 +106,17 @@
   100% {
     opacity: 0.2;
     transform: scale(0.9);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
