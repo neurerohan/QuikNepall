@@ -71,27 +71,64 @@ const Home = () => {
       title="QuikNepal - Your Essential Nepali Information Hub"
       description="Access Nepali calendars, vegetable rates, metal prices, rashifal readings and more at QuikNepal, your comprehensive Nepali information portal."
     >
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary to-primary-dark py-16">
-        <div className="container mx-auto px-4 text-center text-white">
+      {/* Hero Section - Enhanced with animation and gradient */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#57c84d] to-[#83d475] py-20">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 w-full h-full">
+          <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full animate-ping" style={{ animationDuration: '8s' }}></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/5 rounded-full animate-ping" style={{ animationDuration: '15s' }}></div>
+          <div className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/10 rounded-full animate-ping" style={{ animationDuration: '10s', animationDelay: '2s' }}></div>
+          <div className="absolute top-3/4 left-1/3 w-24 h-24 bg-white/5 rounded-full animate-ping" style={{ animationDuration: '12s', animationDelay: '1s' }}></div>
+        </div>
+        
+        {/* Floating decorative elements */}
+        <div className="absolute top-20 right-[10%] text-4xl text-white/20 animate-bounce" style={{ animationDuration: '4s' }}>
+          <i className="ri-calendar-line"></i>
+        </div>
+        <div className="absolute bottom-20 left-[15%] text-5xl text-white/20 animate-bounce" style={{ animationDuration: '5s', animationDelay: '1s' }}>
+          <i className="ri-coins-line"></i>
+        </div>
+        
+        <div className="container relative z-10 mx-auto px-4 text-center text-white">
           <FadeIn>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-poppins mb-4">Essential Nepali Information Hub</h1>
+            <div className="inline-block relative mb-2">
+              <span className="text-lg font-medium bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full">नमस्ते नेपाल</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-poppins mb-6 text-shadow-sm">Essential Nepali Information Hub</h1>
           </FadeIn>
+          
           <FadeIn delay={0.1}>
-            <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-90 mb-8">Your comprehensive resource for Nepali calendars, vegetable rates, metal prices, rashifal readings and more</p>
+            <p className="text-xl md:text-2xl max-w-3xl mx-auto font-light mb-12">Your comprehensive resource for Nepali calendars, vegetable rates, metal prices, rashifal readings and more</p>
           </FadeIn>
+          
           <FadeIn delay={0.2}>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-wrap justify-center gap-5">
               <Bounce>
-                <Link href="/calendar" className="bg-accent text-primary font-bold py-3 px-6 rounded-lg hover:shadow-lg transition duration-300" aria-label="Explore Nepali Calendar">
-                  Explore Calendar
+                <Link 
+                  href="/calendar" 
+                  className="bg-white text-primary font-bold py-4 px-8 rounded-lg transform hover:scale-105 hover:shadow-lg transition duration-300 flex items-center" 
+                  aria-label="Explore Nepali Calendar"
+                >
+                  <i className="ri-calendar-2-line mr-2"></i> Explore Calendar
                 </Link>
               </Bounce>
-              <Link href="#features" className="bg-white/10 backdrop-blur-sm text-white border border-white/20 font-medium py-3 px-6 rounded-lg hover:bg-white/20 transition duration-300" aria-label="Discover Features">
-                Discover Features
+              <Link 
+                href="#features" 
+                className="bg-primary-dark/30 backdrop-blur-sm text-white border border-white/20 font-medium py-4 px-8 rounded-lg hover:bg-primary-dark/50 transition duration-300 flex items-center" 
+                aria-label="Discover Features"
+              >
+                <i className="ri-apps-line mr-2"></i> Discover Features
               </Link>
             </div>
           </FadeIn>
+          
+          {/* Wave effect at bottom */}
+          <div className="absolute bottom-0 left-0 w-full overflow-hidden">
+            <svg className="relative block w-full h-10 md:h-16" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C172,20,295,50,321.39,56.44Z" 
+                className="fill-white"></path>
+            </svg>
+          </div>
         </div>
       </section>
 
@@ -170,196 +207,380 @@ const Home = () => {
           <h2 className="text-3xl font-bold text-primary font-poppins mb-10 text-center">Our Featured Services</h2>
           
           {/* Vegetable Price Tracker */}
-          <div className="flex flex-col md:flex-row gap-12 items-center mb-20">
-            <div className="md:w-1/2">
-              <h3 className="text-2xl font-bold text-primary font-poppins mb-4">Vegetable Price Tracker</h3>
+          <div className="flex flex-col md:flex-row gap-12 items-center mb-20 relative">
+            {/* Animated decorative elements */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/5 rounded-full animate-pulse" style={{ animationDuration: '7s' }}></div>
+            <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-primary/5 rounded-full animate-pulse" style={{ animationDuration: '10s' }}></div>
+            
+            <FadeIn className="md:w-1/2 relative z-10">
+              <div className="relative">
+                <span className="absolute -top-6 left-0 text-xs font-semibold bg-primary text-white px-3 py-1 rounded-full">
+                  UPDATED DAILY
+                </span>
+                <h3 className="text-2xl font-bold text-primary font-poppins mb-4 mt-2">Vegetable Price Tracker</h3>
+              </div>
+              
               <p className="text-neutral mb-6">Stay informed about current vegetable prices at Kalimati Market to make better shopping decisions. Our tracker provides:</p>
               
               <ul className="space-y-3 mb-8">
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Daily updated prices for common vegetables</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Minimum and maximum price ranges for each item</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Price trend indicators to track changes</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Easy-to-read table format with sorting options</span>
-                </li>
+                {['Daily updated prices for common vegetables', 
+                  'Minimum and maximum price ranges for each item', 
+                  'Price trend indicators to track changes', 
+                  'Easy-to-read table format with sorting options'].map((item, index) => (
+                  <FadeIn key={index} delay={0.2 + (index * 0.1)}>
+                    <li className="flex items-start group">
+                      <div className="mr-3 mt-1 p-1 rounded-full bg-primary-light/20 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                        <i className="ri-check-line"></i>
+                      </div>
+                      <span className="group-hover:text-primary-dark transition-colors duration-300">{item}</span>
+                    </li>
+                  </FadeIn>
+                ))}
               </ul>
               
-              <Link href="/vegetables" className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors">
-                View Vegetable Prices <i className="ri-arrow-right-line ml-2"></i>
-              </Link>
-            </div>
+              <Bounce>
+                <Link 
+                  href="/vegetables" 
+                  className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300"
+                >
+                  <span className="relative">
+                    <span className="absolute inset-0 bg-white/20 animate-pulse rounded-md" style={{ animationDuration: '2s' }}></span>
+                    <span className="relative">View Vegetable Prices</span>
+                  </span>
+                  <i className="ri-arrow-right-line ml-2 group-hover:translate-x-1 transition-transform duration-300"></i>
+                </Link>
+              </Bounce>
+            </FadeIn>
             
-            <div className="md:w-1/2">
-              <DataTable
-                title="Today's Vegetable Prices"
-                subtitle={`Last updated: ${formattedDate}`}
-                columns={vegetableColumns}
-                data={(vegetablesQuery.data || []).slice(0, 5).map((item: any) => ({
-                  name: item.name_nepali ? `${item.name} (${item.name_nepali})` : item.name,
-                  unit: item.unit,
-                  minPrice: parseFloat(item.min_price),
-                  maxPrice: parseFloat(item.max_price),
-                  avgPrice: parseFloat(item.avg_price)
-                }))}
-                isLoading={vegetablesQuery.isLoading}
-              />
+            <div className="md:w-1/2 relative z-10">
+              <div className="relative overflow-hidden rounded-xl shadow-lg border border-gray-100 bg-white">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-green-600"></div>
+                
+                <div className="p-5">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="text-xl font-semibold text-primary">Today's Vegetable Prices</h4>
+                    <span className="text-xs text-gray-500">{`Last updated: ${formattedDate}`}</span>
+                  </div>
+                  
+                  {vegetablesQuery.isLoading ? (
+                    <div className="space-y-4 py-4">
+                      {[1, 2, 3, 4, 5].map(i => (
+                        <div key={i} className="flex gap-4 items-center animate-pulse">
+                          <div className="h-10 w-10 rounded-md bg-gray-200"></div>
+                          <div className="flex-1">
+                            <div className="h-4 w-3/4 bg-gray-200 rounded mb-2"></div>
+                            <div className="h-3 w-1/2 bg-gray-100 rounded"></div>
+                          </div>
+                          <div className="h-6 w-14 bg-gray-200 rounded"></div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="divide-y">
+                      {(vegetablesQuery.data || []).slice(0, 5).map((item: any, index: number) => (
+                        <FadeIn key={index} delay={0.1 * index} className="py-3 first:pt-0 last:pb-0">
+                          <div className="flex items-center gap-4 group">
+                            <div className="h-10 w-10 bg-primary-light/10 flex items-center justify-center rounded-md text-primary">
+                              <i className="ri-leaf-line text-lg"></i>
+                            </div>
+                            
+                            <div className="flex-1">
+                              <div className="font-medium group-hover:text-primary transition-colors duration-300">
+                                {item.name_nepali ? `${item.name} (${item.name_nepali})` : item.name}
+                              </div>
+                              <div className="text-xs text-gray-500">Per {item.unit}</div>
+                            </div>
+                            
+                            <div className="text-right">
+                              <div className="font-semibold text-primary-dark">
+                                Rs. {parseFloat(item.avg_price).toFixed(2)}
+                              </div>
+                              <div className="text-xs flex items-center gap-1 justify-end">
+                                {parseFloat(item.min_price) < parseFloat(item.avg_price) * 0.9 ? (
+                                  <span className="text-green-500 flex items-center"><i className="ri-arrow-down-line"></i> Low: Rs.{parseFloat(item.min_price).toFixed(2)}</span>
+                                ) : parseFloat(item.max_price) > parseFloat(item.avg_price) * 1.1 ? (
+                                  <span className="text-red-500 flex items-center"><i className="ri-arrow-up-line"></i> High: Rs.{parseFloat(item.max_price).toFixed(2)}</span>
+                                ) : (
+                                  <span className="text-gray-500 flex items-center"><i className="ri-arrow-right-line"></i> Stable</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </FadeIn>
+                      ))}
+                    </div>
+                  )}
+                  
+                  <div className="mt-5 text-center">
+                    <Link href="/vegetables" className="text-primary text-sm hover:underline inline-flex items-center">
+                      See all vegetable prices <i className="ri-arrow-right-s-line ml-1"></i>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           
           {/* Rashifal Service */}
-          <div className="flex flex-col md:flex-row-reverse gap-12 items-center mb-20">
-            <div className="md:w-1/2">
-              <h3 className="text-2xl font-bold text-primary font-poppins mb-4">Daily Rashifal Readings</h3>
+          <div className="flex flex-col md:flex-row-reverse gap-12 items-center mb-20 relative">
+            {/* Animated background decorations */}
+            <div className="absolute -top-16 -right-8 w-40 h-40 bg-yellow-50 rounded-full animate-pulse opacity-40" style={{ animationDuration: '6s' }}></div>
+            <div className="absolute -bottom-8 -left-12 w-56 h-56 bg-blue-50 rounded-full animate-pulse opacity-50" style={{ animationDuration: '8s' }}></div>
+            
+            {/* Zodiac symbol animations */}
+            <div className="hidden md:block">
+              {['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'].map((symbol, index) => (
+                <div key={index} 
+                  className="absolute text-primary-light/20 text-2xl animate-float" 
+                  style={{ 
+                    top: `${Math.random() * 100}%`,
+                    right: `${(index * 8) % 100}%`,
+                    animationDuration: `${5 + Math.random() * 5}s`,
+                    animationDelay: `${index * 0.3}s` 
+                  }}>
+                  {symbol}
+                </div>
+              ))}
+            </div>
+            
+            <FadeIn className="md:w-1/2 relative z-10">
+              <div className="relative">
+                <span className="absolute -top-6 right-0 text-xs font-semibold bg-purple-600 text-white px-3 py-1 rounded-full">
+                  DAILY UPDATES
+                </span>
+                <h3 className="text-2xl font-bold text-primary font-poppins mb-4 mt-2">Daily Rashifal Readings</h3>
+              </div>
               <p className="text-neutral mb-6">Access personalized daily horoscope predictions based on traditional Nepali astrology. Our Rashifal service features:</p>
               
               <ul className="space-y-3 mb-8">
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Daily updated predictions for all 12 zodiac signs</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Guidance on relationships, career, health, and finances</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Traditional Nepali astrological interpretations</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Beautiful, interactive zodiac sign cards</span>
-                </li>
+                {[
+                  'Daily updated predictions for all 12 zodiac signs',
+                  'Guidance on relationships, career, health, and finances',
+                  'Traditional Nepali astrological interpretations',
+                  'Beautiful, interactive zodiac sign cards'
+                ].map((item, index) => (
+                  <FadeIn key={index} delay={0.2 + (index * 0.1)}>
+                    <li className="flex items-start group">
+                      <div className="mr-3 mt-1 p-1 rounded-full bg-purple-100 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
+                        <i className="ri-check-line"></i>
+                      </div>
+                      <span className="group-hover:text-purple-800 transition-colors duration-300">{item}</span>
+                    </li>
+                  </FadeIn>
+                ))}
               </ul>
               
-              <Link href="/rashifal" className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors">
-                Read Your Rashifal <i className="ri-arrow-right-line ml-2"></i>
-              </Link>
-            </div>
+              <Bounce>
+                <Link 
+                  href="/rashifal" 
+                  className="group inline-flex items-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-3 px-6 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300"
+                >
+                  <i className="ri-star-line mr-2"></i>
+                  <span>Read Your Rashifal</span>
+                  <i className="ri-arrow-right-line ml-2 group-hover:translate-x-1 transition-transform duration-300"></i>
+                </Link>
+              </Bounce>
+            </FadeIn>
             
-            <div className="md:w-1/2">
-              <div className="p-6 bg-gradient-to-br from-primary to-primary-light rounded-xl shadow-md text-white">
-                <div className="flex items-center justify-between mb-5">
-                  <h4 className="text-xl font-semibold">आजको राशिफल</h4>
-                  <span className="text-sm font-medium">{formattedDate}</span>
+            <div className="md:w-1/2 relative z-10">
+              <div className="relative overflow-hidden rounded-xl shadow-lg">
+                {/* Stars animation in background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#57c84d] to-[#83d475]">
+                  {Array.from({ length: 20 }).map((_, i) => (
+                    <span 
+                      key={i}
+                      className="absolute inline-block bg-white rounded-full animate-twinkle"
+                      style={{
+                        width: `${Math.random() * 2 + 1}px`,
+                        height: `${Math.random() * 2 + 1}px`,
+                        top: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}%`,
+                        animationDelay: `${Math.random() * 5}s`,
+                        animationDuration: `${2 + Math.random() * 3}s`
+                      }}
+                    />
+                  ))}
                 </div>
                 
-                <div className="grid grid-cols-2 gap-5">
-                  {rashifalQuery.data && rashifalQuery.data.predictions ? (
-                    rashifalQuery.data.predictions.slice(0, 4).map((sign: any, index: number) => (
-                      <div key={index} className="bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/20">
-                        <h5 className="font-medium text-white">{sign.sign_nepali}</h5>
-                        <p className="text-sm text-white/80 mt-2 line-clamp-3">{sign.prediction}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="col-span-2 p-4 text-center">
-                      <div className="animate-pulse bg-white/20 h-5 w-3/4 mx-auto rounded mb-3"></div>
-                      <div className="animate-pulse bg-white/20 h-4 w-2/3 mx-auto rounded"></div>
+                <div className="relative p-6 text-white z-10">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center">
+                      <i className="ri-moon-fill text-2xl mr-2 text-yellow-200"></i>
+                      <h4 className="text-xl font-semibold">आजको राशिफल</h4>
                     </div>
-                  )}
-                </div>
-                
-                <div className="text-center mt-5">
-                  <p className="text-white/80 text-sm mb-3">Read your complete daily horoscope</p>
-                  <Link href="/rashifal" className="inline-block bg-white text-primary px-5 py-2 rounded-lg font-medium hover:bg-white/90 transition-colors">
-                    View All Signs
-                  </Link>
+                    <span className="text-sm bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">{formattedDate}</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-5">
+                    {rashifalQuery.data && rashifalQuery.data.predictions ? (
+                      rashifalQuery.data.predictions.slice(0, 4).map((sign: any, index: number) => (
+                        <FadeIn key={index} delay={0.1 * index}>
+                          <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300 hover:shadow-inner group">
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 text-white">
+                                {sign.sign_english ? sign.sign_english.charAt(0) : '✨'}
+                              </div>
+                              <h5 className="font-medium text-white">{sign.sign_nepali}</h5>
+                            </div>
+                            <p className="text-sm text-white/90 mt-2 line-clamp-3 group-hover:text-white transition-colors duration-300">{sign.prediction}</p>
+                          </div>
+                        </FadeIn>
+                      ))
+                    ) : (
+                      <div className="col-span-2 p-6 text-center">
+                        <div className="animate-pulse bg-white/20 h-5 w-3/4 mx-auto rounded mb-3"></div>
+                        <div className="animate-pulse bg-white/20 h-4 w-2/3 mx-auto rounded"></div>
+                        <div className="animate-pulse bg-white/20 h-4 w-1/2 mx-auto rounded mt-3"></div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="mt-6 text-center">
+                    <p className="text-white/90 text-sm mb-3">Find guidance for your zodiac sign today</p>
+                    <Link href="/rashifal" 
+                      className="inline-block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-5 py-2 rounded-lg font-medium border border-white/30 transition-all duration-300 hover:shadow-lg group">
+                      <span className="inline-flex items-center">
+                        <span>View All Signs</span>
+                        <i className="ri-arrow-right-s-line ml-1 group-hover:translate-x-1 transition-transform duration-200"></i>
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           
           {/* Date Converter Service */}
-          <div className="flex flex-col md:flex-row gap-12 items-center">
-            <div className="md:w-1/2">
-              <h3 className="text-2xl font-bold text-primary font-poppins mb-4">BS-AD Date Converter</h3>
+          <div className="flex flex-col md:flex-row gap-12 items-center relative">
+            {/* Animated decorative elements */}
+            <div className="absolute -bottom-16 -left-8 w-40 h-40 bg-primary/5 rounded-full animate-pulse" style={{ animationDuration: '8s' }}></div>
+            <div className="absolute -top-8 -right-12 w-48 h-48 bg-sky-50 rounded-full animate-pulse opacity-50" style={{ animationDuration: '10s' }}></div>
+            
+            {/* Calendar date animations */}
+            <div className="hidden md:block">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div 
+                  key={index} 
+                  className="absolute text-primary/5 font-bold text-3xl animate-float" 
+                  style={{ 
+                    top: `${15 + (index * 15)}%`,
+                    left: `${5 + (index * 3)}%`,
+                    animationDuration: `${6 + Math.random() * 4}s`,
+                    animationDelay: `${index * 0.5}s`,
+                    transform: `rotate(${-5 + (index * 2)}deg)`
+                  }}>
+                  {index % 2 === 0 ? (2080 + index) : (2023 + index)}
+                </div>
+              ))}
+            </div>
+            
+            <FadeIn className="md:w-1/2 relative z-10">
+              <div className="relative">
+                <span className="absolute -top-6 left-0 text-xs font-semibold bg-blue-500 text-white px-3 py-1 rounded-full">
+                  REAL-TIME CONVERSION
+                </span>
+                <h3 className="text-2xl font-bold text-primary font-poppins mb-4 mt-2">BS-AD Date Converter</h3>
+              </div>
+              
               <p className="text-neutral mb-6">Easily convert dates between Bikram Sambat (BS) and Gregorian (AD) calendars with our precise conversion tool. Features include:</p>
               
               <ul className="space-y-3 mb-8">
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Instant conversion between Nepali and Gregorian calendars</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Simple, intuitive interface with date pickers</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Additional date information including day of week and tithis</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Support for dates from 1975 BS to 2100 BS</span>
-                </li>
+                {[
+                  'Instant conversion between Nepali and Gregorian calendars',
+                  'Simple, intuitive interface with date pickers',
+                  'Additional date information including day of week and tithis',
+                  'Support for dates from 1975 BS to 2100 BS'
+                ].map((item, index) => (
+                  <FadeIn key={index} delay={0.2 + (index * 0.1)}>
+                    <li className="flex items-start group">
+                      <div className="mr-3 mt-1 p-1 rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                        <i className="ri-check-line"></i>
+                      </div>
+                      <span className="group-hover:text-blue-800 transition-colors duration-300">{item}</span>
+                    </li>
+                  </FadeIn>
+                ))}
               </ul>
               
-              <Link href="/date-converter" className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors">
-                Convert Dates <i className="ri-arrow-right-line ml-2"></i>
-              </Link>
-            </div>
+              <Bounce>
+                <Link 
+                  href="/date-converter" 
+                  className="group inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium py-3 px-6 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300"
+                >
+                  <i className="ri-calendar-line mr-2"></i>
+                  <span>Convert Dates</span>
+                  <i className="ri-arrow-right-line ml-2 group-hover:translate-x-1 transition-transform duration-300"></i>
+                </Link>
+              </Bounce>
+            </FadeIn>
             
-            <div className="md:w-1/2">
-              <div className="bg-gray-50 rounded-xl border border-gray-100 shadow-sm p-6">
-                <h4 className="text-xl font-semibold text-primary mb-4">Date Converter</h4>
-                <div className="flex flex-col space-y-6">
-                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                    <div className="text-sm text-gray-500 mb-1">Convert from BS to AD</div>
-                    <div className="flex gap-3 items-center justify-between">
-                      <div className="font-medium text-neutral">2080 Kartik 15</div>
-                      <div className="text-2xl text-primary">→</div>
-                      <div className="font-medium text-neutral">2023 November 1</div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                    <div className="text-sm text-gray-500 mb-1">Convert from AD to BS</div>
-                    <div className="flex gap-3 items-center justify-between">
-                      <div className="font-medium text-neutral">2025 April 14</div>
-                      <div className="text-2xl text-primary">→</div>
-                      <div className="font-medium text-neutral">2082 Baishakh 1</div>
-                    </div>
-                  </div>
+            <div className="md:w-1/2 relative z-10">
+              <div className="relative overflow-hidden rounded-xl shadow-lg p-6 bg-white border border-gray-100">
+                {/* Animated gradient border */}
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#57c84d] via-blue-500 to-[#83d475]"></div>
                 </div>
                 
-                <div className="mt-6 text-center">
-                  <Link href="/date-converter" className="text-primary text-sm font-medium hover:underline">
-                    Try the converter yourself →
-                  </Link>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-6">
+                    <h4 className="text-xl font-semibold text-primary flex items-center">
+                      <i className="ri-calendar-event-line mr-2 text-blue-500"></i>
+                      Date Converter
+                    </h4>
+                    <div className="flex items-center text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
+                      <i className="ri-time-line mr-1"></i> Instant
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    <FadeIn delay={0.1}>
+                      <div className="bg-gradient-to-r from-gray-50 to-white p-5 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group">
+                        <div className="flex justify-between items-center mb-3">
+                          <div className="text-sm text-gray-500 flex items-center">
+                            <span className="inline-block w-3 h-3 bg-[#57c84d] rounded-full mr-2"></span>
+                            Convert from BS to AD
+                          </div>
+                          <div className="text-xs text-gray-400">Bikram Sambat → Gregorian</div>
+                        </div>
+                        <div className="flex gap-3 items-center justify-between">
+                          <div className="font-medium text-neutral group-hover:text-primary transition-colors duration-300">2080 Kartik 15</div>
+                          <div className="text-2xl text-primary relative">
+                            <i className="ri-arrow-right-line group-hover:animate-pulse"></i>
+                          </div>
+                          <div className="font-medium text-neutral group-hover:text-primary transition-colors duration-300">2023 November 1</div>
+                        </div>
+                      </div>
+                    </FadeIn>
+                    
+                    <FadeIn delay={0.2}>
+                      <div className="bg-gradient-to-r from-gray-50 to-white p-5 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group">
+                        <div className="flex justify-between items-center mb-3">
+                          <div className="text-sm text-gray-500 flex items-center">
+                            <span className="inline-block w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+                            Convert from AD to BS
+                          </div>
+                          <div className="text-xs text-gray-400">Gregorian → Bikram Sambat</div>
+                        </div>
+                        <div className="flex gap-3 items-center justify-between">
+                          <div className="font-medium text-neutral group-hover:text-blue-600 transition-colors duration-300">2025 April 14</div>
+                          <div className="text-2xl text-blue-500 relative">
+                            <i className="ri-arrow-right-line group-hover:animate-pulse"></i>
+                          </div>
+                          <div className="font-medium text-neutral group-hover:text-blue-600 transition-colors duration-300">2082 Baishakh 1</div>
+                        </div>
+                      </div>
+                    </FadeIn>
+                  </div>
+                  
+                  <div className="mt-6 text-center">
+                    <Link 
+                      href="/date-converter" 
+                      className="inline-flex items-center text-primary font-medium hover:text-primary-dark transition-colors group"
+                    >
+                      <span>Try the converter yourself</span>
+                      <i className="ri-arrow-right-s-line ml-1 group-hover:translate-x-1 transition-transform duration-200"></i>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
