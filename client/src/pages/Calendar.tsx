@@ -6,6 +6,8 @@ import { useParams, useLocation } from 'wouter';
 import FadeIn from '@/components/ui/FadeIn';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from '@/components/ui/separator';
+import { getMonthContent, getYearInfo } from '@/lib/calendar-content';
+import AnnualEvents from '@/components/ui/AnnualEvents';
 
 // Helper function to convert Tithi names to Devanagari
 const convertTithiToNepali = (tithi: string): string => {
@@ -595,109 +597,164 @@ const Calendar = () => {
                 <div className="mt-6 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                   <h4 className="text-lg font-semibold text-primary mb-4">Key Events in {getMonthName(parseInt(month))}</h4>
                   
-                  {data && data.days && data.days.filter(day => day.events && day.events.length > 0).length > 0 ? (
+                  {/* Current month events from API data */}
+                  {data && data.days && data.days.filter((day: any) => day.events && day.events.length > 0).length > 0 ? (
                     <div className="space-y-3">
-                      {Array.from(new Set(data.days.filter(day => day.events && day.events.length > 0)
-                        .flatMap(day => day.events)))
-                        .map((event, index) => (
+                      {(() => {
+                        // Safely extract all events with proper type handling
+                        const allEvents: string[] = [];
+                        data.days.forEach((day: any) => {
+                          if (day.events && Array.isArray(day.events)) {
+                            day.events.forEach((event: any) => {
+                              if (typeof event === 'string' && !allEvents.includes(event)) {
+                                allEvents.push(event);
+                              }
+                            });
+                          }
+                        });
+                        
+                        return allEvents.map((event: string, index) => (
                           <div key={index} className="flex items-start">
                             <div className="text-primary mr-2 mt-0.5">•</div>
                             <div>
                               <span className="text-sm text-gray-700">{event}</span>
                               <span className="text-xs text-gray-500 ml-2">
-                                ({data.days.filter(day => day.events && day.events.includes(event))
-                                  .map(day => day.bs.nepaliDay)
+                                ({data.days
+                                  .filter((day: any) => 
+                                    day.events && 
+                                    Array.isArray(day.events) && 
+                                    day.events.includes(event)
+                                  )
+                                  .map((day: any) => day.bs.nepaliDay)
                                   .join(', ')} {getMonthName(parseInt(month))})
                               </span>
                             </div>
                           </div>
-                        ))
-                      }
+                        ));
+                      })()}
                     </div>
                   ) : (
                     <p className="text-sm text-gray-500">No major events recorded for this month.</p>
                   )}
+                  
+                  {/* Traditional festivals associated with this month */}
+                  {params.year && (
+                    <div className="mt-6">
+                      <h5 className="font-medium text-primary-dark mb-3">Traditional Festivals</h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {getMonthContent(parseInt(month), parseInt(params.year)).festivals.map((festival, index) => (
+                          <div key={index} className="bg-primary-light/5 p-3 rounded-lg border border-primary-light/20">
+                            <div className="font-medium text-primary-dark">{festival}</div>
+                            <div className="text-xs text-gray-500 mt-1">
+                              Traditional festival celebrated in {getMonthName(parseInt(month))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
-                {/* Month Summary */}
-                <div className="mt-6 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                  <h3 className="text-xl font-semibold text-primary mb-3">About {getMonthName(parseInt(month))} Month</h3>
-                  
-                  <p className="text-neutral mb-4">
-                    {getMonthName(parseInt(month))} (Nepali: {
-                      ['बैशाख', 'जेठ', 'असार', 'साउन', 'भदौ', 'असोज', 'कार्तिक', 'मंसिर', 'पुष', 'माघ', 'फागुन', 'चैत'][parseInt(month) - 1]
-                    }) is the {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'} month in the Nepali Bikram Sambat calendar. 
-                    This month typically falls during {
-                      ['April-May', 'May-June', 'June-July', 'July-August', 'August-September', 'September-October', 
-                       'October-November', 'November-December', 'December-January', 'January-February', 'February-March', 'March-April'][parseInt(month) - 1]
-                    } in the Gregorian calendar.
-                  </p>
-                  
-                  <p className="text-neutral mb-4">
-                    In {getMonthName(parseInt(month))}, the average temperature in Nepal ranges from {
-                      ['18-30°C in the Terai region and 12-22°C in the hilly regions', 
-                       '22-33°C in the Terai region and 15-26°C in the hilly regions',
-                       '25-35°C in the Terai region and 18-28°C in the hilly regions',
-                       '25-33°C in the Terai region and 19-27°C in the hilly regions',
-                       '24-32°C in the Terai region and 18-26°C in the hilly regions',
-                       '23-31°C in the Terai region and 17-25°C in the hilly regions',
-                       '18-28°C in the Terai region and 14-22°C in the hilly regions',
-                       '15-24°C in the Terai region and 10-18°C in the hilly regions',
-                       '12-22°C in the Terai region and 8-15°C in the hilly regions',
-                       '10-20°C in the Terai region and 5-15°C in the hilly regions',
-                       '12-22°C in the Terai region and 8-18°C in the hilly regions',
-                       '15-25°C in the Terai region and 10-20°C in the hilly regions'][parseInt(month) - 1]
-                    }. This month is known for {
-                      ['the start of summer and the celebration of Nepali New Year',
-                       'increasingly warmer days and preparation for monsoon season',
-                       'the onset of monsoon rains and rice planting activities',
-                       'heavy monsoon rainfall and lush greenery across the country',
-                       'continued monsoon and the beginning of major festival preparations',
-                       'the end of monsoon and the start of festival season including Dashain',
-                       'post-Dashain celebrations and clearer skies',
-                       'cooler temperatures and the start of winter clothing',
-                       'winter season and cultural ceremonies like Yomari Punhi',
-                       'the coldest month with clear Himalayan views',
-                       'the late winter with warming trends and celebration of Holi',
-                       'the end of winter and preparations for the New Year'][parseInt(month) - 1]
-                    }.
-                  </p>
-                  
-                  <p className="text-neutral mb-4">
-                    {getMonthName(parseInt(month))} has {
-                      [30, 31, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30][parseInt(month) - 1]
-                    } days in most years of the Nepali calendar. The agricultural activities during this month include {
-                      ['preparation of fields for rice cultivation and harvesting of wheat',
-                       'preparation for paddy plantation and vegetable farming',
-                       'rice plantation and tending to summer crops',
-                       'weeding rice fields and planting vegetables',
-                       'monitoring of paddy growth and early harvests of some vegetables',
-                       'harvesting early rice varieties and planting winter vegetables',
-                       'rice harvesting and preparation of fields for winter crops',
-                       'planting winter crops like wheat, barley, and mustard',
-                       'tending to winter crops and vegetable harvesting',
-                       'limited agricultural activities due to cold conditions in many regions',
-                       'preparing fields for spring crops and tending to fruit trees',
-                       'harvesting winter crops and preparing for summer vegetables'][parseInt(month) - 1]
-                    }.
-                  </p>
-                  
-                  <p className="text-neutral">
-                    The Nepali calendar, officially known as Bikram Sambat (BS), is approximately 56.7 years ahead of the Gregorian calendar (AD) and is the official calendar of Nepal. It was introduced by King Bikramaditya and has been in use for over 2,000 years, making it one of the oldest continuously used calendars in the world.
-                  </p>
-                </div>
+                {/* Month Summary - Using dynamic content */}
+                {params.year && (
+                  <div className="mt-6 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h3 className="text-xl font-semibold text-primary mb-3">About {getMonthName(parseInt(month))} Month</h3>
+                    
+                    <div className="flex flex-col md:flex-row gap-6">
+                      <div className="md:w-3/4">
+                        {/* Dynamic content */}
+                        {(() => {
+                          const monthContent = getMonthContent(parseInt(month), parseInt(params.year));
+                          return (
+                            <>
+                              <p className="text-neutral mb-4">
+                                <span className="font-medium">{monthContent.name}</span> (Nepali: <span className="font-medium">{monthContent.nepaliName}</span>) is 
+                                the {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'} month in the Nepali Bikram Sambat calendar. 
+                                This month typically falls during <span className="font-medium">{monthContent.gregorianMonths}</span> in the Gregorian calendar.
+                              </p>
+                              
+                              <p className="text-neutral mb-4">
+                                In {monthContent.name}, the average temperature in Nepal ranges from <span className="font-medium">{monthContent.temperature}</span>. 
+                                This month is particularly known for <span className="font-medium">{monthContent.highlights}</span>.
+                              </p>
+                              
+                              <p className="text-neutral mb-4">
+                                {monthContent.name} typically has <span className="font-medium">{monthContent.days} days</span> in most years of the Nepali calendar. 
+                                The agricultural activities during this month generally include <span className="font-medium">{monthContent.agriculture}</span>.
+                              </p>
+                              
+                              <div className="bg-primary-light/10 p-4 rounded-lg mb-4">
+                                <h4 className="font-medium text-primary mb-2">Seasonal Context</h4>
+                                <p className="text-sm text-neutral">
+                                  {monthContent.name} falls within {(() => {
+                                    if ([1, 2, 3].includes(parseInt(month))) return "spring season in Nepal";
+                                    if ([4, 5, 6, 7].includes(parseInt(month))) return "monsoon season in Nepal";
+                                    if ([8, 9].includes(parseInt(month))) return "autumn season in Nepal";
+                                    return "winter season in Nepal";
+                                  })()} with particular importance to the agricultural calendar and cultural traditions.
+                                  {parseInt(month) === 1 && " This is the beginning of the Nepali calendar year."}
+                                  {parseInt(month) === 6 && " This month hosts Dashain, Nepal's most significant festival."}
+                                  {parseInt(month) === 7 && " This month hosts Tihar, the festival of lights, second only to Dashain in importance."}
+                                </p>
+                              </div>
+                            </>
+                          )
+                        })()}
+                        
+                        {/* General information about Nepali calendar */}
+                        <p className="text-neutral">
+                          The Nepali calendar, officially known as Bikram Sambat (BS), is approximately 56.7 years ahead of the Gregorian calendar (AD) and is the official calendar of Nepal. It was introduced by King Bikramaditya and has been in use for over 2,000 years, making it one of the oldest continuously used calendars in the world.
+                        </p>
+                      </div>
+                      
+                      <div className="md:w-1/4">
+                        <div className="bg-gradient-to-r from-primary/80 to-primary p-4 rounded-lg text-white shadow-md">
+                          <h4 className="font-medium mb-3 text-white/90">Month Facts</h4>
+                          <ul className="space-y-3 text-sm">
+                            <li className="flex items-start">
+                              <span className="mr-2">•</span>
+                              <span>Position: {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'} month</span>
+                            </li>
+                            <li className="flex items-start">
+                              <span className="mr-2">•</span>
+                              <span>Nepali Name: {getMonthContent(parseInt(month), parseInt(params.year)).nepaliName}</span>
+                            </li>
+                            <li className="flex items-start">
+                              <span className="mr-2">•</span>
+                              <span>Days: {getMonthContent(parseInt(month), parseInt(params.year)).days}</span>
+                            </li>
+                            <li className="flex items-start">
+                              <span className="mr-2">•</span>
+                              <span>Major Festivals: {getMonthContent(parseInt(month), parseInt(params.year)).festivals.length}</span>
+                            </li>
+                            <li className="flex items-start">
+                              <span className="mr-2">•</span>
+                              <span>Gregorian: {getMonthContent(parseInt(month), parseInt(params.year)).gregorianMonths}</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </TabsContent>
               
-              {/* YEAR EVENTS TAB */}
+              {/* YEAR EVENTS TAB - Using our new Annual Events component */}
               <TabsContent value="events">
                 <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                   <div className="bg-primary p-4">
                     <h2 className="text-xl font-semibold text-white font-montserrat text-center">
-                      {`Holidays & Events for ${params.year || new Date().getFullYear().toString()}`}
+                      {`Holidays & Events for ${params.year || new Date().getFullYear().toString()} BS`}
                     </h2>
                   </div>
                   
-                  <YearEvents year={params.year || new Date().getFullYear().toString()} />
+                  {/* Standard API events first */}
+                  <div className="border-b border-gray-100">
+                    <YearEvents year={params.year || new Date().getFullYear().toString()} />
+                  </div>
+                  
+                  {/* Enhanced annual events with our new component */}
+                  <AnnualEvents year={parseInt(params.year || new Date().getFullYear().toString())} />
                 </div>
               </TabsContent>
             </Tabs>
