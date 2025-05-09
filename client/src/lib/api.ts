@@ -186,7 +186,7 @@ function getDayOfWeekNumber(dayName: string): number {
 };
 
 // Helper function to get Nepali month name
-function getMonthName(month: number): string {
+export function getMonthName(month: number): string {
   const nepaliMonths = [
     'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
     'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 

@@ -1,11 +1,97 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getCalendar, getCalendarEvents } from '@/lib/api';
+import { getCalendar, getCalendarEvents, getMonthName } from '@/lib/api';
 import MainLayout from '@/components/layout/MainLayout';
 import { useParams, useLocation } from 'wouter';
 import FadeIn from '@/components/ui/FadeIn';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from '@/components/ui/separator';
+
+// YearEvents component to display events for a specific year
+const YearEvents = ({ year }: { year: string }) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: [`/api/calendar/events?year_bs=${year}`],
+    queryFn: () => getCalendarEvents({ year_bs: year }),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  if (isLoading) {
+    return (
+      <div className="p-8 text-center">
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+        </div>
+        <p className="mt-4 text-gray-500">Loading events...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-8 text-center text-red-500">
+        <p>Failed to load events data</p>
+        <p className="text-sm mt-2">Please try again later</p>
+      </div>
+    );
+  }
+
+  if (!data || !data.events || data.events.length === 0) {
+    return (
+      <div className="p-8 text-center text-gray-500">
+        <p>No events found for this year</p>
+        <p className="text-sm mt-2">Try selecting a different year</p>
+      </div>
+    );
+  }
+
+  // Group events by month
+  const eventsByMonth: Record<string, any[]> = {};
+  
+  data.events.forEach((event: any) => {
+    const date = event.date_bs || event.date;
+    // Extract month from date (assuming format YYYY-MM-DD)
+    const month = date.split('-')[1];
+    const monthName = getMonthName(parseInt(month));
+    
+    if (!eventsByMonth[monthName]) {
+      eventsByMonth[monthName] = [];
+    }
+    eventsByMonth[monthName].push(event);
+  });
+
+  return (
+    <div className="p-6">
+      {Object.keys(eventsByMonth).map((month) => (
+        <div key={month} className="mb-6">
+          <h3 className="text-lg font-semibold text-primary mb-3">{month}</h3>
+          <div className="space-y-3">
+            {eventsByMonth[month].map((event, index) => (
+              <div 
+                key={index} 
+                className="border border-gray-100 rounded-lg p-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex items-start">
+                  <div className="bg-primary text-white rounded-md p-2 text-center min-w-[50px] mr-3">
+                    <div className="text-xs">{event.date_bs?.split('-')[1] || 'N/A'}</div>
+                    <div className="text-lg font-bold">{event.date_bs?.split('-')[2] || 'N/A'}</div>
+                  </div>
+                  <div>
+                    <h4 className="font-medium">{event.title || event.name}</h4>
+                    <p className="text-sm text-gray-500">
+                      {event.description || event.event_type || 'Public Holiday'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
 
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
