@@ -3,9 +3,43 @@ import { useQuery } from '@tanstack/react-query';
 import { getCalendar, getTodayNepaliDate, getMonthName } from '@/lib/api';
 import { Link } from 'wouter';
 
-const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+// Helper function to convert Tithi names to Devanagari
+const convertTithiToNepali = (tithi: string): string => {
+  // Map of tithi names to Devanagari equivalents
+  const tithiMap: Record<string, string> = {
+    'Pratipada': 'प्रतिपदा',
+    'Dwitiya': 'द्वितीया',
+    'Tritiya': 'तृतीया',
+    'Chaturthi': 'चतुर्थी',
+    'Panchami': 'पञ्चमी',
+    'Shashthi': 'षष्ठी',
+    'Saptami': 'सप्तमी',
+    'Ashtami': 'अष्टमी',
+    'Navami': 'नवमी',
+    'Dashami': 'दशमी',
+    'Ekadashi': 'एकादशी',
+    'Dwadashi': 'द्वादशी',
+    'Trayodashi': 'त्रयोदशी',
+    'Chaturdashi': 'चतुर्दशी',
+    'Purnima': 'पूर्णिमा',
+    'Amavasya': 'अमावस्या',
+    // Add any other mappings needed
+  };
+  
+  // Extract just the tithi name without Krishna/Shukla prefix if present
+  const tithiParts = tithi.split(' ');
+  const tithiName = tithiParts.length > 1 ? tithiParts[1] : tithi;
+  
+  return tithiMap[tithiName] || tithiName;
+};
+
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const fullWeekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const CalendarWidget = () => {
+  // State for tracking selected day for modal
+  const [selectedDay, setSelectedDay] = useState<any>(null);
+  
   // Fetch today's Nepali date
   const { data: nepaliToday, isLoading: loadingNepaliToday } = useQuery({
     queryKey: ['/api/today'],
@@ -133,10 +167,11 @@ const CalendarWidget = () => {
                     className={`aspect-square border border-gray-100 rounded-lg p-1
                       ${day.isHoliday ? 'bg-red-50' : day.events?.length ? 'bg-primary-light/10' : ''}
                       hover:bg-gray-50 transition-all cursor-pointer`}
+                    onClick={() => setSelectedDay(day)}
                   >
-                    <div className="flex flex-col h-full items-center justify-center">
+                    <div className="flex flex-col h-full items-center justify-center relative">
                       {/* Nepali date - emphasized */}
-                      <div className={`text-lg font-bold 
+                      <div className={`text-xl font-bold 
                         ${isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} 
                         ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-7 h-7 flex items-center justify-center' : ''}`}
                       >
@@ -144,14 +179,14 @@ const CalendarWidget = () => {
                       </div>
                       
                       {/* English date - smaller and positioned in corner */}
-                      <div className="text-[9px] text-gray-500 absolute top-1 right-1">
+                      <div className="text-[9px] text-gray-500 absolute top-0 right-0 px-0.5">
                         {day.ad.day}
                       </div>
                       
-                      {/* Tithi information - center aligned */}
+                      {/* Tithi information in Devanagari - center aligned */}
                       {day.tithi && (
-                        <div className="text-[8px] text-gray-500 text-center mt-0.5 max-w-full truncate px-0.5">
-                          {day.tithi}
+                        <div className="text-[7px] text-gray-500 text-center mt-0.5 max-w-full truncate px-0.5">
+                          तिथि: {convertTithiToNepali(day.tithi)}
                         </div>
                       )}
                       
@@ -177,6 +212,106 @@ const CalendarWidget = () => {
           </Link>
         </div>
       </div>
+      
+      {/* Day Details Modal */}
+      {selectedDay && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[80vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-2xl font-bold text-primary">
+                    {selectedDay.bs.nepaliDay} {selectedDay.bs.monthName} {selectedDay.bs.year}
+                  </h3>
+                  <p className="text-neutral">
+                    {selectedDay.ad.day} {selectedDay.ad.monthName} {selectedDay.ad.year} ({fullWeekdays[selectedDay.dayOfWeek]})
+                  </p>
+                </div>
+                <button 
+                  className="text-gray-500 hover:text-gray-700 p-1" 
+                  onClick={() => setSelectedDay(null)}
+                >
+                  <span className="text-xl">×</span>
+                </button>
+              </div>
+              
+              {/* Tithi Information */}
+              {selectedDay.tithi && (
+                <div className="mb-4">
+                  <h4 className="text-sm font-medium text-gray-700 mb-1">Tithi</h4>
+                  <p className="bg-primary-light/10 p-2 rounded text-sm">
+                    {selectedDay.tithi} (तिथि: {convertTithiToNepali(selectedDay.tithi)})
+                  </p>
+                </div>
+              )}
+              
+              {/* Events */}
+              <div className="mb-4">
+                <h4 className="text-sm font-medium text-gray-700 mb-1">Events</h4>
+                {selectedDay.events && selectedDay.events.length > 0 ? (
+                  <ul className="space-y-2">
+                    {selectedDay.events.map((event: string, index: number) => (
+                      <li key={index} className="bg-primary-light/10 p-2 rounded text-sm flex items-start">
+                        <span className="mr-2 text-primary">•</span>
+                        <span>{event}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-500 text-sm">No events on this day</p>
+                )}
+              </div>
+              
+              {/* Holiday Information */}
+              <div className="mb-4">
+                <h4 className="text-sm font-medium text-gray-700 mb-1">Status</h4>
+                <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium
+                  ${selectedDay.isHoliday 
+                    ? 'bg-red-100 text-red-800' 
+                    : selectedDay.dayOfWeek === 6 
+                      ? 'bg-red-100 text-red-800'
+                      : 'bg-green-100 text-green-800'
+                  }`}
+                >
+                  {selectedDay.isHoliday 
+                    ? 'Public Holiday' 
+                    : selectedDay.dayOfWeek === 6 
+                      ? 'Weekend (Saturday)'
+                      : 'Working Day'
+                  }
+                </div>
+              </div>
+              
+              {/* SEO content */}
+              <div className="sr-only">
+                <h2>Day Details: {selectedDay.bs.nepaliDay} {selectedDay.bs.monthName} {selectedDay.bs.year}</h2>
+                <p>Gregorian date: {selectedDay.ad.day} {selectedDay.ad.monthName} {selectedDay.ad.year}</p>
+                <p>Weekday: {fullWeekdays[selectedDay.dayOfWeek]}</p>
+                {selectedDay.tithi && <p>Tithi: {selectedDay.tithi}</p>}
+                {selectedDay.events && selectedDay.events.length > 0 && (
+                  <>
+                    <h3>Events on this day:</h3>
+                    <ul>
+                      {selectedDay.events.map((event: string, index: number) => (
+                        <li key={index}>{event}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+              
+              <div className="mt-6 flex justify-end">
+                <button
+                  className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors"
+                  onClick={() => setSelectedDay(null)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

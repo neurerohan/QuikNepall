@@ -7,6 +7,36 @@ import FadeIn from '@/components/ui/FadeIn';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from '@/components/ui/separator';
 
+// Helper function to convert Tithi names to Devanagari
+const convertTithiToNepali = (tithi: string): string => {
+  // Map of tithi names to Devanagari equivalents
+  const tithiMap: Record<string, string> = {
+    'Pratipada': 'प्रतिपदा',
+    'Dwitiya': 'द्वितीया',
+    'Tritiya': 'तृतीया',
+    'Chaturthi': 'चतुर्थी',
+    'Panchami': 'पञ्चमी',
+    'Shashthi': 'षष्ठी',
+    'Saptami': 'सप्तमी',
+    'Ashtami': 'अष्टमी',
+    'Navami': 'नवमी',
+    'Dashami': 'दशमी',
+    'Ekadashi': 'एकादशी',
+    'Dwadashi': 'द्वादशी',
+    'Trayodashi': 'त्रयोदशी',
+    'Chaturdashi': 'चतुर्दशी',
+    'Purnima': 'पूर्णिमा',
+    'Amavasya': 'अमावस्या',
+    // Add any other mappings needed
+  };
+  
+  // Extract just the tithi name without Krishna/Shukla prefix if present
+  const tithiParts = tithi.split(' ');
+  const tithiName = tithiParts.length > 1 ? tithiParts[1] : tithi;
+  
+  return tithiMap[tithiName] || tithiName;
+};
+
 // YearEvents component to display events for a specific year
 const YearEvents = ({ year }: { year: string }) => {
   const { data, isLoading, error } = useQuery({
