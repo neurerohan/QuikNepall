@@ -17,6 +17,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { year_bs, start_date_bs, end_date_bs } = req.query;
       const params: any = {};
       
+      // According to API documentation, these are the expected parameters
       if (year_bs) {
         params.year_bs = year_bs;
       }
@@ -26,10 +27,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         params.end_date_bs = end_date_bs;
       }
       
+      console.log("Calendar events params:", params);
       const response = await axios.get(`${API_BASE_URL}calendar/`, { params });
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching calendar events:", error);
+      if (error instanceof AxiosError && error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+      }
       res.status(500).json({ message: "Failed to fetch calendar events" });
     }
   });
@@ -38,10 +44,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/calendar-convert", async (req, res) => {
     try {
       const { from, date } = req.query;
+      console.log(`Converting date with params: from=${from}, date=${date}`);
       const response = await axios.get(`${API_BASE_URL}calendar/convert`, { params: { from, date } });
       res.json(response.data);
     } catch (error) {
       console.error("Error converting date:", error);
+      if (error instanceof AxiosError && error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+      }
       res.status(500).json({ message: "Failed to convert date" });
     }
   });
@@ -60,11 +71,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`Fetching calendar for year=${year}, month_name=${monthName}`);
       
-      // Use the detailed-calendar endpoint with year and month_name as query params
-      // Make a direct request to the API with the exact structure observed in the example
+      // Use the detailed-calendar endpoint with year_bs and month_name as query params
+      // Make a direct request to the API with the exact structure from the documentation
+      console.log(`Using parameters: year_bs=${year}, month_name=${monthName}`);
       const response = await axios.get(`${API_BASE_URL}detailed-calendar/`, {
         params: {
-          year: year, 
+          year_bs: year, 
           month_name: monthName
         }
       });
@@ -89,6 +101,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching vegetables:", error);
+      if (error instanceof AxiosError && error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+      }
       res.status(500).json({ message: "Failed to fetch vegetable data" });
     }
   });
@@ -100,6 +116,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching metals:", error);
+      if (error instanceof AxiosError && error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+      }
       res.status(500).json({ message: "Failed to fetch metal prices" });
     }
   });
@@ -119,6 +139,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching rashifal:", error);
+      if (error instanceof AxiosError && error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+      }
       res.status(500).json({ message: "Failed to fetch rashifal data" });
     }
   });
@@ -133,6 +157,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching forex:", error);
+      if (error instanceof AxiosError && error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+      }
       res.status(500).json({ message: "Failed to fetch forex data" });
     }
   });
