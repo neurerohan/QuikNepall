@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator';
 // YearEvents component to display events for a specific year
 const YearEvents = ({ year }: { year: string }) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: [`/api/calendar/events?year_bs=${year}`],
+    queryKey: [`/api/calendar-events?year_bs=${year}`],
     queryFn: () => getCalendarEvents({ year_bs: year }),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -35,7 +35,7 @@ const YearEvents = ({ year }: { year: string }) => {
     );
   }
 
-  if (!data || !data.events || data.events.length === 0) {
+  if (!data || !data.calendar_events || data.calendar_events.length === 0) {
     return (
       <div className="p-8 text-center text-gray-500">
         <p>No events found for this year</p>
@@ -47,10 +47,22 @@ const YearEvents = ({ year }: { year: string }) => {
   // Group events by month
   const eventsByMonth: Record<string, any[]> = {};
   
-  data.events.forEach((event: any) => {
+  data.calendar_events.forEach((event: any) => {
     const date = event.date_bs || event.date;
-    // Extract month from date (assuming format YYYY-MM-DD)
-    const month = date.split('-')[1];
+    if (!date) return; // Skip if no date
+    
+    // Extract month from date (assuming format YYYY-MM-DD or DD.MM.YYYY)
+    let month: string;
+    if (date.includes('-')) {
+      // Format: YYYY-MM-DD
+      month = date.split('-')[1];
+    } else if (date.includes('.')) {
+      // Format: DD.MM.YYYY
+      month = date.split('.')[1];
+    } else {
+      return; // Skip if invalid date format
+    }
+    
     const monthName = getMonthName(parseInt(month));
     
     if (!eventsByMonth[monthName]) {
@@ -217,7 +229,7 @@ const Calendar = () => {
                           ));
                           
                           // Then render all the day cells
-                          const dayCells = data.days.map((day, index) => (
+                          const dayCells = data.days.map((day: any, index: number) => (
                             <div 
                               key={`day-${index}`}
                               className={`aspect-square border border-gray-100 rounded p-1 hover:bg-gray-50 ${
