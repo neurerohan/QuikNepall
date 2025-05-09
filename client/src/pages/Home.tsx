@@ -666,7 +666,7 @@ const Home = () => {
               title="Forex Rates"
               description="Check current and historical foreign exchange rates for Nepali Rupee (NPR)."
               icon="exchange-dollar"
-              link="/forex"
+              link="/foreign-currency-exchange"
               linkText="View Forex Rates"
             />
           </div>

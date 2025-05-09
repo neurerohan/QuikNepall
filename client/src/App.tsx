@@ -18,6 +18,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/nepali-calendar/:year/:month" component={Calendar} />
+      <Route path="/nepali-calendar" component={Calendar} />
       <Route path="/calendar/:year/:month" component={Calendar} />
       <Route path="/calendar" component={Calendar} />
       <Route path="/nepalicalendar/:year/:month" component={Calendar} />
