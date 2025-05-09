@@ -165,7 +165,7 @@ const CalendarWidget = () => {
                   <div 
                     key={`day-${index}`}
                     className={`aspect-square border border-gray-100 rounded-lg p-1
-                      ${day.isHoliday ? 'bg-red-50' : day.events?.length ? 'bg-primary-light/10' : ''}
+                      ${day.isHoliday === true ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : day.events?.length ? 'bg-primary-light/10' : ''}
                       hover:bg-gray-50 transition-all cursor-pointer`}
                     onClick={() => setSelectedDay(day)}
                   >
@@ -185,14 +185,16 @@ const CalendarWidget = () => {
                       
                       {/* Tithi information in Devanagari - center aligned */}
                       {day.tithi && (
-                        <div className="text-[7px] text-gray-500 text-center mt-0.5 max-w-full truncate px-0.5">
+                        <div className="text-[8px] text-gray-500 text-center mt-0.5 max-w-full truncate px-0.5">
                           तिथि: {convertTithiToNepali(day.tithi)}
                         </div>
                       )}
                       
                       {/* Event indicator */}
                       {day.events?.length > 0 && (
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1"></div>
+                        <div className="text-[8px] text-primary-dark truncate bg-primary-light/20 px-1 py-0.5 rounded text-center mt-1 max-w-full">
+                          {day.events[0]}
+                        </div>
                       )}
                     </div>
                   </div>

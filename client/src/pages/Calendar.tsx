@@ -547,7 +547,7 @@ const Calendar = () => {
                               <div 
                                 key={`day-${index}`}
                                 className={`aspect-square border border-gray-100 rounded p-1.5 hover:bg-gray-50 
-                                  ${day.isHoliday ? 'bg-red-50' : day.events?.length ? 'bg-primary-light/10' : ''}
+                                  ${day.isHoliday === true ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : day.events?.length ? 'bg-primary-light/10' : ''}
                                   ${isTodayHighlight ? 'ring-2 ring-green-500' : ''}
                                   transition-all cursor-pointer`}
                                 onClick={() => setSelectedDay(day)}
@@ -565,7 +565,7 @@ const Calendar = () => {
                                   
                                   {/* Tithi information in Devanagari */}
                                   {day.tithi && (
-                                    <div className="text-[7px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
+                                    <div className="text-[8px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
                                       <h4 className="sr-only">Tithi: {day.tithi}</h4>
                                       तिथि: {convertTithiToNepali(day.tithi)}
                                     </div>
@@ -573,7 +573,7 @@ const Calendar = () => {
                                   
                                   {/* Event indicator */}
                                   {day.events?.length > 0 && (
-                                    <div className="mt-auto text-[10px] text-primary-dark truncate bg-primary-light/20 px-1 py-0.5 rounded text-center">
+                                    <div className="mt-auto text-[8px] text-primary-dark truncate bg-primary-light/20 px-1 py-0.5 rounded text-center">
                                       <h4 className="sr-only">Event: {day.events.join(', ')}</h4>
                                       {day.events[0]}
                                     </div>
