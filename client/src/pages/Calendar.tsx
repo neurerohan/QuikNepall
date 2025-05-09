@@ -31,11 +31,11 @@ const convertTithiToNepali = (tithi: string): string => {
     'Amavasya': 'अमावस्या',
     // Add any other mappings needed
   };
-  
+
   // Extract just the tithi name without Krishna/Shukla prefix if present
   const tithiParts = tithi.split(' ');
   const tithiName = tithiParts.length > 1 ? tithiParts[1] : tithi;
-  
+
   return tithiMap[tithiName] || tithiName;
 };
 
@@ -78,11 +78,11 @@ const YearEvents = ({ year }: { year: string }) => {
 
   // Group events by month
   const eventsByMonth: Record<string, any[]> = {};
-  
+
   data.calendar_events.forEach((event: any) => {
     const date = event.date_bs || event.date;
     if (!date) return; // Skip if no date
-    
+
     // Extract month from date (assuming format YYYY-MM-DD or DD.MM.YYYY)
     let month: string;
     if (date.includes('-')) {
@@ -94,9 +94,9 @@ const YearEvents = ({ year }: { year: string }) => {
     } else {
       return; // Skip if invalid date format
     }
-    
+
     const monthName = getMonthName(parseInt(month));
-    
+
     if (!eventsByMonth[monthName]) {
       eventsByMonth[monthName] = [];
     }
@@ -107,47 +107,47 @@ const YearEvents = ({ year }: { year: string }) => {
   const getEventTypeAndColor = (event: any) => {
     const title = (event.title || event.name || '').toLowerCase();
     const type = event.event_type || '';
-    
+
     if (type.includes('holiday') || title.includes('holiday')) {
       return {
         type: 'Public Holiday',
         color: 'bg-red-100 border-red-200 text-red-700'
       };
     }
-    
+
     if (title.includes('festival') || type.includes('festival')) {
       return {
         type: 'Festival',
         color: 'bg-orange-100 border-orange-200 text-orange-700'
       };
     }
-    
+
     if (title.includes('birthday') || type.includes('birthday')) {
       return {
         type: 'Birthday',
         color: 'bg-blue-100 border-blue-200 text-blue-700'
       };
     }
-    
+
     return {
       type: 'Event',
       color: 'bg-green-100 border-green-200 text-green-700'
     };
   };
-  
+
   // Format date nicely
   const formatDate = (date: string) => {
     if (!date) return 'N/A';
-    
+
     if (date.includes('-')) {
       const parts = date.split('-');
       return `${parts[2]}-${parts[1]}-${parts[0]}`;
     }
-    
+
     if (date.includes('.')) {
       return date.replace(/\./g, '-');
     }
-    
+
     return date;
   };
 
@@ -159,24 +159,24 @@ const YearEvents = ({ year }: { year: string }) => {
       'Shashthi', 'Saptami', 'Ashtami', 'Navami', 'Dashami',
       'Ekadashi', 'Dwadashi', 'Trayodashi', 'Chaturdashi', 'Purnima', 'Amavasya'
     ];
-    
+
     // Simple deterministic algorithm to assign a tithi based on date
     if (!date) return '';
-    
+
     let dayOfMonth = 1;
-    
+
     if (date.includes('-')) {
       dayOfMonth = parseInt(date.split('-')[2]) || 1;
     } else if (date.includes('.')) {
       dayOfMonth = parseInt(date.split('.')[0]) || 1;
     }
-    
+
     // Map the day to a tithi (1-30 -> 0-15 with repetition)
     const tithiIndex = ((dayOfMonth - 1) % 15);
-    
+
     // For the second half of the month, we're in the dark half (Krishna Paksha)
     const paksha = dayOfMonth > 15 ? 'Krishna' : 'Shukla';
-    
+
     return `${tithis[tithiIndex]} (${paksha})`;
   };
 
@@ -199,7 +199,7 @@ const YearEvents = ({ year }: { year: string }) => {
                   const bsDate = event.date_bs || '';
                   const adDate = event.date_ad || event.date || '';
                   const tithi = event.tithi || getTithiForDate(bsDate);
-                  
+
                   // Extract day number for display
                   let dayNumber = 'N/A';
                   if (bsDate.includes('-')) {
@@ -207,7 +207,7 @@ const YearEvents = ({ year }: { year: string }) => {
                   } else if (bsDate.includes('.')) {
                     dayNumber = bsDate.split('.')[0];
                   }
-                  
+
                   return (
                     <div 
                       key={index} 
@@ -228,20 +228,20 @@ const YearEvents = ({ year }: { year: string }) => {
                               BS: {formatDate(bsDate)} | AD: {formatDate(adDate)}
                             </p>
                           </div>
-                          
+
                           {tithi && (
                             <div className="mt-2 text-sm text-gray-600 italic">
                               <strong>Tithi:</strong> {tithi} <span className="text-primary">(तिथि: {convertTithiToNepali(tithi)})</span>
                             </div>
                           )}
-                          
+
                           {event.description && (
                             <div className="mt-2">
                               <h5 className="text-sm font-medium text-gray-700">Description:</h5>
                               <p className="text-sm text-gray-600">{event.description}</p>
                             </div>
                           )}
-                          
+
                           {/* Additional details for SEO */}
                           <div className="sr-only">
                             <h5>Event Details</h5>
@@ -258,7 +258,7 @@ const YearEvents = ({ year }: { year: string }) => {
               </div>
             </div>
           ))}
-          
+
           {/* SEO Information */}
           <div className="sr-only">
             <h2>Nepali Calendar Events for Year {year}</h2>
@@ -283,13 +283,13 @@ interface CalendarParams {
 const Calendar = () => {
   const [location, setLocation] = useLocation();
   const params = useParams<CalendarParams>();
-  
+
   // State to hold today's Nepali date from API
   const [todayNepaliDate, setTodayNepaliDate] = useState<any>(null);
-  
+
   // State to hold the selected day for detail view
   const [selectedDay, setSelectedDay] = useState<any>(null);
-  
+
   // Get today's Nepali date from API
   const { data: nepaliToday, isLoading: loadingToday } = useQuery({
     queryKey: ['/api/today'],
@@ -297,14 +297,14 @@ const Calendar = () => {
     staleTime: 1000 * 60 * 60, // Cache for 1 hour
     refetchOnWindowFocus: false,
   });
-  
+
   // Update today state when data is loaded
   useEffect(() => {
     if (nepaliToday) {
       setTodayNepaliDate(nepaliToday);
     }
   }, [nepaliToday]);
-  
+
   // If no params are provided, use current Nepali date from API and redirect
   useEffect(() => {
     if (!params.year || !params.month) {
@@ -322,7 +322,7 @@ const Calendar = () => {
       }
     }
   }, [params, setLocation, nepaliToday]);
-  
+
   // Helper function to get month number from name
   const getMonthNumberFromName = (monthName: string): number => {
     const nepaliMonths = [
@@ -335,11 +335,11 @@ const Calendar = () => {
     );
     return index !== -1 ? index + 1 : 1;
   };
-  
+
   // Support both numeric month and month name formats
   let year = params.year || new Date().getFullYear().toString();
   let month = params.month || '1';
-  
+
   // Check if month is a string name (like "baishakh") and convert to number
   if (isNaN(parseInt(month))) {
     month = getMonthNumberFromName(month).toString();
@@ -380,7 +380,7 @@ const Calendar = () => {
       return false;
     }
   };
-  
+
   return (
     <MainLayout 
       title={`Nepali Calendar ${params.year} - ${getMonthName(parseInt(month))}` }
@@ -389,25 +389,35 @@ const Calendar = () => {
       <FadeIn>
         <section className="py-8 bg-gray-50">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-              <div>
-                <h1 className="text-3xl font-bold text-primary font-poppins mb-2">
-                  {isLoading ? 'Loading Calendar...' : 
-                    `Nepali Calendar ${params.year} - ${getMonthName(parseInt(month))}`}
-                </h1>
-                <p className="text-neutral mb-2">
-                  नेपाली पात्रो {params.year} - {getMonthName(parseInt(month))}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Today: {today.toLocaleDateString()} ({weekdays[today.getDay()]})
-                  {nepaliToday && (
-                    <span className="ml-1">
-                      | BS: {nepaliToday.year}-{nepaliToday.month}-{nepaliToday.day} ({nepaliToday.month_name})
-                    </span>
-                  )}
-                </p>
-              </div>
-              
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+                <div className="relative">
+                  <div className="absolute -top-2 -left-3 w-20 h-20 bg-primary/5 rounded-full blur-2xl"></div>
+                  <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent font-poppins mb-3">
+                    {isLoading ? 'Loading Calendar...' : 
+                      `Nepali Calendar ${params.year}`}
+                  </h1>
+                  <div className="flex items-center gap-3 mb-3">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-primary-dark">
+                      {getMonthName(parseInt(month))}
+                    </h2>
+                    <div className="h-6 w-[2px] bg-gray-300 rounded-full"></div>
+                    <p className="text-2xl font-medium text-neutral">
+                      नेपाली पात्रो
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm border border-gray-100">
+                    <i className="ri-calendar-event-fill text-primary"></i>
+                    <p className="text-base font-medium text-gray-700">
+                      Today: {today.toLocaleDateString()} ({weekdays[today.getDay()]})
+                      {nepaliToday && (
+                        <span className="ml-2 text-primary">
+                          BS: {nepaliToday.year}-{nepaliToday.month}-{nepaliToday.day} ({nepaliToday.month_name})
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+
               <div className="mt-4 md:mt-0 flex flex-wrap gap-3">
                 <button 
                   className="px-3 py-1.5 bg-primary text-white text-sm rounded-md hover:bg-primary-dark transition-colors"
@@ -428,7 +438,7 @@ const Calendar = () => {
                 >
                   Go to Today
                 </button>
-                
+
                 <div className="flex gap-1 items-center">
                   <select 
                     className="px-2 py-1.5 border border-gray-200 rounded-md text-sm"
@@ -442,7 +452,7 @@ const Calendar = () => {
                       <option key={m} value={m}>{getMonthName(m)}</option>
                     ))}
                   </select>
-                  
+
                   <select 
                     className="px-2 py-1.5 border border-gray-200 rounded-md text-sm"
                     defaultValue={year}
@@ -459,7 +469,7 @@ const Calendar = () => {
                 </div>
               </div>
             </div>
-            
+
             <p className="text-center text-neutral mb-4 max-w-2xl mx-auto">
               Browse through the Bikram Sambat (BS) calendar and view corresponding Gregorian (AD) dates.
             </p>
@@ -475,7 +485,7 @@ const Calendar = () => {
                 <TabsTrigger value="month">Calendar View</TabsTrigger>
                 <TabsTrigger value="events">Year Events</TabsTrigger>
               </TabsList>
-              
+
               {/* MONTH VIEW TAB */}
               <TabsContent value="month">
                 <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
@@ -500,7 +510,7 @@ const Calendar = () => {
                       <i className="ri-arrow-right-s-line text-xl"></i>
                     </button>
                   </div>
-                  
+
                   <div className="p-4 md:p-5">
                     <div className="grid grid-cols-7 mb-3">
                       {weekdays.map((day, index) => (
@@ -515,7 +525,7 @@ const Calendar = () => {
                         </div>
                       ))}
                     </div>
-                    
+
                     <div className="grid grid-cols-7 gap-2 md:gap-3">
                       {isLoading ? (
                         // Loading skeleton
@@ -531,14 +541,14 @@ const Calendar = () => {
                         // Calendar grid with actual data
                         (() => {
                           if (!data?.days?.length) return null;
-                          
+
                           // First, create and render empty cells for proper day alignment
                           const firstDay = data.days[0];
                           const emptyCellCount = firstDay.dayOfWeek;
                           const emptyCells = Array(emptyCellCount).fill(null).map((_, i) => (
                             <div key={`empty-${i}`} className="aspect-square"></div>
                           ));
-                          
+
                           // Then render all the day cells
                           const dayCells = data.days.map((day: any, index: number) => {
                             const isTodayHighlight = isToday(day.bs.day, day.bs.month, day.bs.year);
@@ -551,7 +561,7 @@ const Calendar = () => {
                                 event.toLowerCase().includes('public holiday') || 
                                 event.toLowerCase().includes('federal holiday') ||
                                 event.toLowerCase().includes('national holiday');
-                                
+
                               // Religious festivals that are holidays  
                               const isReligiousHoliday =
                                 event.toLowerCase().includes('dashain') ||
@@ -559,10 +569,10 @@ const Calendar = () => {
                                 event.toLowerCase().includes('holi') ||
                                 event.toLowerCase().includes('lhosar') ||
                                 event.toLowerCase().includes('chhath');
-                                
+
                               return isPublicHoliday || isReligiousHoliday;
                             });
-                            
+
                             return (
                               <div 
                                 key={`day-${index}`}
@@ -577,12 +587,12 @@ const Calendar = () => {
                                   <div className={`text-xl md:text-2xl font-bold text-center ${day.isHoliday || isHoliday ? 'text-red-500' : isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-9 h-9 flex items-center justify-center mx-auto' : ''}`}>
                                     {day.bs.nepaliDay}
                                   </div>
-                                  
+
                                   {/* English date - smaller, positioned in corner */}
                                   <div className="text-[10px] md:text-xs text-gray-500 absolute top-0 right-0 px-0.5">
                                     {day.ad.day}
                                   </div>
-                                  
+
                                   {/* Tithi information in Devanagari */}
                                   {day.tithi && (
                                     <div className="text-[9px] md:text-[10px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
@@ -590,7 +600,7 @@ const Calendar = () => {
                                       तिथि: {convertTithiToNepali(day.tithi)}
                                     </div>
                                   )}
-                                  
+
                                   {/* Event indicator */}
                                   {day.events?.length > 0 && (
                                     <div className="mt-auto text-[9px] md:text-[10px] text-primary-dark truncate px-1 py-0.5 text-center">
@@ -602,7 +612,7 @@ const Calendar = () => {
                               </div>
                             );
                           });
-                          
+
                           // Return all cells - empty cells first, then day cells
                           return [...emptyCells, ...dayCells];
                         })()
@@ -614,7 +624,7 @@ const Calendar = () => {
                 {/* Monthly Events Section - Enlarged */}
                 <div className="mt-6 bg-white rounded-xl shadow-sm p-6 md:p-7 border border-gray-100">
                   <h4 className="text-xl font-semibold text-primary mb-5">Key Events in {getMonthName(parseInt(month))}</h4>
-                  
+
                   {/* Current month events from API data */}
                   {data && data.days && data.days.filter((day: any) => day.events && day.events.length > 0).length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -630,7 +640,7 @@ const Calendar = () => {
                             });
                           }
                         });
-                        
+
                         return allEvents.map((event: string, index) => {
                           // Get days for this event
                           const eventDays = data.days
@@ -641,7 +651,7 @@ const Calendar = () => {
                             )
                             .map((day: any) => day.bs.nepaliDay)
                             .join(', ');
-                            
+
                           // Determine if the event is a holiday - match the logic from day cells
                           const isEventHoliday = (() => {
                               // Only mark true holidays as holidays, not every event with these common terms
@@ -649,7 +659,7 @@ const Calendar = () => {
                                 event.toLowerCase().includes('public holiday') || 
                                 event.toLowerCase().includes('federal holiday') ||
                                 event.toLowerCase().includes('national holiday');
-                                
+
                               // Religious festivals that are holidays  
                               const isReligiousHoliday =
                                 event.toLowerCase().includes('dashain') ||
@@ -657,10 +667,10 @@ const Calendar = () => {
                                 event.toLowerCase().includes('holi') ||
                                 event.toLowerCase().includes('lhosar') ||
                                 event.toLowerCase().includes('chhath');
-                                
+
                               return isPublicHoliday || isReligiousHoliday;
                           })();
-                          
+
                           return (
                             <div 
                               key={index} 
@@ -691,7 +701,7 @@ const Calendar = () => {
                   ) : (
                     <p className="text-base text-gray-500 bg-gray-50 p-4 rounded-lg">No major events recorded for this month.</p>
                   )}
-                  
+
                   {/* Traditional festivals associated with this month */}
                   {params.year && (
                     <div className="mt-6">
@@ -709,12 +719,12 @@ const Calendar = () => {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Month Summary - Using dynamic content */}
                 {params.year && (
                   <div className="mt-6 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                     <h3 className="text-xl font-semibold text-primary mb-3">About {getMonthName(parseInt(month))} Month</h3>
-                    
+
                     <div className="flex flex-col md:flex-row gap-6">
                       <div className="md:w-3/4">
                         {/* Dynamic content */}
@@ -727,17 +737,17 @@ const Calendar = () => {
                                 the {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'} month in the Nepali Bikram Sambat calendar. 
                                 This month typically falls during <span className="font-medium">{monthContent.gregorianMonths}</span> in the Gregorian calendar.
                               </p>
-                              
+
                               <p className="text-neutral mb-4">
                                 In {monthContent.name}, the average temperature in Nepal ranges from <span className="font-medium">{monthContent.temperature}</span>. 
                                 This month is particularly known for <span className="font-medium">{monthContent.highlights}</span>.
                               </p>
-                              
+
                               <p className="text-neutral mb-4">
                                 {monthContent.name} typically has <span className="font-medium">{monthContent.days} days</span> in most years of the Nepali calendar. 
                                 The agricultural activities during this month generally include <span className="font-medium">{monthContent.agriculture}</span>.
                               </p>
-                              
+
                               <div className="bg-primary-light/10 p-4 rounded-lg mb-4">
                                 <h4 className="font-medium text-primary mb-2">Seasonal Context</h4>
                                 <p className="text-sm text-neutral">
@@ -755,13 +765,13 @@ const Calendar = () => {
                             </>
                           )
                         })()}
-                        
+
                         {/* General information about Nepali calendar */}
                         <p className="text-neutral">
                           The Nepali calendar, officially known as Bikram Sambat (BS), is approximately 56.7 years ahead of the Gregorian calendar (AD) and is the official calendar of Nepal. It was introduced by King Bikramaditya and has been in use for over 2,000 years, making it one of the oldest continuously used calendars in the world.
                         </p>
                       </div>
-                      
+
                       <div className="md:w-1/4">
                         <div className="bg-gradient-to-r from-primary/80 to-primary p-4 rounded-lg text-white shadow-md">
                           <h4 className="font-medium mb-3 text-white/90">Month Facts</h4>
@@ -793,7 +803,7 @@ const Calendar = () => {
                   </div>
                 )}
               </TabsContent>
-              
+
               {/* YEAR EVENTS TAB - Using our new Annual Events component */}
               <TabsContent value="events">
                 <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
@@ -802,12 +812,12 @@ const Calendar = () => {
                       {`Holidays & Events for ${params.year || new Date().getFullYear().toString()} BS`}
                     </h2>
                   </div>
-                  
+
                   {/* Standard API events first */}
                   <div className="border-b border-gray-100">
                     <YearEvents year={params.year || new Date().getFullYear().toString()} />
                   </div>
-                  
+
                   {/* Enhanced annual events with our new component */}
                   <AnnualEvents year={parseInt(params.year || new Date().getFullYear().toString())} />
                 </div>
@@ -835,7 +845,7 @@ const Calendar = () => {
                         <i className="ri-close-line text-xl"></i>
                       </button>
                     </div>
-                    
+
                     {/* Tithi Information */}
                     {selectedDay.tithi && (
                       <div className="mb-4">
@@ -845,7 +855,7 @@ const Calendar = () => {
                         </p>
                       </div>
                     )}
-                    
+
                     {/* Events */}
                     <div className="mb-4">
                       <h4 className="text-sm font-medium text-gray-700 mb-1">Events</h4>
@@ -862,7 +872,7 @@ const Calendar = () => {
                         <p className="text-gray-500 text-sm">No events on this day</p>
                       )}
                     </div>
-                    
+
                     {/* Holiday Information */}
                     <div className="mb-4">
                       <h4 className="text-sm font-medium text-gray-700 mb-1">Status</h4>
@@ -882,7 +892,7 @@ const Calendar = () => {
                         }
                       </div>
                     </div>
-                    
+
                     {/* SEO content */}
                     <div className="sr-only">
                       <h2>Day Details: {selectedDay.bs.nepaliDay} {selectedDay.bs.monthName} {selectedDay.bs.year}</h2>
@@ -900,7 +910,7 @@ const Calendar = () => {
                         </>
                       )}
                     </div>
-                    
+
                     <div className="mt-6 flex justify-end">
                       <button
                         className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors"
@@ -913,49 +923,49 @@ const Calendar = () => {
                 </div>
               </div>
             )}
-            
+
             {/* FAQs Section */}
             <div className="mt-12">
               <h3 className="text-xl font-semibold text-primary mb-6">Frequently Asked Questions</h3>
-              
+
               <div className="space-y-4">
                 <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
                   <h4 className="font-medium text-lg mb-2">How to check today's Nepali date?</h4>
                   <p className="text-neutral">Click the "Go to Today" button at the top of the page to view today's date in the Nepali calendar.</p>
                 </div>
-                
+
                 <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
                   <h4 className="font-medium text-lg mb-2">How do I view events for a month?</h4>
                   <p className="text-neutral">Navigate to the desired month using the month selector at the top, then click on the "Events" tab to see all events for that month.</p>
                 </div>
-                
+
                 <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
                   <h4 className="font-medium text-lg mb-2">What do the different colored days mean?</h4>
                   <p className="text-neutral">Red indicates Saturdays (weekend holiday in Nepal), blue indicates Sundays, and other special holidays are marked with background colors. The legend below the calendar explains the color coding.</p>
                 </div>
-                
+
                 <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
                   <h4 className="font-medium text-lg mb-2">How do I see details for a specific day?</h4>
                   <p className="text-neutral">Click on any day in the calendar to see its detailed information, including the tithi, events, and holiday status.</p>
                 </div>
               </div>
             </div>
-            
+
             {/* Explore Other Tools */}
             <div className="mt-12">
               <h3 className="text-xl font-semibold text-primary mb-6">Explore Other Tools</h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <a href="/vegetables" className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow text-center">
                   <h4 className="font-medium text-lg mb-2 text-primary">Vegetable Prices</h4>
                   <p className="text-neutral text-sm">Check daily vegetable prices from Kalimati market.</p>
                 </a>
-                
+
                 <a href="/date-converter" className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow text-center">
                   <h4 className="font-medium text-lg mb-2 text-primary">Date Converter</h4>
                   <p className="text-neutral text-sm">Convert dates between Nepali (BS) and English (AD) calendars.</p>
                 </a>
-                
+
                 <a href="/rashifal" className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow text-center">
                   <h4 className="font-medium text-lg mb-2 text-primary">Daily Rashifal</h4>
                   <p className="text-neutral text-sm">Check your daily horoscope prediction.</p>
