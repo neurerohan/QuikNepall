@@ -229,7 +229,7 @@ const YearEvents = ({ year }: { year: string }) => {
                           
                           {tithi && (
                             <div className="mt-2 text-sm text-gray-600 italic">
-                              <strong>Tithi:</strong> {tithi}
+                              <strong>Tithi:</strong> {tithi} <span className="text-primary">(तिथि: {convertTithiToNepali(tithi)})</span>
                             </div>
                           )}
                           
@@ -559,15 +559,15 @@ const Calendar = () => {
                                   </div>
                                   
                                   {/* English date - smaller, positioned in corner */}
-                                  <div className="text-[10px] text-gray-500 absolute top-2 right-2">
+                                  <div className="text-[9px] text-gray-500 absolute top-0 right-0 px-0.5">
                                     {day.ad.day}
                                   </div>
                                   
-                                  {/* Tithi information */}
+                                  {/* Tithi information in Devanagari */}
                                   {day.tithi && (
-                                    <div className="text-[9px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
+                                    <div className="text-[7px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
                                       <h4 className="sr-only">Tithi: {day.tithi}</h4>
-                                      {day.tithi}
+                                      तिथि: {convertTithiToNepali(day.tithi)}
                                     </div>
                                   )}
                                   
@@ -670,7 +670,9 @@ const Calendar = () => {
                     {selectedDay.tithi && (
                       <div className="mb-4">
                         <h4 className="text-sm font-medium text-gray-700 mb-1">Tithi</h4>
-                        <p className="bg-primary-light/10 p-2 rounded text-sm">{selectedDay.tithi}</p>
+                        <p className="bg-primary-light/10 p-2 rounded text-sm">
+                          {selectedDay.tithi} (तिथि: {convertTithiToNepali(selectedDay.tithi)})
+                        </p>
                       </div>
                     )}
                     
