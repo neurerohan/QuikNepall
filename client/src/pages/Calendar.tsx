@@ -388,17 +388,24 @@ const Calendar = () => {
                                   transition-all`}
                               >
                                 <div className="flex flex-col h-full">
-                                  <div className={`text-xs ${isSunday ? 'text-red-500' : isSaturday ? 'text-green-600' : 'text-gray-500'}`}>
-                                    {day.bs.day}
+                                  {/* Nepali date - emphasized */}
+                                  <div className={`text-lg font-bold ${isSunday ? 'text-red-500' : isSaturday ? 'text-green-600' : 'text-gray-700'} ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-7 h-7 flex items-center justify-center mx-auto' : ''}`}>
+                                    {day.bs.nepaliDay}
                                   </div>
-                                  <div className={`text-sm font-medium ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center mx-auto' : ''}`}>
+                                  
+                                  {/* English date - smaller */}
+                                  <div className="text-xs text-gray-500 text-center">
                                     {day.ad.day}
                                   </div>
+                                  
+                                  {/* Tithi information */}
                                   {day.tithi && (
-                                    <div className="text-[9px] text-gray-500 italic mt-1">{day.tithi}</div>
+                                    <div className="text-[9px] text-gray-500 italic mt-1 text-center">{day.tithi}</div>
                                   )}
+                                  
+                                  {/* Event indicator */}
                                   {day.events?.length > 0 && (
-                                    <div className="mt-auto text-[10px] text-primary-dark truncate bg-primary-light/20 px-1 py-0.5 rounded">
+                                    <div className="mt-auto text-[10px] text-primary-dark truncate bg-primary-light/20 px-1 py-0.5 rounded text-center">
                                       {day.events[0]}
                                     </div>
                                   )}

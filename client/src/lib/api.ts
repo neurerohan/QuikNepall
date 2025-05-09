@@ -30,7 +30,12 @@ export const getCalendar = async (year: string, month: string) => {
     }
     
     if (response.data && response.data.days) {
-      const calendarData = response.data.days;
+      let calendarData = response.data.days;
+      
+      // Sort data by day number to ensure days are in correct order
+      calendarData = calendarData.sort((a: any, b: any) => {
+        return parseInt(a.bs_day_english_equivalent) - parseInt(b.bs_day_english_equivalent);
+      });
       
       // Format the data to match component expectations
       return {
@@ -38,11 +43,17 @@ export const getCalendar = async (year: string, month: string) => {
           // Check if the day has events
           const events = day.events_raw?.length ? day.events_raw : [];
           
+          // Get the Nepali day from the bs_day_nepali (which is in Devanagari script)
+          // or fallback to bs_day_english_equivalent as integer
+          let nepaliDay = day.bs_day_nepali; // This is in Devanagari script like "१", "२", etc.
+          let nepaliDayNumeric = parseInt(day.bs_day_english_equivalent); // This is 1, 2, etc.
+          
           return {
             bs: {
               year: day.bs_year,
               month: day.bs_month_number,
-              day: parseInt(day.bs_day_english_equivalent)
+              day: nepaliDayNumeric,
+              nepaliDay: nepaliDay // Keep the Devanagari representation
             },
             ad: {
               year: day.ad_year,
