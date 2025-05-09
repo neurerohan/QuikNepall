@@ -32,7 +32,8 @@ const Header = () => {
   // Social media links
   const socialLinks = [
     { icon: 'ri-facebook-fill', label: 'Facebook', url: '#' },
-    { icon: 'ri-tiktok-fill', label: 'TikTok', url: '#' }
+    { icon: 'ri-tiktok-fill', label: 'TikTok', url: '#' },
+    { icon: 'ri-twitter-x-fill', label: 'Twitter', url: '#' }
   ];
 
   return (
@@ -60,11 +61,11 @@ const Header = () => {
           {[
             { path: '/', label: '', icon: 'ri-home-5-line' }, // Home icon only
             { path: '/calendar', label: 'Calendar' },
-            { path: '/date-converter', label: 'Converter' },
-            { path: '/vegetables', label: 'Vegetables' },
-            { path: '/metals', label: 'Metals' },
-            { path: '/rashifal', label: 'Rashifal' },
-            { path: '/forex', label: 'Forex' }
+            { path: '/nepali-date-converter', label: 'Converter' },
+            { path: '/kalimati-vegetable-price', label: 'Vegetables' },
+            { path: '/gold-and-silver-in-nepal', label: 'Metals' },
+            { path: '/nepali-rashifal', label: 'Rashifal' },
+            { path: '/foreign-currency-exchange', label: 'Forex' }
           ].map((item) => (
             <Link 
               key={item.path}
@@ -129,11 +130,11 @@ const Header = () => {
             {[
               { path: '/', label: 'Home', icon: 'ri-home-5-line' },
               { path: '/calendar', label: 'Calendar', icon: 'ri-calendar-line' },
-              { path: '/date-converter', label: 'Converter', icon: 'ri-arrow-left-right-line' },
-              { path: '/vegetables', label: 'Vegetables', icon: 'ri-shopping-basket-line' },
-              { path: '/metals', label: 'Metals', icon: 'ri-coins-line' },
-              { path: '/rashifal', label: 'Rashifal', icon: 'ri-star-line' },
-              { path: '/forex', label: 'Forex', icon: 'ri-exchange-dollar-line' }
+              { path: '/nepali-date-converter', label: 'Converter', icon: 'ri-arrow-left-right-line' },
+              { path: '/kalimati-vegetable-price', label: 'Vegetables', icon: 'ri-shopping-basket-line' },
+              { path: '/gold-and-silver-in-nepal', label: 'Metals', icon: 'ri-coins-line' },
+              { path: '/nepali-rashifal', label: 'Rashifal', icon: 'ri-star-line' },
+              { path: '/foreign-currency-exchange', label: 'Forex', icon: 'ri-exchange-dollar-line' }
             ].map((item, index) => (
               <Link 
                 key={item.path}

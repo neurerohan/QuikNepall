@@ -22,6 +22,14 @@ function Router() {
       <Route path="/calendar" component={Calendar} />
       <Route path="/nepalicalendar/:year/:month" component={Calendar} />
       <Route path="/nepalicalendar" component={Calendar} />
+      {/* New URLs */}
+      <Route path="/nepali-date-converter" component={DateConverter} />
+      <Route path="/kalimati-vegetable-price" component={Vegetables} />
+      <Route path="/gold-and-silver-in-nepal" component={Metals} />
+      <Route path="/nepali-rashifal" component={Rashifal} />
+      <Route path="/foreign-currency-exchange" component={Forex} />
+      
+      {/* Legacy URLs for backward compatibility */}
       <Route path="/date-converter" component={DateConverter} />
       <Route path="/vegetables" component={Vegetables} />
       <Route path="/metals" component={Metals} />

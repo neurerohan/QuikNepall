@@ -265,7 +265,7 @@ const Home = () => {
               
               <Bounce>
                 <Link 
-                  href="/vegetables" 
+                  href="/kalimati-vegetable-price" 
                   className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300"
                 >
                   <span className="relative">
@@ -337,7 +337,7 @@ const Home = () => {
                   )}
                   
                   <div className="mt-5 text-center">
-                    <Link href="/vegetables" className="text-primary text-sm hover:underline inline-flex items-center">
+                    <Link href="/kalimati-vegetable-price" className="text-primary text-sm hover:underline inline-flex items-center">
                       See all vegetable prices <i className="ri-arrow-right-s-line ml-1"></i>
                     </Link>
                   </div>
@@ -397,7 +397,7 @@ const Home = () => {
               
               <Bounce>
                 <Link 
-                  href="/rashifal" 
+                  href="/nepali-rashifal" 
                   className="group inline-flex items-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-3 px-6 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300"
                 >
                   <i className="ri-star-line mr-2"></i>
