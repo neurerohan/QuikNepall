@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getForex } from '@/lib/api';
@@ -10,12 +9,15 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const Forex = () => {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['/api/forex', { from: fromDate, to: toDate, page: currentPage, per_page: perPage }],
@@ -44,10 +46,18 @@ const Forex = () => {
   ];
 
   const popularCurrencies = [
-    { code: 'USD', name: 'US Dollar', flag: '🇺🇸' },
-    { code: 'EUR', name: 'Euro', flag: '🇪🇺' },
-    { code: 'GBP', name: 'British Pound', flag: '🇬🇧' },
-    { code: 'AUD', name: 'Australian Dollar', flag: '🇦🇺' }
+    { code: 'USD', name: 'US Dollar', flag: '🇺🇸', trends: { daily: -0.2, weekly: 1.5 } },
+    { code: 'EUR', name: 'Euro', flag: '🇪🇺', trends: { daily: 0.3, weekly: -0.8 } },
+    { code: 'GBP', name: 'British Pound', flag: '🇬🇧', trends: { daily: 0.1, weekly: 0.5 } },
+    { code: 'AUD', name: 'Australian Dollar', flag: '🇦🇺', trends: { daily: -0.4, weekly: -1.2 } },
+    { code: 'JPY', name: 'Japanese Yen', flag: '🇯🇵', trends: { daily: 0.2, weekly: 0.7 } },
+    { code: 'CNY', name: 'Chinese Yuan', flag: '🇨🇳', trends: { daily: -0.1, weekly: -0.3 } }
+  ];
+
+  const marketInsights = [
+    { title: 'Market Hours', content: 'Nepal Forex market operates Sunday-Friday, 10:00 AM - 3:00 PM NPT' },
+    { title: 'Rate Updates', content: 'NRB updates rates twice daily at 10:00 AM and 3:00 PM NPT' },
+    { title: 'Weekend Rates', content: 'Weekend rates are set on Friday and remain unchanged until Sunday' }
   ];
 
   return (
@@ -68,131 +78,178 @@ const Forex = () => {
           </div>
         </section>
 
-        {/* Quick Rate Cards */}
         <section className="py-8 bg-white">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              {popularCurrencies.map((currency) => (
-                <Card key={currency.code} className="p-4 hover:shadow-md transition-shadow">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-2xl">{currency.flag}</span>
-                    <div>
-                      <h3 className="font-semibold text-lg">{currency.code}</h3>
-                      <p className="text-sm text-gray-600">{currency.name}</p>
-                    </div>
+            {/* Market Status Alert */}
+            <Alert className="mb-8 bg-green-50 border-green-200">
+              <i className="ri-time-line text-green-600 mr-2"></i>
+              <AlertTitle>Market Status: Open</AlertTitle>
+              <AlertDescription>
+                Next rate update in: 2 hours 30 minutes
+              </AlertDescription>
+            </Alert>
+
+            {/* Currency Tabs */}
+            <Tabs defaultValue="popular" className="mb-8">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="popular">Popular Currencies</TabsTrigger>
+                <TabsTrigger value="all">All Currencies</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="popular">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {popularCurrencies.map((currency) => (
+                    <Card 
+                      key={currency.code} 
+                      className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${selectedCurrency === currency.code ? 'border-primary' : ''}`}
+                      onClick={() => setSelectedCurrency(currency.code)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <span className="text-2xl">{currency.flag}</span>
+                          <div>
+                            <h3 className="font-semibold text-lg">{currency.code}</h3>
+                            <p className="text-sm text-gray-600">{currency.name}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className={`text-sm ${currency.trends.daily >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {currency.trends.daily >= 0 ? '↑' : '↓'} {Math.abs(currency.trends.daily)}%
+                            <span className="text-xs ml-1">24h</span>
+                          </div>
+                          <div className={`text-sm ${currency.trends.weekly >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {currency.trends.weekly >= 0 ? '↑' : '↓'} {Math.abs(currency.trends.weekly)}%
+                            <span className="text-xs ml-1">7d</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 pt-3 border-t">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Buy:</span>
+                          <span className="font-medium">NPR {data?.rates?.[0]?.buyingRate || '---'}</span>
+                        </div>
+                        <div className="flex justify-between text-sm mt-1">
+                          <span className="text-gray-600">Sell:</span>
+                          <span className="font-medium">NPR {data?.rates?.[0]?.sellingRate || '---'}</span>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="all">
+                {/* Historical Rate Search */}
+                <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 mb-8">
+                  <div className="bg-primary p-4">
+                    <h2 className="text-xl font-semibold text-white">Historical Forex Rates</h2>
+                    <p className="text-white/80 text-sm">Search exchange rates by date range</p>
                   </div>
-                  <div className="mt-3 pt-3 border-t">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Buying:</span>
-                      <span className="font-medium">NPR {data?.rates?.[0]?.buyingRate || '---'}</span>
+
+                  <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                      <div>
+                        <Label htmlFor="from-date" className="mb-1 block">From Date</Label>
+                        <Input 
+                          id="from-date" 
+                          type="date" 
+                          value={fromDate} 
+                          onChange={(e) => setFromDate(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="to-date" className="mb-1 block">To Date</Label>
+                        <Input 
+                          id="to-date" 
+                          type="date" 
+                          value={toDate} 
+                          onChange={(e) => setToDate(e.target.value)}
+                        />
+                      </div>
+                      <div className="flex items-end">
+                        <Button 
+                          onClick={handleSearch}
+                          className="bg-primary hover:bg-primary-dark w-full"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? 'Searching...' : 'Search Rates'}
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-sm mt-1">
-                      <span className="text-gray-600">Selling:</span>
-                      <span className="font-medium">NPR {data?.rates?.[0]?.sellingRate || '---'}</span>
-                    </div>
+
+                    {data ? (
+                      <>
+                        <DataTable
+                          columns={forexColumns}
+                          data={data.rates || []}
+                          isLoading={isLoading}
+                        />
+
+                        {data.totalPages > 1 && (
+                          <div className="mt-4">
+                            <Pagination>
+                              <PaginationContent>
+                                <PaginationItem>
+                                  <PaginationPrevious 
+                                    onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+                                    className={currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                                  />
+                                </PaginationItem>
+
+                                {Array.from({ length: Math.min(data.totalPages, 5) }, (_, i) => {
+                                  let pageNum = currentPage - 2 + i;
+                                  if (pageNum < 1) pageNum += 5;
+                                  if (pageNum > data.totalPages) pageNum -= 5;
+
+                                  return (
+                                    <PaginationItem key={i}>
+                                      <PaginationLink 
+                                        onClick={() => handlePageChange(pageNum)}
+                                        isActive={currentPage === pageNum}
+                                      >
+                                        {pageNum}
+                                      </PaginationLink>
+                                    </PaginationItem>
+                                  );
+                                })}
+
+                                <PaginationItem>
+                                  <PaginationNext 
+                                    onClick={() => handlePageChange(Math.min(currentPage + 1, data.totalPages))}
+                                    className={currentPage === data.totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                                  />
+                                </PaginationItem>
+                              </PaginationContent>
+                            </Pagination>
+                          </div>
+                        )}
+                      </>
+                    ) : error ? (
+                      <div className="bg-red-50 p-4 rounded-lg text-red-800">
+                        Failed to load forex data. Please try again later.
+                      </div>
+                    ) : (
+                      <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+                        Set a date range and click Search to view historical forex rates.
+                      </div>
+                    )}
                   </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+
+            {/* Market Insights Grid */}
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {marketInsights.map((insight, index) => (
+                <Card key={index} className="p-6">
+                  <h3 className="text-lg font-semibold text-primary mb-2">{insight.title}</h3>
+                  <p className="text-gray-600">{insight.content}</p>
                 </Card>
               ))}
             </div>
 
-            {/* Search Section */}
-            <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 mb-8">
-              <div className="bg-primary p-4">
-                <h2 className="text-xl font-semibold text-white">Historical Forex Rates</h2>
-                <p className="text-white/80 text-sm">Search exchange rates by date range</p>
-              </div>
-              
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div>
-                    <Label htmlFor="from-date" className="mb-1 block">From Date</Label>
-                    <Input 
-                      id="from-date" 
-                      type="date" 
-                      value={fromDate} 
-                      onChange={(e) => setFromDate(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="to-date" className="mb-1 block">To Date</Label>
-                    <Input 
-                      id="to-date" 
-                      type="date" 
-                      value={toDate} 
-                      onChange={(e) => setToDate(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex items-end">
-                    <Button 
-                      onClick={handleSearch}
-                      className="bg-primary hover:bg-primary-dark w-full"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? 'Searching...' : 'Search Rates'}
-                    </Button>
-                  </div>
-                </div>
-
-                {data ? (
-                  <>
-                    <DataTable
-                      columns={forexColumns}
-                      data={data.rates || []}
-                      isLoading={isLoading}
-                    />
-                    
-                    {data.totalPages > 1 && (
-                      <div className="mt-4">
-                        <Pagination>
-                          <PaginationContent>
-                            <PaginationItem>
-                              <PaginationPrevious 
-                                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-                                className={currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-                              />
-                            </PaginationItem>
-                            
-                            {Array.from({ length: Math.min(data.totalPages, 5) }, (_, i) => {
-                              let pageNum = currentPage - 2 + i;
-                              if (pageNum < 1) pageNum += 5;
-                              if (pageNum > data.totalPages) pageNum -= 5;
-                              
-                              return (
-                                <PaginationItem key={i}>
-                                  <PaginationLink 
-                                    onClick={() => handlePageChange(pageNum)}
-                                    isActive={currentPage === pageNum}
-                                  >
-                                    {pageNum}
-                                  </PaginationLink>
-                                </PaginationItem>
-                              );
-                            })}
-                            
-                            <PaginationItem>
-                              <PaginationNext 
-                                onClick={() => handlePageChange(Math.min(currentPage + 1, data.totalPages))}
-                                className={currentPage === data.totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-                              />
-                            </PaginationItem>
-                          </PaginationContent>
-                        </Pagination>
-                      </div>
-                    )}
-                  </>
-                ) : error ? (
-                  <div className="bg-red-50 p-4 rounded-lg text-red-800">
-                    Failed to load forex data. Please try again later.
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
-                    Set a date range and click Search to view historical forex rates.
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Information Section */}
+            {/* Information Sections */}
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-gray-50 rounded-lg p-6">
                 <h3 className="text-xl font-semibold text-primary mb-4">About Nepal Forex Rates</h3>
@@ -200,7 +257,7 @@ const Forex = () => {
                 <p className="mb-4">These rates are applicable for currency exchange and international transactions within Nepal.</p>
                 <p>The buying rate is applicable when you sell foreign currency, and the selling rate applies when you buy foreign currency against Nepali Rupees (NPR).</p>
               </div>
-              
+
               <div className="bg-gray-50 rounded-lg p-6">
                 <h3 className="text-xl font-semibold text-primary mb-4">Understanding Forex Rates</h3>
                 <ul className="space-y-3">
