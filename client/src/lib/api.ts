@@ -61,7 +61,7 @@ export const getCalendar = async (year: string, month: string) => {
               day: day.ad_day,
               monthName: day.ad_month_name
             },
-            isHoliday: events.length > 0 || day.day_of_week === 'Saturday',
+            isHoliday: events.length > 0 && day.day_of_week !== 'Saturday', // Only true holidays, not Saturdays
             events: events,
             dayOfWeek: getDayOfWeekNumber(day.day_of_week),
             tithi: day.tithi

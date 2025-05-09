@@ -105,21 +105,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Calendar events endpoint
   app.get("/api/calendar-events", async (req, res) => {
     try {
-      const { year_bs, start_date_bs, end_date_bs } = req.query;
+      const { year_bs, month_bs, start_date_bs, end_date_bs } = req.query;
+      console.log("Calendar events params:", { year_bs, month_bs, start_date_bs, end_date_bs });
+      
+      // Construct params object based on what was provided
       const params: any = {};
+      if (year_bs) params.year_bs = year_bs;
+      if (month_bs) params.month_bs = month_bs;
+      if (start_date_bs) params.start_date_bs = start_date_bs;
+      if (end_date_bs) params.end_date_bs = end_date_bs;
       
-      // According to API documentation, these are the expected parameters
-      if (year_bs) {
-        params.year_bs = year_bs;
-      }
-      
-      if (start_date_bs && end_date_bs) {
-        params.start_date_bs = start_date_bs;
-        params.end_date_bs = end_date_bs;
-      }
-      
-      console.log("Calendar events params:", params);
+      // Make the API request to calendar endpoint
       const response = await axios.get(`${API_BASE_URL}calendar/`, { params });
+      
+      // Return the data
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching calendar events:", error);
@@ -145,34 +144,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.error("Response status:", error.response.status);
       }
       res.status(500).json({ message: "Failed to convert date" });
-    }
-  });
-  
-  // Calendar events endpoint
-  app.get("/api/calendar-events", async (req, res) => {
-    try {
-      const { year_bs, month_bs, start_date_bs, end_date_bs } = req.query;
-      console.log("Calendar events params:", { year_bs, month_bs, start_date_bs, end_date_bs });
-      
-      // Construct params object based on what was provided
-      const params: any = {};
-      if (year_bs) params.year_bs = year_bs;
-      if (month_bs) params.month_bs = month_bs;
-      if (start_date_bs) params.start_date_bs = start_date_bs;
-      if (end_date_bs) params.end_date_bs = end_date_bs;
-      
-      // Make the API request to calendar endpoint
-      const response = await axios.get(`${API_BASE_URL}calendar/`, { params });
-      
-      // Return the data
-      res.json(response.data);
-    } catch (error) {
-      console.error("Error fetching calendar events:", error);
-      if (error instanceof AxiosError && error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-      }
-      res.status(500).json({ message: "Failed to fetch calendar events" });
     }
   });
   
