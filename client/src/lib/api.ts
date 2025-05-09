@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { isHolidayEvent } from './holidays';
 
 const api = axios.create({
   baseURL: '/api',
@@ -61,7 +62,7 @@ export const getCalendar = async (year: string, month: string) => {
               day: day.ad_day,
               monthName: day.ad_month_name
             },
-            isHoliday: events.length > 0 && day.day_of_week !== 'Saturday', // Only true holidays, not Saturdays
+            isHoliday: events.some(event => isHolidayEvent(event)), // Only mark as holiday if event matches our holiday list
             events: events,
             dayOfWeek: getDayOfWeekNumber(day.day_of_week),
             tithi: day.tithi
