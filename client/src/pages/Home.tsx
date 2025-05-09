@@ -164,12 +164,15 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Vegetable Prices Preview Section - Moved Before Features Section */}
+      {/* Featured Services Sections */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-12 items-center">
+          <h2 className="text-3xl font-bold text-primary font-poppins mb-10 text-center">Our Featured Services</h2>
+          
+          {/* Vegetable Price Tracker */}
+          <div className="flex flex-col md:flex-row gap-12 items-center mb-20">
             <div className="md:w-1/2">
-              <h2 className="text-3xl font-bold text-primary font-poppins mb-4">Featured Service: Vegetable Price Tracker</h2>
+              <h3 className="text-2xl font-bold text-primary font-poppins mb-4">Vegetable Price Tracker</h3>
               <p className="text-neutral mb-6">Stay informed about current vegetable prices at Kalimati Market to make better shopping decisions. Our tracker provides:</p>
               
               <ul className="space-y-3 mb-8">
@@ -218,6 +221,147 @@ const Home = () => {
                 }))}
                 isLoading={vegetablesQuery.isLoading}
               />
+            </div>
+          </div>
+          
+          {/* Rashifal Service */}
+          <div className="flex flex-col md:flex-row-reverse gap-12 items-center mb-20">
+            <div className="md:w-1/2">
+              <h3 className="text-2xl font-bold text-primary font-poppins mb-4">Daily Rashifal Readings</h3>
+              <p className="text-neutral mb-6">Access personalized daily horoscope predictions based on traditional Nepali astrology. Our Rashifal service features:</p>
+              
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Daily updated predictions for all 12 zodiac signs</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Guidance on relationships, career, health, and finances</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Traditional Nepali astrological interpretations</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Beautiful, interactive zodiac sign cards</span>
+                </li>
+              </ul>
+              
+              <Link href="/rashifal" className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors">
+                Read Your Rashifal <i className="ri-arrow-right-line ml-2"></i>
+              </Link>
+            </div>
+            
+            <div className="md:w-1/2">
+              <div className="p-6 bg-gradient-to-br from-primary to-primary-light rounded-xl shadow-md text-white">
+                <div className="flex items-center justify-between mb-5">
+                  <h4 className="text-xl font-semibold">आजको राशिफल</h4>
+                  <span className="text-sm font-medium">{formattedDate}</span>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-5">
+                  {rashifalQuery.data && rashifalQuery.data.predictions ? (
+                    rashifalQuery.data.predictions.slice(0, 4).map((sign: any, index: number) => (
+                      <div key={index} className="bg-white/10 backdrop-blur-sm p-3 rounded-lg border border-white/20">
+                        <h5 className="font-medium text-white">{sign.sign_nepali}</h5>
+                        <p className="text-sm text-white/80 mt-2 line-clamp-3">{sign.prediction}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="col-span-2 p-4 text-center">
+                      <div className="animate-pulse bg-white/20 h-5 w-3/4 mx-auto rounded mb-3"></div>
+                      <div className="animate-pulse bg-white/20 h-4 w-2/3 mx-auto rounded"></div>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="text-center mt-5">
+                  <p className="text-white/80 text-sm mb-3">Read your complete daily horoscope</p>
+                  <Link href="/rashifal" className="inline-block bg-white text-primary px-5 py-2 rounded-lg font-medium hover:bg-white/90 transition-colors">
+                    View All Signs
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Date Converter Service */}
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+            <div className="md:w-1/2">
+              <h3 className="text-2xl font-bold text-primary font-poppins mb-4">BS-AD Date Converter</h3>
+              <p className="text-neutral mb-6">Easily convert dates between Bikram Sambat (BS) and Gregorian (AD) calendars with our precise conversion tool. Features include:</p>
+              
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Instant conversion between Nepali and Gregorian calendars</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Simple, intuitive interface with date pickers</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Additional date information including day of week and tithis</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Support for dates from 1975 BS to 2100 BS</span>
+                </li>
+              </ul>
+              
+              <Link href="/date-converter" className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors">
+                Convert Dates <i className="ri-arrow-right-line ml-2"></i>
+              </Link>
+            </div>
+            
+            <div className="md:w-1/2">
+              <div className="bg-gray-50 rounded-xl border border-gray-100 shadow-sm p-6">
+                <h4 className="text-xl font-semibold text-primary mb-4">Date Converter</h4>
+                <div className="flex flex-col space-y-6">
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
+                    <div className="text-sm text-gray-500 mb-1">Convert from BS to AD</div>
+                    <div className="flex gap-3 items-center justify-between">
+                      <div className="font-medium text-neutral">2080 Kartik 15</div>
+                      <div className="text-2xl text-primary">→</div>
+                      <div className="font-medium text-neutral">2023 November 1</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
+                    <div className="text-sm text-gray-500 mb-1">Convert from AD to BS</div>
+                    <div className="flex gap-3 items-center justify-between">
+                      <div className="font-medium text-neutral">2025 April 14</div>
+                      <div className="text-2xl text-primary">→</div>
+                      <div className="font-medium text-neutral">2082 Baishakh 1</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-6 text-center">
+                  <Link href="/date-converter" className="text-primary text-sm font-medium hover:underline">
+                    Try the converter yourself →
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -279,6 +423,57 @@ const Home = () => {
               link="/forex"
               linkText="View Forex Rates"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* SEO-friendly Informational Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-primary font-poppins mb-8 text-center">
+              The Ultimate Nepali Information Resource
+            </h2>
+            
+            <div className="prose prose-lg max-w-none text-neutral">
+              <p>
+                QuikNepal provides comprehensive Nepali information resources designed specifically for the unique needs of Nepali citizens and anyone interested in Nepal. Our platform integrates essential daily utilities with cultural context to make everyday life easier for Nepali users.
+              </p>
+              
+              <h3 className="text-primary font-semibold mt-8 mb-4">The Importance of Nepali Calendar (Bikram Sambat)</h3>
+              <p>
+                The Bikram Sambat calendar holds immense cultural significance in Nepal, serving as the country's official calendar system. It's not just a way to track dates—it's integral to planning festivals, religious ceremonies, and agricultural activities. Our detailed calendar presentation includes:
+              </p>
+              <ul>
+                <li>Traditional festivals and celebrations highlighted throughout the year</li>
+                <li>Important national holidays and observances clearly marked</li>
+                <li>Tithi information for religious and cultural practices</li>
+                <li>Seasonal contextual information for each month</li>
+              </ul>
+              
+              <h3 className="text-primary font-semibold mt-8 mb-4">Practical Daily Information</h3>
+              <p>
+                QuikNepal goes beyond calendar services to provide practical information that impacts daily life in Nepal. Our vegetable price tracker helps families budget effectively by providing up-to-date information on market prices, while our metal prices section allows users to track the value of investments in gold and silver—traditional stores of value in Nepali culture.
+              </p>
+              
+              <h3 className="text-primary font-semibold mt-8 mb-4">Cultural Alignment</h3>
+              <p>
+                Our platform respectfully integrates traditional Nepali practices with modern technology. The Rashifal (horoscope) section honors the astrological traditions important to many Nepali citizens, while our intuitive design makes this cultural information accessible to users of all ages.
+              </p>
+              
+              <div className="bg-primary-light/10 p-6 rounded-xl my-8 border border-primary-light/20">
+                <h4 className="text-primary font-semibold mb-4">Why QuikNepal?</h4>
+                <p className="mb-0">
+                  QuikNepal stands out by providing authentic, accurate information specifically tailored to the Nepali context. Unlike general information sites, our platform deeply understands the cultural significance behind the data we present. We're committed to preserving cultural heritage while making essential information easily accessible for the modern Nepali user.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex justify-center">
+              <Link href="#features" className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors">
+                Explore All Services <i className="ri-arrow-right-line ml-2"></i>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
