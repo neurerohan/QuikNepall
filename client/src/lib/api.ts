@@ -62,7 +62,7 @@ export const getCalendar = async (year: string, month: string) => {
               day: day.ad_day,
               monthName: day.ad_month_name
             },
-            isHoliday: events.some(event => isHolidayEvent(event)), // Only mark as holiday if event matches our holiday list
+            isHoliday: events.some((event: string) => isHolidayEvent(event)), // Only mark as holiday if event matches our holiday list
             events: events,
             dayOfWeek: getDayOfWeekNumber(day.day_of_week),
             tithi: day.tithi

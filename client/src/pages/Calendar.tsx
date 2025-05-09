@@ -547,14 +547,14 @@ const Calendar = () => {
                               <div 
                                 key={`day-${index}`}
                                 className={`aspect-square border border-gray-100 rounded p-1.5 hover:bg-gray-50 
-                                  ${day.isHoliday === true ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : day.events?.length ? 'bg-primary-light/10' : ''}
+                                  ${day.isHoliday === true ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : ''}
                                   ${isTodayHighlight ? 'ring-2 ring-green-500' : ''}
                                   transition-all cursor-pointer`}
                                 onClick={() => setSelectedDay(day)}
                               >
                                 <div className="flex flex-col h-full">
                                   {/* Nepali date - emphasized */}
-                                  <div className={`text-xl font-bold ${isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto' : ''}`}>
+                                  <div className={`text-xl font-bold ${day.isHoliday ? 'text-red-500' : isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto' : ''}`}>
                                     {day.bs.nepaliDay}
                                   </div>
                                   
@@ -573,7 +573,7 @@ const Calendar = () => {
                                   
                                   {/* Event indicator */}
                                   {day.events?.length > 0 && (
-                                    <div className="mt-auto text-[8px] text-primary-dark truncate bg-primary-light/20 px-1 py-0.5 rounded text-center">
+                                    <div className="mt-auto text-[8px] text-primary-dark truncate px-1 py-0.5 text-center">
                                       <h4 className="sr-only">Event: {day.events.join(', ')}</h4>
                                       {day.events[0]}
                                     </div>
@@ -593,8 +593,8 @@ const Calendar = () => {
 
                 {/* Legend */}
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="bg-primary-light/10 p-3 rounded-lg flex items-center">
-                    <div className="w-4 h-4 bg-primary-light/10 border border-gray-200 rounded mr-2"></div>
+                  <div className="p-3 rounded-lg flex items-center">
+                    <div className="text-primary-dark text-[8px] mr-2">पर्व/जात्रा</div>
                     <span className="text-sm">Event/Festival</span>
                   </div>
                   <div className="bg-red-50 p-3 rounded-lg flex items-center">

@@ -172,7 +172,7 @@ const CalendarWidget = () => {
                     <div className="flex flex-col h-full items-center justify-center relative">
                       {/* Nepali date - emphasized */}
                       <div className={`text-xl font-bold 
-                        ${isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} 
+                        ${day.isHoliday ? 'text-red-500' : isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} 
                         ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-7 h-7 flex items-center justify-center' : ''}`}
                       >
                         {day.bs.nepaliDay || day.bs.day}
@@ -192,7 +192,7 @@ const CalendarWidget = () => {
                       
                       {/* Event indicator */}
                       {day.events?.length > 0 && (
-                        <div className="text-[8px] text-primary-dark truncate bg-primary-light/20 px-1 py-0.5 rounded text-center mt-1 max-w-full">
+                        <div className="text-[8px] text-primary-dark truncate px-1 py-0.5 text-center mt-1 max-w-full">
                           {day.events[0]}
                         </div>
                       )}
