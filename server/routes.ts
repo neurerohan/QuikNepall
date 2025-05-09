@@ -6,10 +6,84 @@ import axios, { AxiosError } from "axios";
 // Base URL for the external API
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.kalimatirate.nyure.com.np/api/";
 
+// Date conversion utilities for Nepali calendar
+// This is an approximation - for precise conversion we use the API
+const getCurrentNepaliDate = async () => {
+  try {
+    // Use the API to get current Nepali date by converting today's date
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+    
+    // Call the conversion API
+    const response = await axios.get(`${API_BASE_URL}calendar/convert`, {
+      params: { from: 'ad', date: todayStr }
+    });
+    
+    if (response.data && response.data.bs) {
+      // Get the BS date parts
+      const dateParts = response.data.bs.split('-');
+      if (dateParts.length === 3) {
+        const year = parseInt(dateParts[0]);
+        const month = parseInt(dateParts[1]);
+        const day = parseInt(dateParts[2]);
+        
+        // Get month name
+        const nepaliMonths = [
+          'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
+          'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
+          'Poush', 'Magh', 'Falgun', 'Chaitra'
+        ];
+        
+        return {
+          year: year,
+          month: month,
+          day: day,
+          month_name: nepaliMonths[month - 1] || 'Unknown',
+          day_of_week: today.getDay(), // 0-6 (Sunday-Saturday)
+          ad_date: todayStr,
+          bs_date: response.data.bs
+        };
+      }
+    }
+    
+    throw new Error("Invalid response format from conversion API");
+  } catch (error) {
+    console.error("Error getting current Nepali date:", error);
+    // Fallback: use approximation if API fails
+    const today = new Date();
+    return {
+      year: today.getFullYear() + 57, // Rough approximation
+      month: (today.getMonth() + 1),
+      day: today.getDate(),
+      month_name: "Unknown",
+      day_of_week: today.getDay(),
+      ad_date: today.toISOString().split('T')[0],
+      bs_date: "Unknown"
+    };
+  }
+};
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Prefix all routes with /api
   
   // Important: Order matters in Express routes! Specific routes must be registered first.
+  
+  // Today's Nepali date endpoint
+  app.get("/api/today", async (req, res) => {
+    try {
+      const todayNepaliDate = await getCurrentNepaliDate();
+      res.json({
+        today: todayNepaliDate,
+        success: true
+      });
+    } catch (error) {
+      console.error("Error getting today's Nepali date:", error);
+      res.status(500).json({ 
+        message: "Failed to get today's Nepali date",
+        success: false 
+      });
+    }
+  });
   
   // Calendar events endpoint
   app.get("/api/calendar-events", async (req, res) => {

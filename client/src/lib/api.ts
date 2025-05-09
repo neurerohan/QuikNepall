@@ -230,6 +230,16 @@ function mapSignToEnglish(nepaliSign: string): string {
   return signMap[nepaliSign] || nepaliSign;
 }
 
+export const getTodayNepaliDate = async () => {
+  try {
+    const response = await api.get('/today');
+    return response.data.today;
+  } catch (error) {
+    console.error("Error fetching today's Nepali date:", error);
+    throw new Error("Failed to get today's Nepali date");
+  }
+};
+
 export const getForex = async (params: { from?: string; to?: string; page?: number; per_page?: number }) => {
   try {
     const response = await api.get('/forex', { params });

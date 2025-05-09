@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getCalendar, getCalendarEvents, getMonthName } from '@/lib/api';
+import { getCalendar, getCalendarEvents, getMonthName, getTodayNepaliDate } from '@/lib/api';
 import MainLayout from '@/components/layout/MainLayout';
 import { useParams, useLocation } from 'wouter';
 import FadeIn from '@/components/ui/FadeIn';
@@ -193,19 +193,41 @@ const Calendar = () => {
   const [location, setLocation] = useLocation();
   const params = useParams<CalendarParams>();
   
-  // If no params are provided, use current date and redirect
+  // State to hold today's Nepali date from API
+  const [todayNepaliDate, setTodayNepaliDate] = useState<any>(null);
+  
+  // Get today's Nepali date from API
+  const { data: nepaliToday, isLoading: loadingToday } = useQuery({
+    queryKey: ['/api/today'],
+    queryFn: getTodayNepaliDate,
+    staleTime: 1000 * 60 * 60, // Cache for 1 hour
+    refetchOnWindowFocus: false,
+  });
+  
+  // Update today state when data is loaded
+  useEffect(() => {
+    if (nepaliToday) {
+      setTodayNepaliDate(nepaliToday);
+    }
+  }, [nepaliToday]);
+  
+  // If no params are provided, use current Nepali date from API and redirect
   useEffect(() => {
     if (!params.year || !params.month) {
-      const today = new Date();
-      // Get current Nepali year (roughly AD + 56/57 years)
-      const currentNepaliYear = today.getFullYear() + 57;
-      const currentMonth = today.getMonth() + 1; // JavaScript months are 0-based
-      
-      // We'll use the /nepalicalendar path format with month name
-      const nepaliMonthName = getMonthName(currentMonth);
-      setLocation(`/nepalicalendar/${currentNepaliYear}/${nepaliMonthName.toLowerCase()}`);
+      if (nepaliToday) {
+        // Use the accurate Nepali date from API
+        const nepaliMonthName = nepaliToday.month_name.toLowerCase();
+        setLocation(`/nepalicalendar/${nepaliToday.year}/${nepaliMonthName}`);
+      } else {
+        // Fallback to approximation if API data not available yet
+        const today = new Date();
+        const currentNepaliYear = today.getFullYear() + 57; // Approximate
+        const currentMonth = today.getMonth() + 1;
+        const nepaliMonthName = getMonthName(currentMonth).toLowerCase();
+        setLocation(`/nepalicalendar/${currentNepaliYear}/${nepaliMonthName}`);
+      }
     }
-  }, [params, setLocation]);
+  }, [params, setLocation, nepaliToday]);
   
   // Helper function to get month number from name
   const getMonthNumberFromName = (monthName: string): number => {
@@ -282,12 +304,18 @@ const Calendar = () => {
                 <button 
                   className="px-3 py-1.5 bg-primary text-white text-sm rounded-md hover:bg-primary-dark transition-colors"
                   onClick={() => {
-                    const today = new Date();
-                    // Get Nepali year (roughly AD + 57)
-                    const currentNepaliYear = today.getFullYear() + 57;
-                    const currentMonth = today.getMonth() + 1;
-                    const nepaliMonthName = getMonthName(currentMonth).toLowerCase();
-                    setLocation(`/nepalicalendar/${currentNepaliYear}/${nepaliMonthName}`);
+                    if (nepaliToday) {
+                      // Use accurate Nepali date from the API
+                      const nepaliMonthName = nepaliToday.month_name.toLowerCase();
+                      setLocation(`/nepalicalendar/${nepaliToday.year}/${nepaliMonthName}`);
+                    } else {
+                      // Fallback to approximation if API data not available
+                      const today = new Date();
+                      const currentNepaliYear = today.getFullYear() + 57;
+                      const currentMonth = today.getMonth() + 1;
+                      const nepaliMonthName = getMonthName(currentMonth).toLowerCase();
+                      setLocation(`/nepalicalendar/${currentNepaliYear}/${nepaliMonthName}`);
+                    }
                   }}
                 >
                   Go to Today
