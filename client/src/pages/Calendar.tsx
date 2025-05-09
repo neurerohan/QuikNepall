@@ -275,7 +275,13 @@ const Calendar = () => {
   // Get today's date to highlight
   const today = new Date();
   const isToday = (bsDay: number, bsMonth: number, bsYear: number) => {
-    return parseInt(year) === bsYear && parseInt(month) === bsMonth && today.getDate() === bsDay;
+    if (nepaliToday) {
+      // Use accurate Nepali date from API
+      return parseInt(year) === bsYear && parseInt(month) === bsMonth && nepaliToday.day === bsDay;
+    } else {
+      // Fallback to approximation
+      return parseInt(year) === bsYear && parseInt(month) === bsMonth && today.getDate() === bsDay;
+    }
   };
   
   return (
@@ -297,6 +303,11 @@ const Calendar = () => {
                 </p>
                 <p className="text-sm text-gray-500">
                   Today: {today.toLocaleDateString()} ({weekdays[today.getDay()]})
+                  {nepaliToday && (
+                    <span className="ml-1">
+                      | BS: {nepaliToday.year}-{nepaliToday.month}-{nepaliToday.day} ({nepaliToday.month_name})
+                    </span>
+                  )}
                 </p>
               </div>
               

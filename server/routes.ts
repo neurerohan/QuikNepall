@@ -51,14 +51,23 @@ const getCurrentNepaliDate = async () => {
     console.error("Error getting current Nepali date:", error);
     // Fallback: use approximation if API fails
     const today = new Date();
+    // Get month name
+    const nepaliMonths = [
+      'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
+      'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
+      'Poush', 'Magh', 'Falgun', 'Chaitra'
+    ];
+    const monthIndex = today.getMonth();
+    const nepaliMonth = monthIndex + 1;
+    
     return {
       year: today.getFullYear() + 57, // Rough approximation
-      month: (today.getMonth() + 1),
+      month: nepaliMonth,
       day: today.getDate(),
-      month_name: "Unknown",
+      month_name: nepaliMonths[monthIndex],
       day_of_week: today.getDay(),
       ad_date: today.toISOString().split('T')[0],
-      bs_date: "Unknown"
+      bs_date: `${today.getFullYear() + 57}-${nepaliMonth}-${today.getDate()}`
     };
   }
 };

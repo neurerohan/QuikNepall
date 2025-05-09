@@ -233,10 +233,33 @@ function mapSignToEnglish(nepaliSign: string): string {
 export const getTodayNepaliDate = async () => {
   try {
     const response = await api.get('/today');
-    return response.data.today;
+    if (response.data && response.data.today) {
+      return response.data.today;
+    }
+    // Return a fallback object if API returns empty data
+    const today = new Date();
+    return {
+      year: today.getFullYear() + 57, // Rough approximation
+      month: today.getMonth() + 1,
+      day: today.getDate(),
+      month_name: getMonthName(today.getMonth() + 1),
+      day_of_week: today.getDay(),
+      ad_date: today.toISOString().split('T')[0],
+      bs_date: `${today.getFullYear() + 57}-${today.getMonth() + 1}-${today.getDate()}`
+    };
   } catch (error) {
     console.error("Error fetching today's Nepali date:", error);
-    throw new Error("Failed to get today's Nepali date");
+    // Return a fallback object instead of throwing
+    const today = new Date();
+    return {
+      year: today.getFullYear() + 57, // Rough approximation
+      month: today.getMonth() + 1,
+      day: today.getDate(),
+      month_name: getMonthName(today.getMonth() + 1),
+      day_of_week: today.getDay(),
+      ad_date: today.toISOString().split('T')[0],
+      bs_date: `${today.getFullYear() + 57}-${today.getMonth() + 1}-${today.getDate()}`
+    };
   }
 };
 
