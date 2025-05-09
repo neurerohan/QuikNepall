@@ -56,15 +56,14 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = 5000;
+  // const port = 5e3; // Old port
+  const port = process.env.PORT || 5000; // Use Vercel's PORT or fallback
   server.listen({
     port,
-    host: "0.0.0.0",
-    reusePort: true,
+    host: "0.0.0.0"
+    // reusePort: true // Removed for Vercel compatibility
   }, () => {
-    log(`serving on port ${port}`);
+    // Assuming 'log' is your custom logging function, e.g., console.log or a wrapper
+    console.log(`Server listening on port ${port} in ${app.get("env")} mode`);
   });
 })();
