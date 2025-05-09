@@ -720,83 +720,151 @@ const Calendar = () => {
                   )}
                 </div>
 
-                {/* Month Summary - Using dynamic content */}
+                {/* Month Summary - Enhanced Modern Design */}
                 {params.year && (
-                  <div className="mt-6 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                    <h3 className="text-xl font-semibold text-primary mb-3">About {getMonthName(parseInt(month))} Month</h3>
+                  <div className="mt-8 space-y-6 animate-fadeIn">
+                    {/* Header Section with Gradient Background */}
+                    <div className="relative overflow-hidden bg-gradient-to-br from-primary/90 to-primary rounded-2xl p-8 text-white">
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+                      <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-dark/20 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2"></div>
+                      
+                      <div className="relative">
+                        <h3 className="text-3xl md:text-4xl font-bold mb-3 font-montserrat tracking-tight">
+                          {(() => {
+                            const monthContent = getMonthContent(parseInt(month), parseInt(params.year));
+                            return (
+                              <span className="flex items-baseline gap-3">
+                                {monthContent.name}
+                                <span className="text-lg text-white/80">({monthContent.nepaliName})</span>
+                              </span>
+                            );
+                          })()}
+                        </h3>
+                        <p className="text-white/90 text-lg">The beginning of new possibilities ✨</p>
+                      </div>
+                    </div>
 
-                    <div className="flex flex-col md:flex-row gap-6">
-                      <div className="md:w-3/4">
-                        {/* Dynamic content */}
+                    {/* Content Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                      {/* Main Content */}
+                      <div className="md:col-span-8 space-y-6">
                         {(() => {
                           const monthContent = getMonthContent(parseInt(month), parseInt(params.year));
                           return (
                             <>
-                              <p className="text-neutral mb-4">
-                                <span className="font-medium">{monthContent.name}</span> (Nepali: <span className="font-medium">{monthContent.nepaliName}</span>) is 
-                                the {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'} month in the Nepali Bikram Sambat calendar. 
-                                This month typically falls during <span className="font-medium">{monthContent.gregorianMonths}</span> in the Gregorian calendar.
-                              </p>
+                              {/* Quick Facts Cards */}
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                  <div className="text-sm text-gray-500">Position</div>
+                                  <div className="text-xl font-semibold text-primary mt-1">
+                                    {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'}
+                                  </div>
+                                </div>
+                                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                  <div className="text-sm text-gray-500">Days</div>
+                                  <div className="text-xl font-semibold text-primary mt-1">{monthContent.days}</div>
+                                </div>
+                                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                  <div className="text-sm text-gray-500">Gregorian</div>
+                                  <div className="text-xl font-semibold text-primary mt-1">{monthContent.gregorianMonths}</div>
+                                </div>
+                                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                  <div className="text-sm text-gray-500">Major Festivals</div>
+                                  <div className="text-xl font-semibold text-primary mt-1">{monthContent.festivals.length}</div>
+                                </div>
+                              </div>
 
-                              <p className="text-neutral mb-4">
-                                In {monthContent.name}, the average temperature in Nepal ranges from <span className="font-medium">{monthContent.temperature}</span>. 
-                                This month is particularly known for <span className="font-medium">{monthContent.highlights}</span>.
-                              </p>
+                              {/* Main Description */}
+                              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
+                                <div className="prose max-w-none">
+                                  <h4 className="text-xl font-semibold text-primary mb-4 flex items-center gap-2">
+                                    <i className="ri-calendar-2-fill"></i>
+                                    Month Overview
+                                  </h4>
+                                  <p className="text-neutral leading-relaxed">
+                                    <span className="font-medium">{monthContent.name}</span> marks the {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'} month in the Nepali Bikram Sambat calendar, 
+                                    aligning with <span className="font-medium">{monthContent.gregorianMonths}</span> in the Gregorian calendar. 
+                                    During this time, Nepal experiences temperatures ranging from <span className="font-medium">{monthContent.temperature}</span>.
+                                  </p>
+                                  
+                                  <div className="mt-4 flex items-center gap-4 p-4 bg-primary/5 rounded-lg">
+                                    <i className="ri-sun-line text-2xl text-primary"></i>
+                                    <p className="text-neutral">
+                                      This month is notable for <span className="font-medium">{monthContent.highlights}</span>
+                                    </p>
+                                  </div>
 
-                              <p className="text-neutral mb-4">
-                                {monthContent.name} typically has <span className="font-medium">{monthContent.days} days</span> in most years of the Nepali calendar. 
-                                The agricultural activities during this month generally include <span className="font-medium">{monthContent.agriculture}</span>.
-                              </p>
+                                  <div className="mt-4 flex items-center gap-4 p-4 bg-green-50 rounded-lg">
+                                    <i className="ri-plant-line text-2xl text-green-600"></i>
+                                    <p className="text-neutral">
+                                      Agricultural activities include <span className="font-medium">{monthContent.agriculture}</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
 
-                              <div className="bg-primary-light/10 p-4 rounded-lg mb-4">
-                                <h4 className="font-medium text-primary mb-2">Seasonal Context</h4>
-                                <p className="text-sm text-neutral">
-                                  {monthContent.name} falls within {(() => {
-                                    if ([1, 2, 3].includes(parseInt(month))) return "spring season in Nepal";
-                                    if ([4, 5, 6, 7].includes(parseInt(month))) return "monsoon season in Nepal";
-                                    if ([8, 9].includes(parseInt(month))) return "autumn season in Nepal";
-                                    return "winter season in Nepal";
-                                  })()} with particular importance to the agricultural calendar and cultural traditions.
-                                  {parseInt(month) === 1 && " This is the beginning of the Nepali calendar year."}
-                                  {parseInt(month) === 6 && " This month hosts Dashain, Nepal's most significant festival."}
-                                  {parseInt(month) === 7 && " This month hosts Tihar, the festival of lights, second only to Dashain in importance."}
-                                </p>
+                              {/* Seasonal Context Card */}
+                              <div className="bg-gradient-to-br from-blue-50 to-primary/5 rounded-xl p-6">
+                                <div className="flex items-start gap-4">
+                                  <div className="p-3 bg-white rounded-lg shadow-sm">
+                                    <i className="ri-leaf-line text-2xl text-primary"></i>
+                                  </div>
+                                  <div>
+                                    <h4 className="text-lg font-semibold text-primary mb-2">Seasonal Context</h4>
+                                    <p className="text-neutral">
+                                      {monthContent.name} falls within {(() => {
+                                        if ([1, 2, 3].includes(parseInt(month))) return "spring season in Nepal 🌸";
+                                        if ([4, 5, 6, 7].includes(parseInt(month))) return "monsoon season in Nepal 🌧️";
+                                        if ([8, 9].includes(parseInt(month))) return "autumn season in Nepal 🍂";
+                                        return "winter season in Nepal ❄️";
+                                      })()} with particular importance to the agricultural calendar and cultural traditions.
+                                      {parseInt(month) === 1 && " This is the beginning of the Nepali calendar year! 🎊"}
+                                      {parseInt(month) === 6 && " This month hosts Dashain, Nepal's most significant festival! 🎯"}
+                                      {parseInt(month) === 7 && " This month hosts Tihar, the festival of lights! ✨"}
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
                             </>
-                          )
+                          );
                         })()}
-
-                        {/* General information about Nepali calendar */}
-                        <p className="text-neutral">
-                          The Nepali calendar, officially known as Bikram Sambat (BS), is approximately 56.7 years ahead of the Gregorian calendar (AD) and is the official calendar of Nepal. It was introduced by King Bikramaditya and has been in use for over 2,000 years, making it one of the oldest continuously used calendars in the world.
-                        </p>
                       </div>
 
-                      <div className="md:w-1/4">
-                        <div className="bg-gradient-to-r from-primary/80 to-primary p-4 rounded-lg text-white shadow-md">
-                          <h4 className="font-medium mb-3 text-white/90">Month Facts</h4>
-                          <ul className="space-y-3 text-sm">
-                            <li className="flex items-start">
-                              <span className="mr-2">•</span>
-                              <span>Position: {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'} month</span>
-                            </li>
-                            <li className="flex items-start">
-                              <span className="mr-2">•</span>
-                              <span>Nepali Name: {getMonthContent(parseInt(month), parseInt(params.year)).nepaliName}</span>
-                            </li>
-                            <li className="flex items-start">
-                              <span className="mr-2">•</span>
-                              <span>Days: {getMonthContent(parseInt(month), parseInt(params.year)).days}</span>
-                            </li>
-                            <li className="flex items-start">
-                              <span className="mr-2">•</span>
-                              <span>Major Festivals: {getMonthContent(parseInt(month), parseInt(params.year)).festivals.length}</span>
-                            </li>
-                            <li className="flex items-start">
-                              <span className="mr-2">•</span>
-                              <span>Gregorian: {getMonthContent(parseInt(month), parseInt(params.year)).gregorianMonths}</span>
-                            </li>
-                          </ul>
+                      {/* Sidebar Content */}
+                      <div className="md:col-span-4 space-y-6">
+                        {/* Historical Context */}
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                          <h4 className="text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+                            <i className="ri-history-line"></i>
+                            Historical Context
+                          </h4>
+                          <p className="text-sm text-neutral leading-relaxed">
+                            The Nepali calendar (Bikram Sambat) predates the Gregorian calendar by approximately 56.7 years. 
+                            Introduced by King Bikramaditya, it stands as one of the world's oldest continuously used calendars, 
+                            with over 2,000 years of history.
+                          </p>
+                        </div>
+
+                        {/* FAQ Section */}
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                          <h4 className="text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+                            <i className="ri-questionnaire-line"></i>
+                            Quick Tips
+                          </h4>
+                          <div className="space-y-4">
+                            <div className="hover:bg-gray-50 p-3 rounded-lg transition-colors">
+                              <h5 className="font-medium text-neutral">Today's Date</h5>
+                              <p className="text-sm text-gray-500 mt-1">Click "Go to Today" at the top to quickly jump to today's date</p>
+                            </div>
+                            <div className="hover:bg-gray-50 p-3 rounded-lg transition-colors">
+                              <h5 className="font-medium text-neutral">View Events</h5>
+                              <p className="text-sm text-gray-500 mt-1">Switch to "Events" tab to see all events for this month</p>
+                            </div>
+                            <div className="hover:bg-gray-50 p-3 rounded-lg transition-colors">
+                              <h5 className="font-medium text-neutral">Day Details</h5>
+                              <p className="text-sm text-gray-500 mt-1">Click any date to view detailed information and events</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
