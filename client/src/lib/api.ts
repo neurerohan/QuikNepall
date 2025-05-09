@@ -15,14 +15,6 @@ export const getCalendar = async (year: string, month: string) => {
     if (response.data && response.data.days) {
       const calendarData = response.data.days;
       
-      // Convert month number to Nepali month name for display
-      const nepaliMonths = [
-        'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
-        'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
-        'Poush', 'Magh', 'Falgun', 'Chaitra'
-      ];
-      const monthName = nepaliMonths[parseInt(month) - 1] || 'Baishakh';
-      
       // Format the data to match component expectations
       return {
         days: calendarData.map((day: any) => {
@@ -31,14 +23,14 @@ export const getCalendar = async (year: string, month: string) => {
           
           return {
             bs: {
-              year: parseInt(year),
-              month: parseInt(month),
-              day: parseInt(day.bs_date)
+              year: day.bs_year,
+              month: day.bs_month_number,
+              day: parseInt(day.bs_day_english_equivalent)
             },
             ad: {
               year: day.ad_year,
               month: getMonthNumberFromName(day.ad_month_name),
-              day: day.ad_date,
+              day: day.ad_day,
               monthName: day.ad_month_name
             },
             isHoliday: events.length > 0 || day.day_of_week === 'Saturday',
@@ -49,7 +41,7 @@ export const getCalendar = async (year: string, month: string) => {
         }),
         monthDetails: {
           bs: {
-            monthName: monthName,
+            monthName: response.data.month_name,
             year: parseInt(year),
             month: parseInt(month)
           },
@@ -59,9 +51,9 @@ export const getCalendar = async (year: string, month: string) => {
             month: getMonthNumberFromName(calendarData[0]?.ad_month_name) || new Date().getMonth() + 1
           },
           meta: {
-            nepaliHeader: response.data.days[0]?.meta_header_nepali,
-            englishHeader: response.data.days[0]?.meta_header_english,
-            source: response.data.days[0]?.source_url
+            nepaliHeader: calendarData[0]?.meta_header_nepali,
+            englishHeader: calendarData[0]?.meta_header_english,
+            source: calendarData[0]?.source_url
           }
         }
       };

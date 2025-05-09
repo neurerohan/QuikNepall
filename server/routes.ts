@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 // Base URL for the external API
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.kalimatirate.nyure.com.np/api/";
@@ -58,16 +58,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       ];
       const monthName = nepaliMonths[parseInt(month) - 1] || 'Baishakh';
       
-      // Use the detailed-calendar endpoint with year and month_name parameters
+      console.log(`Fetching calendar for year=${year}, month_name=${monthName}`);
+      
+      // Use the detailed-calendar endpoint with year and month_name as query params
+      // Make a direct request to the API with the exact structure observed in the example
       const response = await axios.get(`${API_BASE_URL}detailed-calendar/`, {
         params: {
-          year: year,
+          year: year, 
           month_name: monthName
         }
       });
+      
+      console.log("Calendar API response status:", response.status);
+      
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching calendar:", error);
+      if (error instanceof AxiosError && error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+      }
       res.status(500).json({ message: "Failed to fetch calendar data" });
     }
   });
