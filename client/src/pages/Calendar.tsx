@@ -255,6 +255,9 @@ const Calendar = () => {
   // State to hold today's Nepali date from API
   const [todayNepaliDate, setTodayNepaliDate] = useState<any>(null);
   
+  // State to hold the selected day for detail view
+  const [selectedDay, setSelectedDay] = useState<any>(null);
+  
   // Get today's Nepali date from API
   const { data: nepaliToday, isLoading: loadingToday } = useQuery({
     queryKey: ['/api/today'],
@@ -516,22 +519,23 @@ const Calendar = () => {
                                 className={`aspect-square border border-gray-100 rounded p-1.5 hover:bg-gray-50 
                                   ${day.isHoliday ? 'bg-red-50' : day.events?.length ? 'bg-primary-light/10' : ''}
                                   ${isTodayHighlight ? 'ring-2 ring-green-500' : ''}
-                                  transition-all`}
+                                  transition-all cursor-pointer`}
+                                onClick={() => setSelectedDay(day)}
                               >
                                 <div className="flex flex-col h-full">
                                   {/* Nepali date - emphasized */}
-                                  <div className={`text-lg font-bold ${isSunday ? 'text-red-500' : isSaturday ? 'text-green-600' : 'text-gray-700'} ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-7 h-7 flex items-center justify-center mx-auto' : ''}`}>
+                                  <div className={`text-xl font-bold ${isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto' : ''}`}>
                                     {day.bs.nepaliDay}
                                   </div>
                                   
-                                  {/* English date - smaller */}
-                                  <div className="text-xs text-gray-500 text-center">
+                                  {/* English date - smaller, positioned in corner */}
+                                  <div className="text-[10px] text-gray-500 absolute top-2 right-2">
                                     {day.ad.day}
                                   </div>
                                   
                                   {/* Tithi information */}
                                   {day.tithi && (
-                                    <div className="text-[9px] text-gray-500 italic mt-1 text-center">
+                                    <div className="text-[9px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
                                       <h4 className="sr-only">Tithi: {day.tithi}</h4>
                                       {day.tithi}
                                     </div>
@@ -571,9 +575,12 @@ const Calendar = () => {
                     <div className="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
                     <span className="text-sm">Today</span>
                   </div>
-                  <div className="bg-gray-50 p-3 rounded-lg flex items-center">
-                    <div className="w-4 h-4 bg-gray-50 border border-gray-200 rounded mr-2"></div>
-                    <span className="text-sm">Regular Day</span>
+                  <div className="p-3 rounded-lg flex items-center">
+                    <div className="flex gap-2 mr-2">
+                      <span className="text-red-500 font-bold">शनि</span>
+                      <span className="text-primary font-bold">आइत</span>
+                    </div>
+                    <span className="text-sm">Weekend Days</span>
                   </div>
                 </div>
                 
@@ -606,6 +613,104 @@ const Calendar = () => {
                 </div>
               </TabsContent>
             </Tabs>
+
+            {/* Day Details Modal */}
+            {selectedDay && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[80vh] overflow-y-auto">
+                  <div className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="text-2xl font-bold text-primary">
+                          {selectedDay.bs.nepaliDay} {selectedDay.bs.monthName} {selectedDay.bs.year}
+                        </h3>
+                        <p className="text-neutral">
+                          {selectedDay.ad.day} {selectedDay.ad.monthName} {selectedDay.ad.year} ({weekdays[selectedDay.dayOfWeek]})
+                        </p>
+                      </div>
+                      <button 
+                        className="text-gray-500 hover:text-gray-700 p-1" 
+                        onClick={() => setSelectedDay(null)}
+                      >
+                        <i className="ri-close-line text-xl"></i>
+                      </button>
+                    </div>
+                    
+                    {/* Tithi Information */}
+                    {selectedDay.tithi && (
+                      <div className="mb-4">
+                        <h4 className="text-sm font-medium text-gray-700 mb-1">Tithi</h4>
+                        <p className="bg-primary-light/10 p-2 rounded text-sm">{selectedDay.tithi}</p>
+                      </div>
+                    )}
+                    
+                    {/* Events */}
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium text-gray-700 mb-1">Events</h4>
+                      {selectedDay.events && selectedDay.events.length > 0 ? (
+                        <ul className="space-y-2">
+                          {selectedDay.events.map((event: string, index: number) => (
+                            <li key={index} className="bg-primary-light/10 p-2 rounded text-sm flex items-start">
+                              <span className="mr-2 text-primary">•</span>
+                              <span>{event}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-gray-500 text-sm">No events on this day</p>
+                      )}
+                    </div>
+                    
+                    {/* Holiday Information */}
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium text-gray-700 mb-1">Status</h4>
+                      <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium
+                        ${selectedDay.isHoliday 
+                          ? 'bg-red-100 text-red-800' 
+                          : selectedDay.dayOfWeek === 6 
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-green-100 text-green-800'
+                        }`}
+                      >
+                        {selectedDay.isHoliday 
+                          ? 'Public Holiday' 
+                          : selectedDay.dayOfWeek === 6 
+                            ? 'Weekend (Saturday)'
+                            : 'Working Day'
+                        }
+                      </div>
+                    </div>
+                    
+                    {/* SEO content */}
+                    <div className="sr-only">
+                      <h2>Day Details: {selectedDay.bs.nepaliDay} {selectedDay.bs.monthName} {selectedDay.bs.year}</h2>
+                      <p>Gregorian date: {selectedDay.ad.day} {selectedDay.ad.monthName} {selectedDay.ad.year}</p>
+                      <p>Weekday: {weekdays[selectedDay.dayOfWeek]}</p>
+                      {selectedDay.tithi && <p>Tithi: {selectedDay.tithi}</p>}
+                      {selectedDay.events && selectedDay.events.length > 0 && (
+                        <>
+                          <h3>Events on this day:</h3>
+                          <ul>
+                            {selectedDay.events.map((event: string, index: number) => (
+                              <li key={index}>{event}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </div>
+                    
+                    <div className="mt-6 flex justify-end">
+                      <button
+                        className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors"
+                        onClick={() => setSelectedDay(null)}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             
             {/* FAQs Section */}
             <div className="mt-12">
@@ -624,7 +729,12 @@ const Calendar = () => {
                 
                 <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
                   <h4 className="font-medium text-lg mb-2">What do the different colored days mean?</h4>
-                  <p className="text-neutral">Red indicates Sundays, green indicates Saturdays, and other special holidays are marked with background colors. The legend below the calendar explains the color coding.</p>
+                  <p className="text-neutral">Red indicates Saturdays (weekend holiday in Nepal), blue indicates Sundays, and other special holidays are marked with background colors. The legend below the calendar explains the color coding.</p>
+                </div>
+                
+                <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+                  <h4 className="font-medium text-lg mb-2">How do I see details for a specific day?</h4>
+                  <p className="text-neutral">Click on any day in the calendar to see its detailed information, including the tithi, events, and holiday status.</p>
                 </div>
               </div>
             </div>

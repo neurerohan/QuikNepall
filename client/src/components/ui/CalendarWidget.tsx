@@ -136,17 +136,24 @@ const CalendarWidget = () => {
                   >
                     <div className="flex flex-col h-full items-center justify-center">
                       {/* Nepali date - emphasized */}
-                      <div className={`text-base font-bold 
-                        ${isSunday ? 'text-red-500' : isSaturday ? 'text-green-600' : 'text-gray-700'} 
+                      <div className={`text-lg font-bold 
+                        ${isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} 
                         ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-7 h-7 flex items-center justify-center' : ''}`}
                       >
                         {day.bs.nepaliDay || day.bs.day}
                       </div>
                       
-                      {/* English date - smaller */}
-                      <div className="text-[10px] text-gray-500 leading-tight">
+                      {/* English date - smaller and positioned in corner */}
+                      <div className="text-[9px] text-gray-500 absolute top-1 right-1">
                         {day.ad.day}
                       </div>
+                      
+                      {/* Tithi information - center aligned */}
+                      {day.tithi && (
+                        <div className="text-[8px] text-gray-500 text-center mt-0.5 max-w-full truncate px-0.5">
+                          {day.tithi}
+                        </div>
+                      )}
                       
                       {/* Event indicator */}
                       {day.events?.length > 0 && (
