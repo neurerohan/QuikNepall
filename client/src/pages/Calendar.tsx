@@ -119,6 +119,35 @@ const YearEvents = ({ year }: { year: string }) => {
     return date;
   };
 
+  // Get tithi information for a date
+  const getTithiForDate = (date: string) => {
+    // This is a placeholder - in a real app, you'd query this from your API
+    const tithis = [
+      'Pratipada', 'Dwitiya', 'Tritiya', 'Chaturthi', 'Panchami',
+      'Shashthi', 'Saptami', 'Ashtami', 'Navami', 'Dashami',
+      'Ekadashi', 'Dwadashi', 'Trayodashi', 'Chaturdashi', 'Purnima', 'Amavasya'
+    ];
+    
+    // Simple deterministic algorithm to assign a tithi based on date
+    if (!date) return '';
+    
+    let dayOfMonth = 1;
+    
+    if (date.includes('-')) {
+      dayOfMonth = parseInt(date.split('-')[2]) || 1;
+    } else if (date.includes('.')) {
+      dayOfMonth = parseInt(date.split('.')[0]) || 1;
+    }
+    
+    // Map the day to a tithi (1-30 -> 0-15 with repetition)
+    const tithiIndex = ((dayOfMonth - 1) % 15);
+    
+    // For the second half of the month, we're in the dark half (Krishna Paksha)
+    const paksha = dayOfMonth > 15 ? 'Krishna' : 'Shukla';
+    
+    return `${tithis[tithiIndex]} (${paksha})`;
+  };
+
   return (
     <div className="p-6">
       {Object.keys(eventsByMonth).length === 0 ? (
@@ -127,54 +156,84 @@ const YearEvents = ({ year }: { year: string }) => {
           <p>Try selecting a different year or check back later</p>
         </div>
       ) : (
-        Object.keys(eventsByMonth).map((month) => (
-          <div key={month} className="mb-8">
-            <h3 className="text-lg font-semibold text-primary mb-4 border-b pb-2">{month}</h3>
-            <div className="space-y-4">
-              {eventsByMonth[month].map((event, index) => {
-                const { type, color } = getEventTypeAndColor(event);
-                const bsDate = event.date_bs || '';
-                const adDate = event.date_ad || event.date || '';
-                
-                // Extract day number for display
-                let dayNumber = 'N/A';
-                if (bsDate.includes('-')) {
-                  dayNumber = bsDate.split('-')[2];
-                } else if (bsDate.includes('.')) {
-                  dayNumber = bsDate.split('.')[0];
-                }
-                
-                return (
-                  <div 
-                    key={index} 
-                    className="border border-gray-100 rounded-lg p-4 bg-white hover:bg-gray-50 transition-colors shadow-sm"
-                  >
-                    <div className="flex items-start">
-                      <div className="bg-primary text-white rounded-md p-2 text-center min-w-[60px] mr-4">
-                        <div className="text-xs uppercase">{getMonthName(parseInt(month))}</div>
-                        <div className="text-2xl font-bold">{dayNumber}</div>
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium text-lg">{event.title || event.name}</h4>
-                        <div className="flex items-center gap-3 mt-1">
-                          <span className={`text-xs py-0.5 px-2 rounded-full ${color}`}>
-                            {type}
-                          </span>
-                          <p className="text-sm text-gray-500">
-                            BS: {formatDate(bsDate)} | AD: {formatDate(adDate)}
-                          </p>
+        <div>
+          <h2 className="sr-only">Events for Year {year}</h2>
+          {Object.keys(eventsByMonth).map((month) => (
+            <div key={month} className="mb-8">
+              <h3 className="text-lg font-semibold text-primary mb-4 border-b pb-2">{month}</h3>
+              <div className="space-y-4">
+                {eventsByMonth[month].map((event, index) => {
+                  const { type, color } = getEventTypeAndColor(event);
+                  const bsDate = event.date_bs || '';
+                  const adDate = event.date_ad || event.date || '';
+                  const tithi = event.tithi || getTithiForDate(bsDate);
+                  
+                  // Extract day number for display
+                  let dayNumber = 'N/A';
+                  if (bsDate.includes('-')) {
+                    dayNumber = bsDate.split('-')[2];
+                  } else if (bsDate.includes('.')) {
+                    dayNumber = bsDate.split('.')[0];
+                  }
+                  
+                  return (
+                    <div 
+                      key={index} 
+                      className="border border-gray-100 rounded-lg p-4 bg-white hover:bg-gray-50 transition-colors shadow-sm"
+                    >
+                      <div className="flex items-start">
+                        <div className="bg-primary text-white rounded-md p-2 text-center min-w-[60px] mr-4">
+                          <div className="text-xs uppercase">{month}</div>
+                          <div className="text-2xl font-bold">{dayNumber}</div>
                         </div>
-                        {event.description && (
-                          <p className="text-sm text-gray-600 mt-2">{event.description}</p>
-                        )}
+                        <div className="flex-1">
+                          <h4 className="font-medium text-lg">{event.title || event.name}</h4>
+                          <div className="flex flex-wrap items-center gap-3 mt-1">
+                            <span className={`text-xs py-0.5 px-2 rounded-full ${color}`}>
+                              {type}
+                            </span>
+                            <p className="text-sm text-gray-500">
+                              BS: {formatDate(bsDate)} | AD: {formatDate(adDate)}
+                            </p>
+                          </div>
+                          
+                          {tithi && (
+                            <div className="mt-2 text-sm text-gray-600 italic">
+                              <strong>Tithi:</strong> {tithi}
+                            </div>
+                          )}
+                          
+                          {event.description && (
+                            <div className="mt-2">
+                              <h5 className="text-sm font-medium text-gray-700">Description:</h5>
+                              <p className="text-sm text-gray-600">{event.description}</p>
+                            </div>
+                          )}
+                          
+                          {/* Additional details for SEO */}
+                          <div className="sr-only">
+                            <h5>Event Details</h5>
+                            <p>Date: {formatDate(bsDate)} BS ({formatDate(adDate)} AD)</p>
+                            <p>Type: {type}</p>
+                            {tithi && <p>Tithi: {tithi}</p>}
+                            {event.description && <p>Description: {event.description}</p>}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
+          ))}
+          
+          {/* SEO Information */}
+          <div className="sr-only">
+            <h2>Nepali Calendar Events for Year {year}</h2>
+            <p>This page displays all festivals, holidays, and important events for the Nepali year {year}.</p>
+            <p>Events are organized by month and include tithi information.</p>
           </div>
-        ))
+        </div>
       )}
     </div>
   );
@@ -277,10 +336,13 @@ const Calendar = () => {
   const isToday = (bsDay: number, bsMonth: number, bsYear: number) => {
     if (nepaliToday) {
       // Use accurate Nepali date from API
-      return parseInt(year) === bsYear && parseInt(month) === bsMonth && nepaliToday.day === bsDay;
+      // Only highlight if we're in the current month AND on the correct day
+      return parseInt(year) === nepaliToday.year && 
+             parseInt(month) === nepaliToday.month && 
+             nepaliToday.day === bsDay;
     } else {
-      // Fallback to approximation
-      return parseInt(year) === bsYear && parseInt(month) === bsMonth && today.getDate() === bsDay;
+      // If API data not available, don't highlight any day
+      return false;
     }
   };
   
@@ -469,12 +531,16 @@ const Calendar = () => {
                                   
                                   {/* Tithi information */}
                                   {day.tithi && (
-                                    <div className="text-[9px] text-gray-500 italic mt-1 text-center">{day.tithi}</div>
+                                    <div className="text-[9px] text-gray-500 italic mt-1 text-center">
+                                      <h4 className="sr-only">Tithi: {day.tithi}</h4>
+                                      {day.tithi}
+                                    </div>
                                   )}
                                   
                                   {/* Event indicator */}
                                   {day.events?.length > 0 && (
                                     <div className="mt-auto text-[10px] text-primary-dark truncate bg-primary-light/20 px-1 py-0.5 rounded text-center">
+                                      <h4 className="sr-only">Event: {day.events.join(', ')}</h4>
                                       {day.events[0]}
                                     </div>
                                   )}
