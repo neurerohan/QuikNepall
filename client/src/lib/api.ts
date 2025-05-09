@@ -9,8 +9,25 @@ const api = axios.create({
 
 export const getCalendar = async (year: string, month: string) => {
   try {
+    console.log(`Fetching calendar for year=${year}, month=${month}`);
+    
     // Use the updated endpoint with proper path
     const response = await api.get(`/calendar/${year}/${month}`);
+    console.log("Calendar API response status:", response.status);
+    
+    // Log the first few properties to debug
+    if (response.data) {
+      console.log("Calendar response contains data:", Object.keys(response.data));
+      if (response.data.days) {
+        console.log(`Calendar has ${response.data.days.length} days`);
+        // Log first day to show structure
+        if (response.data.days.length > 0) {
+          console.log("First day sample:", JSON.stringify(response.data.days[0]).substring(0, 200) + "...");
+        }
+      } else {
+        console.error("No days data in response");
+      }
+    }
     
     if (response.data && response.data.days) {
       const calendarData = response.data.days;
@@ -57,93 +74,13 @@ export const getCalendar = async (year: string, month: string) => {
           }
         }
       };
+    } else {
+      console.error("Invalid API response format:", response.data);
+      throw new Error("Invalid API response format");
     }
-    
-    console.log("Generating calendar data for", year, month);
-    
-    // Generate calendar data for the current month as fallback
-    const currentDate = new Date();
-    const bsYear = parseInt(year);
-    const bsMonth = parseInt(month);
-    
-    // In BS calendar, months typically have 29-32 days
-    const daysInBSMonth = 30; // Approximation
-    
-    // Generate days for the month
-    const days = Array.from({ length: daysInBSMonth }, (_, i) => {
-      const day = i + 1;
-      // Approximate AD date (not accurate, just for display)
-      const adDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-      
-      return {
-        bs: {
-          year: bsYear,
-          month: bsMonth,
-          day: day
-        },
-        ad: {
-          year: adDate.getFullYear(),
-          month: adDate.getMonth() + 1,
-          day: adDate.getDate(),
-          monthName: adDate.toLocaleString('default', { month: 'long' })
-        },
-        isHoliday: adDate.getDay() === 0 || adDate.getDay() === 6, // Saturday and Sunday are holidays
-        events: adDate.getDay() === 0 ? ["Weekend"] : [],
-        dayOfWeek: adDate.getDay(),
-        tithi: ""
-      };
-    });
-    
-    const nepaliMonths = [
-      'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
-      'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
-      'Poush', 'Magh', 'Falgun', 'Chaitra'
-    ];
-    
-    return {
-      days,
-      monthDetails: {
-        bs: {
-          monthName: nepaliMonths[bsMonth - 1],
-          year: bsYear,
-          month: bsMonth
-        },
-        ad: {
-          monthName: currentDate.toLocaleString('default', { month: 'long' }),
-          year: currentDate.getFullYear(),
-          month: currentDate.getMonth() + 1
-        },
-        meta: {
-          nepaliHeader: `${nepaliMonths[bsMonth - 1]} ${bsYear}`,
-          englishHeader: currentDate.toLocaleString('default', { month: 'long', year: 'numeric' }),
-          source: "QuikNepal"
-        }
-      }
-    };
   } catch (error) {
     console.error("Error in calendar data generation:", error);
-    
-    // Return minimum viable data to prevent UI crashes
-    return {
-      days: [],
-      monthDetails: {
-        bs: {
-          monthName: getMonthName(parseInt(month)),
-          year: parseInt(year),
-          month: parseInt(month)
-        },
-        ad: {
-          monthName: new Date().toLocaleString('default', { month: 'long' }),
-          year: new Date().getFullYear(),
-          month: new Date().getMonth() + 1
-        },
-        meta: {
-          nepaliHeader: `${getMonthName(parseInt(month))} ${year}`,
-          englishHeader: new Date().toLocaleString('default', { month: 'long', year: 'numeric' }),
-          source: "QuikNepal"
-        }
-      }
-    };
+    throw error; // Re-throw the error to be handled by the component
   }
 };
 
