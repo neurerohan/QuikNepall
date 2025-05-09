@@ -180,44 +180,45 @@ const CalendarWidget = () => {
                     <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     
                     <div className="flex flex-col h-full relative z-10">
-                      <div className="flex justify-between items-start mb-1">
-                        {/* English date - better positioned and more visible */}
-                        <div className="text-xs md:text-sm text-gray-500 font-medium">
-                          {day.ad.day}
-                        </div>
-                        
-                        {/* Holiday indicator */}
-                        {isHoliday && (
-                          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                        )}
+                      {/* Holiday indicator - top right corner */}
+                      {isHoliday && (
+                        <div className="absolute top-0 right-0 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                      )}
+                      
+                      {/* English date - only visible on desktop */}
+                      <div className="hidden md:block text-xs text-gray-500 font-medium absolute top-0 left-0 px-1">
+                        {day.ad.day}
                       </div>
                       
-                      {/* Nepali date - larger and more prominent */}
-                      <div className={`text-2xl md:text-3xl font-bold text-center my-1 md:my-2
+                      {/* Nepali date - always visible and centered */}
+                      <div className={`text-center ${isTodayHighlight ? 'my-1' : 'my-2'} flex-grow flex items-center justify-center
                         ${isHoliday ? 'text-red-600' : 
                           isSaturday ? 'text-red-500' : 
-                          isSunday ? 'text-primary-dark' : 'text-gray-800'} 
-                        ${isTodayHighlight ? 
-                          'bg-green-500 text-white rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center mx-auto' : ''}`}
+                          isSunday ? 'text-primary-dark' : 'text-gray-800'}`}
                       >
-                        {day.bs.nepaliDay || day.bs.day}
+                        <span className={`text-2xl md:text-3xl font-bold
+                          ${isTodayHighlight ? 
+                            'bg-green-500 text-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center' : ''}`}
+                        >
+                          {day.bs.nepaliDay || day.bs.day}
+                        </span>
                       </div>
                       
-                      {/* Tithi information in Devanagari - improved visibility */}
+                      {/* Tithi information - hidden on mobile, visible on desktop */}
                       {day.tithi && (
-                        <div className="text-[10px] md:text-xs text-gray-600 font-medium text-center max-w-full px-1 truncate bg-gray-50/80 rounded-sm">
+                        <div className="hidden md:block text-[10px] text-gray-600 font-medium text-center max-w-full px-1 truncate bg-gray-50/80 rounded-sm">
                           {convertTithiToNepali(day.tithi)}
                         </div>
                       )}
                       
-                      {/* Event indicator with better styling */}
+                      {/* Event indicator - only shown on desktop for all days */}
                       {day.events?.length > 0 && (
-                        <div className="mt-auto text-[10px] md:text-xs text-primary-dark font-medium truncate px-1 py-0.5 text-center bg-primary-light/10 rounded-sm mt-1 flex items-center justify-center">
+                        <div className="mt-auto hidden md:flex text-[8px] text-neutral font-medium truncate px-1 py-0.5 text-center bg-primary-light/5 rounded-sm mt-1 items-center justify-center">
                           <span>{day.events[0]}</span>
                           
                           {/* Multiple events count indicator */}
                           {day.events?.length > 1 && (
-                            <span className="ml-1 px-1 bg-orange-500 text-white rounded-full text-[8px] flex items-center justify-center min-w-[14px] h-3">
+                            <span className="ml-1 bg-primary-light/20 text-primary-dark rounded-full text-[6px] flex items-center justify-center min-w-[12px] h-[10px] px-1">
                               +{day.events.length - 1}
                             </span>
                           )}

@@ -71,63 +71,62 @@ const Home = () => {
       title="QuikNepal - Your Essential Nepali Information Hub"
       description="Access Nepali calendars, vegetable rates, metal prices, rashifal readings and more at QuikNepal, your comprehensive Nepali information portal."
     >
-      {/* Hero Section - Enhanced with animation and gradient */}
-      <section className="relative overflow-hidden py-24 bg-gradient-to-r from-[#57c84d] via-[#65cc56] to-[#83d475]">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0yaDF2MmgtMXYtMnoiLz48cGF0aCBkPSJNMzUuMDY4IDM0aC0yLjEzNXYtMmgyLjEzNXYyem0tMy0yaC0yLjEzNnYyaDIuMTM2di0yem0tMyAwaC0yLjEzNnYyaDIuMTM2di0yem0tMyAwaC0yLjEzNnYyaDIuMTM2di0yem0tMyAwaC0yLjEzNnYyaDIuMTM2di0yem0tMyAwaC0yLjEzNnYyaDIuMTM2di0yeiIvPjxwYXRoIGQ9Ik0xNi4wNjggMzRoLTIuMTM1di0yaDIuMTM1djJ6bS0zLTJoLTIuMTM2djJoMi4xMzZ2LTJ6Ii8+PHBhdGggZD0iTTEwLjA2OCAzNGgtMi4xMzV2LTJoMi4xMzV2MnptMjQtN2g0djFoLTR2LTF6bTAgMmgxdjJoLTF2LTJ6Ii8+PHBhdGggZD0iTTM1LjA2OCAyOWgtMi4xMzV2LTJoMi4xMzV2MnptLTMtMmgtMi4xMzZ2MmgyLjEzNnYtMnptLTMgMGgtMi4xMzZ2MmgyLjEzNnYtMnptLTMgMGgtMi4xMzZ2MmgyLjEzNnYtMnptLTMgMGgtMi4xMzZ2MmgyLjEzNnYtMnptLTMgMGgtMi4xMzZ2MmgyLjEzNnYtMnoiLz48cGF0aCBkPSJNMTYuMDY4IDI5aC0yLjEzNXYtMmgyLjEzNXYyem0tMyAyaC0yLjEzNnYyaDIuMTM2di0yeiIvPjwvZz48L2c+PC9zdmc+')]">
-          <div className="absolute top-16 left-20 w-36 h-36 bg-white/20 rounded-full blur-2xl opacity-20"></div>
-          <div className="absolute bottom-16 right-20 w-60 h-60 bg-white/10 rounded-full blur-3xl opacity-10"></div>
-          
-          {/* Animated particle elements */}
-          <div className="absolute inset-0">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div 
-                key={i}
-                className="absolute rounded-full bg-white/20 blur-sm animate-float"
-                style={{ 
-                  width: `${Math.random() * 30 + 10}px`,
-                  height: `${Math.random() * 30 + 10}px`,
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                  animationDuration: `${5 + Math.random() * 10}s`,
-                  animationDelay: `${i * 0.5}s`
-                }}
-              />
-            ))}
-          </div>
+      {/* Hero Section - Completely Rebuilt */}
+      <section className="relative min-h-[80vh] bg-gradient-to-br from-primary to-primary-light overflow-hidden flex items-center">
+        {/* Background animated pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+            <defs>
+              <pattern id="dotPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+                <circle cx="10" cy="10" r="1.5" fill="#fff" fillOpacity="0.4" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#dotPattern)" />
+          </svg>
         </div>
         
-        {/* Floating decorative elements */}
-        <div className="absolute top-1/4 right-[15%] text-5xl text-white/30 animate-float" style={{ animationDuration: '4s' }}>
+        {/* Glowing orbs */}
+        <div className="absolute top-20 left-[10%] w-40 h-40 bg-yellow-300/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-[10%] w-60 h-60 bg-white/10 rounded-full blur-3xl"></div>
+        
+        {/* Floating Icons */}
+        <div className="absolute top-20 left-[10%] text-5xl text-white/15 animate-float" style={{ animationDuration: '8s' }}>
           <i className="ri-calendar-line"></i>
         </div>
-        <div className="absolute bottom-1/4 left-[10%] text-6xl text-white/20 animate-float" style={{ animationDuration: '5s', animationDelay: '1s' }}>
-          <i className="ri-coins-line"></i>
+        
+        <div className="absolute top-1/3 right-[18%] text-6xl text-white/15 animate-float" style={{ animationDuration: '9s', animationDelay: '0.5s' }}>
+          <i className="ri-gold-bar-line"></i>
         </div>
-        <div className="absolute top-1/3 left-[20%] text-4xl text-white/20 animate-float" style={{ animationDuration: '6s', animationDelay: '0.5s' }}>
+        
+        <div className="absolute bottom-1/4 left-[15%] text-5xl text-white/15 animate-float" style={{ animationDuration: '10s', animationDelay: '1s' }}>
           <i className="ri-star-line"></i>
         </div>
-        <div className="absolute bottom-1/3 right-[25%] text-4xl text-white/20 animate-float" style={{ animationDuration: '7s', animationDelay: '1.5s' }}>
+        
+        <div className="absolute bottom-1/3 right-[20%] text-5xl text-white/15 animate-float" style={{ animationDuration: '7s', animationDelay: '1.5s' }}>
           <i className="ri-shopping-basket-line"></i>
         </div>
         
-        <div className="container relative z-10 mx-auto px-4 text-center text-white">
-          {/* Header without FadeIn components */}
-          <div className="inline-block animate-fadeIn relative mb-4">
-            <span className="text-lg md:text-xl font-medium bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full border border-white/10 shadow-lg">
-              <span className="text-yellow-200 font-semibold">नमस्ते</span> नेपाल
-            </span>
+        {/* Content Container */}
+        <div className="container relative mx-auto px-4 py-20 flex flex-col justify-center items-center text-center">
+          {/* Badge */}
+          <div className="inline-block relative mb-6 bg-transparent">
+            <div className="text-lg md:text-xl font-medium bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full border border-white/20 shadow-lg">
+              <span className="text-yellow-200 font-semibold">नमस्ते</span> <span className="text-white">नेपाल</span>
+            </div>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold font-poppins mb-8 text-shadow-md tracking-tight animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+          {/* Main Heading */}
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold font-poppins mb-8 text-white text-shadow-sm tracking-tight bg-transparent">
             Essential Nepali Information Hub
           </h1>
           
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto font-light mb-14 text-white/90 leading-relaxed animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+          {/* Subtitle */}
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto font-light mb-12 text-white/90 leading-relaxed bg-transparent">
             Your comprehensive resource for Nepali calendars, vegetable rates, metal prices, rashifal readings and more
           </p>
           
-          <div className="flex flex-wrap justify-center gap-6 animate-fadeIn" style={{ animationDelay: '0.3s' }}>
+          {/* Action Buttons */}
+          <div className="flex flex-wrap justify-center gap-6 bg-transparent">
             <Link 
               href="/calendar" 
               className="bg-white text-primary font-bold py-4 px-10 rounded-xl hover:scale-105 hover:shadow-xl transition-all duration-300 flex items-center shadow-md" 
@@ -147,14 +146,14 @@ const Home = () => {
               <i className="ri-arrow-right-line ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300"></i>
             </Link>
           </div>
-          
-          {/* Wave effect at bottom */}
-          <div className="absolute bottom-0 left-0 w-full overflow-hidden">
-            <svg className="relative block w-full h-12 md:h-20" viewBox="0 0 1200 120" preserveAspectRatio="none">
-              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C172,20,295,50,321.39,56.44Z" 
-                className="fill-white"></path>
-            </svg>
-          </div>
+        </div>
+        
+        {/* Wave effect at bottom */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden">
+          <svg className="relative block w-full h-12 md:h-20" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C172,20,295,50,321.39,56.44Z" 
+              className="fill-white"></path>
+          </svg>
         </div>
       </section>
 
