@@ -544,13 +544,24 @@ const Calendar = () => {
                             const isTodayHighlight = isToday(day.bs.day, day.bs.month, day.bs.year);
                             const isSunday = day.dayOfWeek === 0;
                             const isSaturday = day.dayOfWeek === 6;
-                            // Create our own holiday detection logic based on event names
-                            const isHoliday = day.events && day.events.some((event: string) => 
-                              event.toLowerCase().includes('holiday') || 
-                              event.toLowerCase().includes('दिवस') ||
-                              event.toLowerCase().includes('जात्रा') || 
-                              event.toLowerCase().includes('पर्व')
-                            );
+                            // Create our own holiday detection logic - be more specific with holiday detection
+                            const isHoliday = day.events && day.events.some((event: string) => {
+                              // Only mark true holidays as holidays, not every event with these common terms
+                              const isPublicHoliday = 
+                                event.toLowerCase().includes('public holiday') || 
+                                event.toLowerCase().includes('federal holiday') ||
+                                event.toLowerCase().includes('national holiday');
+                                
+                              // Religious festivals that are holidays  
+                              const isReligiousHoliday =
+                                event.toLowerCase().includes('dashain') ||
+                                event.toLowerCase().includes('tihar') ||
+                                event.toLowerCase().includes('holi') ||
+                                event.toLowerCase().includes('lhosar') ||
+                                event.toLowerCase().includes('chhath');
+                                
+                              return isPublicHoliday || isReligiousHoliday;
+                            });
                             
                             return (
                               <div 
@@ -631,11 +642,24 @@ const Calendar = () => {
                             .map((day: any) => day.bs.nepaliDay)
                             .join(', ');
                             
-                          // Determine if the event is a holiday
-                          const isEventHoliday = event.toLowerCase().includes('holiday') || 
-                                               event.toLowerCase().includes('दिवस') ||
-                                               event.toLowerCase().includes('जात्रा') || 
-                                               event.toLowerCase().includes('पर्व');
+                          // Determine if the event is a holiday - match the logic from day cells
+                          const isEventHoliday = (() => {
+                              // Only mark true holidays as holidays, not every event with these common terms
+                              const isPublicHoliday = 
+                                event.toLowerCase().includes('public holiday') || 
+                                event.toLowerCase().includes('federal holiday') ||
+                                event.toLowerCase().includes('national holiday');
+                                
+                              // Religious festivals that are holidays  
+                              const isReligiousHoliday =
+                                event.toLowerCase().includes('dashain') ||
+                                event.toLowerCase().includes('tihar') ||
+                                event.toLowerCase().includes('holi') ||
+                                event.toLowerCase().includes('lhosar') ||
+                                event.toLowerCase().includes('chhath');
+                                
+                              return isPublicHoliday || isReligiousHoliday;
+                          })();
                           
                           return (
                             <div 
