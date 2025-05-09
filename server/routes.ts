@@ -9,34 +9,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.kalima
 export async function registerRoutes(app: Express): Promise<Server> {
   // Prefix all routes with /api
   
-  // Calendar endpoints
-  app.get("/api/calendar/:year/:month", async (req, res) => {
-    try {
-      const { year, month } = req.params;
-      // Convert month number to Nepali month name
-      const nepaliMonths = [
-        'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
-        'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
-        'Poush', 'Magh', 'Falgun', 'Chaitra'
-      ];
-      const monthName = nepaliMonths[parseInt(month) - 1] || 'Baishakh';
-      
-      // Use the detailed-calendar endpoint with year_bs and month_bs parameters
-      const response = await axios.get(`${API_BASE_URL}detailed-calendar/`, {
-        params: {
-          year_bs: year,
-          month_bs: monthName
-        }
-      });
-      res.json(response.data);
-    } catch (error) {
-      console.error("Error fetching calendar:", error);
-      res.status(500).json({ message: "Failed to fetch calendar data" });
-    }
-  });
+  // Important: Order matters in Express routes! Specific routes must be registered first.
   
   // Calendar events endpoint
-  app.get("/api/calendar/events", async (req, res) => {
+  app.get("/api/calendar-events", async (req, res) => {
     try {
       const { year_bs, start_date_bs, end_date_bs } = req.query;
       const params: any = {};
@@ -59,7 +35,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Date converter endpoint
-  app.get("/api/calendar/convert", async (req, res) => {
+  app.get("/api/calendar-convert", async (req, res) => {
     try {
       const { from, date } = req.query;
       const response = await axios.get(`${API_BASE_URL}calendar/convert`, { params: { from, date } });
@@ -67,6 +43,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error converting date:", error);
       res.status(500).json({ message: "Failed to convert date" });
+    }
+  });
+  
+  // Calendar endpoints (must be after the more specific routes)
+  app.get("/api/calendar/:year/:month", async (req, res) => {
+    try {
+      const { year, month } = req.params;
+      // Convert month number to Nepali month name
+      const nepaliMonths = [
+        'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
+        'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
+        'Poush', 'Magh', 'Falgun', 'Chaitra'
+      ];
+      const monthName = nepaliMonths[parseInt(month) - 1] || 'Baishakh';
+      
+      // Use the detailed-calendar endpoint with year and month_name parameters
+      const response = await axios.get(`${API_BASE_URL}detailed-calendar/`, {
+        params: {
+          year: year,
+          month_name: monthName
+        }
+      });
+      res.json(response.data);
+    } catch (error) {
+      console.error("Error fetching calendar:", error);
+      res.status(500).json({ message: "Failed to fetch calendar data" });
     }
   });
 

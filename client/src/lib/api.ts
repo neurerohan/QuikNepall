@@ -158,7 +158,7 @@ export const getCalendar = async (year: string, month: string) => {
 // Function to get calendar events
 export const getCalendarEvents = async (params: { year_bs?: string, start_date_bs?: string, end_date_bs?: string }) => {
   try {
-    const response = await api.get('/calendar/events', { params });
+    const response = await api.get('/calendar-events', { params });
     return response.data;
   } catch (error) {
     console.error("Error fetching calendar events:", error);
@@ -196,7 +196,7 @@ export function getMonthName(month: number): string {
 }
 
 export const convertDate = async (params: { from: string; date: string }) => {
-  const response = await api.get(`/calendar/convert`, { params });
+  const response = await api.get(`/calendar-convert`, { params });
   return response.data;
 };
 
