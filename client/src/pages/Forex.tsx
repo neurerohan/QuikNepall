@@ -17,7 +17,7 @@ const Forex = () => {
   const [toDate, setToDate] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-  const [view, setView<'card' | 'list'>('card');
+  const [view, setView] = useState<'card' | 'list'>('card');
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
   const { data, isLoading, error, refetch } = useQuery({
