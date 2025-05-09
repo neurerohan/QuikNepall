@@ -462,7 +462,7 @@ const Home = () => {
                   
                   <div className="mt-6 text-center">
                     <p className="text-white/90 text-sm mb-3">Find guidance for your zodiac sign today</p>
-                    <Link href="/rashifal" 
+                    <Link href="/nepali-rashifal" 
                       className="inline-block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-5 py-2 rounded-lg font-medium border border-white/30 transition-all duration-300 hover:shadow-lg group">
                       <span className="inline-flex items-center">
                         <span>View All Signs</span>
@@ -529,7 +529,7 @@ const Home = () => {
               
               <Bounce>
                 <Link 
-                  href="/date-converter" 
+                  href="/nepali-date-converter" 
                   className="group inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium py-3 px-6 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300"
                 >
                   <i className="ri-calendar-line mr-2"></i>
@@ -599,7 +599,7 @@ const Home = () => {
                   
                   <div className="mt-6 text-center">
                     <Link 
-                      href="/date-converter" 
+                      href="/nepali-date-converter" 
                       className="inline-flex items-center text-primary font-medium hover:text-primary-dark transition-colors group"
                     >
                       <span>Try the converter yourself</span>
@@ -626,7 +626,7 @@ const Home = () => {
               title="Nepali Calendar"
               description="Access a comprehensive Bikram Sambat (BS) calendar with corresponding Gregorian (AD) dates."
               icon="calendar-2"
-              link="/calendar"
+              link="/nepali-calendar"
               linkText="View Calendar"
             />
             
@@ -634,7 +634,7 @@ const Home = () => {
               title="Date Converter"
               description="Easily convert dates between Bikram Sambat (BS) and Gregorian (AD) calendars."
               icon="repeat"
-              link="/date-converter"
+              link="/nepali-date-converter"
               linkText="Convert Dates"
             />
             
@@ -642,7 +642,7 @@ const Home = () => {
               title="Vegetable Rates"
               description="Track current vegetable prices from Kalimati market to make informed shopping decisions."
               icon="shopping-basket"
-              link="/vegetables"
+              link="/kalimati-vegetable-price"
               linkText="Check Rates"
             />
             
@@ -650,7 +650,7 @@ const Home = () => {
               title="Metal Prices"
               description="Stay updated with the latest gold and silver prices in the Nepali market."
               icon="coin"
-              link="/metals"
+              link="/gold-and-silver-in-nepal"
               linkText="View Prices"
             />
             
@@ -658,7 +658,7 @@ const Home = () => {
               title="Rashifal"
               description="Read daily horoscope predictions for all zodiac signs in the Nepali tradition."
               icon="star"
-              link="/rashifal"
+              link="/nepali-rashifal"
               linkText="Read Rashifal"
             />
             
