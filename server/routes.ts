@@ -21,17 +21,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       ];
       const monthName = nepaliMonths[parseInt(month) - 1] || 'Baishakh';
       
-      // Use the detailed-calendar endpoint with year and month_name parameters
+      // Use the detailed-calendar endpoint with year_bs and month_bs parameters
       const response = await axios.get(`${API_BASE_URL}detailed-calendar/`, {
         params: {
-          year: year,
-          month_name: monthName
+          year_bs: year,
+          month_bs: monthName
         }
       });
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching calendar:", error);
       res.status(500).json({ message: "Failed to fetch calendar data" });
+    }
+  });
+  
+  // Calendar events endpoint
+  app.get("/api/calendar/events", async (req, res) => {
+    try {
+      const { year_bs, start_date_bs, end_date_bs } = req.query;
+      const params: any = {};
+      
+      if (year_bs) {
+        params.year_bs = year_bs;
+      }
+      
+      if (start_date_bs && end_date_bs) {
+        params.start_date_bs = start_date_bs;
+        params.end_date_bs = end_date_bs;
+      }
+      
+      const response = await axios.get(`${API_BASE_URL}calendar/`, { params });
+      res.json(response.data);
+    } catch (error) {
+      console.error("Error fetching calendar events:", error);
+      res.status(500).json({ message: "Failed to fetch calendar events" });
     }
   });
 
@@ -72,7 +95,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Rashifal endpoint
   app.get("/api/rashifal", async (req, res) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}rashifal/`);
+      const { date } = req.query;
+      const params: any = {};
+      
+      // Add date parameter if provided
+      if (date) {
+        params.date = date;
+      }
+      
+      const response = await axios.get(`${API_BASE_URL}rashifal/`, { params });
       res.json(response.data);
     } catch (error) {
       console.error("Error fetching rashifal:", error);

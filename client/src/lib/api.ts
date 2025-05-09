@@ -9,19 +9,19 @@ const api = axios.create({
 
 export const getCalendar = async (year: string, month: string) => {
   try {
-    // Convert month number to Nepali month name for the API
-    const nepaliMonths = [
-      'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
-      'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
-      'Poush', 'Magh', 'Falgun', 'Chaitra'
-    ];
-    const monthName = nepaliMonths[parseInt(month) - 1] || 'Baishakh';
-    
-    // Use the detailed-calendar endpoint with year and month_name parameters
+    // Use the updated endpoint with proper path
     const response = await api.get(`/calendar/${year}/${month}`);
     
     if (response.data && response.data.days) {
       const calendarData = response.data.days;
+      
+      // Convert month number to Nepali month name for display
+      const nepaliMonths = [
+        'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
+        'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
+        'Poush', 'Magh', 'Falgun', 'Chaitra'
+      ];
+      const monthName = nepaliMonths[parseInt(month) - 1] || 'Baishakh';
       
       // Format the data to match component expectations
       return {
@@ -43,7 +43,8 @@ export const getCalendar = async (year: string, month: string) => {
             },
             isHoliday: events.length > 0 || day.day_of_week === 'Saturday',
             events: events,
-            dayOfWeek: getDayOfWeekNumber(day.day_of_week)
+            dayOfWeek: getDayOfWeekNumber(day.day_of_week),
+            tithi: day.tithi
           };
         }),
         monthDetails: {
@@ -56,6 +57,11 @@ export const getCalendar = async (year: string, month: string) => {
             monthName: calendarData[0]?.ad_month_name || 'Unknown',
             year: calendarData[0]?.ad_year || new Date().getFullYear(),
             month: getMonthNumberFromName(calendarData[0]?.ad_month_name) || new Date().getMonth() + 1
+          },
+          meta: {
+            nepaliHeader: response.data.days[0]?.meta_header_nepali,
+            englishHeader: response.data.days[0]?.meta_header_english,
+            source: response.data.days[0]?.source_url
           }
         }
       };
@@ -91,9 +97,16 @@ export const getCalendar = async (year: string, month: string) => {
         },
         isHoliday: adDate.getDay() === 0 || adDate.getDay() === 6, // Saturday and Sunday are holidays
         events: adDate.getDay() === 0 ? ["Weekend"] : [],
-        dayOfWeek: adDate.getDay()
+        dayOfWeek: adDate.getDay(),
+        tithi: ""
       };
     });
+    
+    const nepaliMonths = [
+      'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
+      'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 
+      'Poush', 'Magh', 'Falgun', 'Chaitra'
+    ];
     
     return {
       days,
@@ -107,6 +120,11 @@ export const getCalendar = async (year: string, month: string) => {
           monthName: currentDate.toLocaleString('default', { month: 'long' }),
           year: currentDate.getFullYear(),
           month: currentDate.getMonth() + 1
+        },
+        meta: {
+          nepaliHeader: `${nepaliMonths[bsMonth - 1]} ${bsYear}`,
+          englishHeader: currentDate.toLocaleString('default', { month: 'long', year: 'numeric' }),
+          source: "QuikNepal"
         }
       }
     };
@@ -126,9 +144,25 @@ export const getCalendar = async (year: string, month: string) => {
           monthName: new Date().toLocaleString('default', { month: 'long' }),
           year: new Date().getFullYear(),
           month: new Date().getMonth() + 1
+        },
+        meta: {
+          nepaliHeader: `${getMonthName(parseInt(month))} ${year}`,
+          englishHeader: new Date().toLocaleString('default', { month: 'long', year: 'numeric' }),
+          source: "QuikNepal"
         }
       }
     };
+  }
+};
+
+// Function to get calendar events
+export const getCalendarEvents = async (params: { year_bs?: string, start_date_bs?: string, end_date_bs?: string }) => {
+  try {
+    const response = await api.get('/calendar/events', { params });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching calendar events:", error);
+    throw new Error("Failed to fetch calendar events");
   }
 };
 

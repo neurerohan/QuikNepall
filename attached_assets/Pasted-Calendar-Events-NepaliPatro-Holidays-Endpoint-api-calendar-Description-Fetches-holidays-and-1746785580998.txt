@@ -1,0 +1,40 @@
+Calendar Events (NepaliPatro Holidays):
+Endpoint: /api/calendar/
+Description: Fetches holidays and events.
+Query Parameters:
+year_bs=<nepali_year> (e.g., /api/calendar/?year_bs=2081) - To get all events for a specific Nepali year.
+start_date_bs=<YYYY-MM-DD>&end_date_bs=<YYYY-MM-DD> (e.g., /api/calendar/?start_date_bs=2081-01-01&end_date_bs=2081-01-15) - To get events for a specific date range.
+Example Response Item:
+Apply to nepali_data_...
+Rashifal (Daily Horoscope):
+Endpoint: /api/rashifal/
+Description: Fetches daily horoscope.
+Query Parameters:
+date=<YYYY-MM-DD> (e.g., /api/rashifal/?date=2023-10-26) - Optional; fetches for the specified AD date. If omitted, it likely returns the latest available.
+Example Response Item:
+Apply to nepali_data_...
+Detailed Daily Calendar (Ashesh Calendar Data):
+Endpoint: /api/detailed-calendar/
+Description: Fetches comprehensive daily calendar details for a specific Nepali month.
+Query Parameters (Required):
+year_bs=<nepali_year>
+month_bs=<nepali_month_name> (e.g., Baishakh, Jestha)
+Example Request: /api/detailed-calendar/?year_bs=2082&month_bs=Baishakh
+Example Response Item (within the month's list of days):
+Apply to nepali_data_...
+Metal Prices (Gold/Silver from Ashesh):
+Endpoint: /api/metals/
+Description: Fetches gold and silver prices. This endpoint is managed by a Django Rest Framework ViewSet.
+Query Parameters:
+Likely supports filtering by date=<YYYY-MM-DD>.
+Other filters might be available based on the MetalPriceViewSet and MetalPriceSerializer configuration (e.g., metal=gold, unit=tola).
+Example Response Item:
+Apply to nepali_data_...
+Vegetable Prices:
+Endpoint: /api/vegetables/
+Description: Fetches vegetable price data. Managed by a DRF ViewSet.
+Query Parameters: Check VegetableViewSet for available filters (e.g., by date or name).
+Forex Rates (Foreign Exchange):
+Endpoint: /api/forex/
+Description: Fetches foreign exchange rates. Managed by a DRF ViewSet.
+Query Parameters: Check ForexRateViewSet for available filters (e.g., by currency code or date).
