@@ -164,35 +164,36 @@ const CalendarWidget = () => {
                 return (
                   <div 
                     key={`day-${index}`}
-                    className={`aspect-square border border-gray-100 rounded-lg p-1
+                    className={`aspect-square border border-gray-100 rounded p-2 hover:bg-gray-50 
                       ${day.isHoliday === true ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : ''}
-                      hover:bg-gray-50 transition-all cursor-pointer`}
+                      ${isTodayHighlight ? 'ring-2 ring-green-500' : ''}
+                      transition-all cursor-pointer`}
                     onClick={() => setSelectedDay(day)}
                   >
-                    <div className="flex flex-col h-full items-center justify-center relative">
+                    <div className="flex flex-col h-full relative">
                       {/* Nepali date - emphasized */}
-                      <div className={`text-xl font-bold 
+                      <div className={`text-xl md:text-2xl font-bold text-center 
                         ${day.isHoliday ? 'text-red-500' : isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} 
-                        ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-7 h-7 flex items-center justify-center' : ''}`}
+                        ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto' : ''}`}
                       >
                         {day.bs.nepaliDay || day.bs.day}
                       </div>
                       
                       {/* English date - smaller and positioned in corner */}
-                      <div className="text-[9px] text-gray-500 absolute top-0 right-0 px-0.5">
+                      <div className="text-[10px] md:text-xs text-gray-500 absolute top-0 right-0 px-0.5">
                         {day.ad.day}
                       </div>
                       
                       {/* Tithi information in Devanagari - center aligned */}
                       {day.tithi && (
-                        <div className="text-[8px] text-gray-500 text-center mt-0.5 max-w-full truncate px-0.5">
+                        <div className="text-[9px] md:text-[10px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
                           तिथि: {convertTithiToNepali(day.tithi)}
                         </div>
                       )}
                       
                       {/* Event indicator */}
                       {day.events?.length > 0 && (
-                        <div className="text-[8px] text-primary-dark truncate px-1 py-0.5 text-center mt-1 max-w-full">
+                        <div className="mt-auto text-[9px] md:text-[10px] text-primary-dark truncate px-1 py-0.5 text-center">
                           {day.events[0]}
                         </div>
                       )}

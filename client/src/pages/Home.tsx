@@ -98,7 +98,7 @@ const Home = () => {
       {/* Calendar Widget Section */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <CalendarWidget />
             
             <div className="mt-6 bg-primary-light/20 rounded-lg p-4 flex items-start gap-4">
@@ -164,6 +164,65 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Vegetable Prices Preview Section - Moved Before Features Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+            <div className="md:w-1/2">
+              <h2 className="text-3xl font-bold text-primary font-poppins mb-4">Featured Service: Vegetable Price Tracker</h2>
+              <p className="text-neutral mb-6">Stay informed about current vegetable prices at Kalimati Market to make better shopping decisions. Our tracker provides:</p>
+              
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Daily updated prices for common vegetables</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Minimum and maximum price ranges for each item</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Price trend indicators to track changes</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="mr-3 mt-1 text-primary">
+                    <i className="ri-check-line text-xl"></i>
+                  </div>
+                  <span>Easy-to-read table format with sorting options</span>
+                </li>
+              </ul>
+              
+              <Link href="/vegetables" className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors">
+                View Vegetable Prices <i className="ri-arrow-right-line ml-2"></i>
+              </Link>
+            </div>
+            
+            <div className="md:w-1/2">
+              <DataTable
+                title="Today's Vegetable Prices"
+                subtitle={`Last updated: ${formattedDate}`}
+                columns={vegetableColumns}
+                data={(vegetablesQuery.data || []).slice(0, 5).map((item: any) => ({
+                  name: item.name_nepali ? `${item.name} (${item.name_nepali})` : item.name,
+                  unit: item.unit,
+                  minPrice: parseFloat(item.min_price),
+                  maxPrice: parseFloat(item.max_price),
+                  avgPrice: parseFloat(item.avg_price)
+                }))}
+                isLoading={vegetablesQuery.isLoading}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section id="features" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -220,65 +279,6 @@ const Home = () => {
               link="/forex"
               linkText="View Forex Rates"
             />
-          </div>
-        </div>
-      </section>
-
-      {/* Vegetable Prices Preview Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-12 items-center">
-            <div className="md:w-1/2">
-              <h2 className="text-3xl font-bold text-primary font-poppins mb-4">Featured Service: Vegetable Price Tracker</h2>
-              <p className="text-neutral mb-6">Stay informed about current vegetable prices at Kalimati Market to make better shopping decisions. Our tracker provides:</p>
-              
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Daily updated prices for common vegetables</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Minimum and maximum price ranges for each item</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Price trend indicators to track changes</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="mr-3 mt-1 text-primary">
-                    <i className="ri-check-line text-xl"></i>
-                  </div>
-                  <span>Easy-to-read table format with sorting options</span>
-                </li>
-              </ul>
-              
-              <Link href="/vegetables" className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors">
-                View Vegetable Prices <i className="ri-arrow-right-line ml-2"></i>
-              </Link>
-            </div>
-            
-            <div className="md:w-1/2">
-              <DataTable
-                title="Today's Vegetable Prices"
-                subtitle={`Last updated: ${formattedDate}`}
-                columns={vegetableColumns}
-                data={(vegetablesQuery.data || []).slice(0, 5).map((item: any) => ({
-                  name: item.name_nepali ? `${item.name} (${item.name_nepali})` : item.name,
-                  unit: item.unit,
-                  minPrice: parseFloat(item.min_price),
-                  maxPrice: parseFloat(item.max_price),
-                  avgPrice: parseFloat(item.avg_price)
-                }))}
-                isLoading={vegetablesQuery.isLoading}
-              />
-            </div>
           </div>
         </div>
       </section>
