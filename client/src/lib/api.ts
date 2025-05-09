@@ -199,33 +199,40 @@ export const getVegetables = async () => {
 };
 
 export const getMetals = async () => {
-  const response = await api.get('/metals');
-  // Transform the metals data to the format our components expect
-  if (response.data && response.data.results) {
-    const metals = response.data.results;
-    const goldItems = metals.filter((item: any) => item.metal === 'gold');
-    const silverItems = metals.filter((item: any) => item.metal === 'silver');
-    
-    return {
-      gold: {
-        fineGold: goldItems.find((item: any) => item.unit === 'tola')?.buy_rate || '0',
-        standardGold: goldItems.find((item: any) => item.unit === 'tola')?.sell_rate || '0'
-      },
-      silver: {
-        standardSilver: silverItems.find((item: any) => item.unit === 'tola')?.buy_rate || '0'
-      }
-    };
+  try {
+    const response = await api.get('/metals');
+    // Transform the metals data to the format our components expect
+    if (response.data && response.data.results) {
+      const metals = response.data.results;
+      const goldItems = metals.filter((item: any) => item.metal === 'gold');
+      const silverItems = metals.filter((item: any) => item.metal === 'silver');
+      
+      return {
+        gold: {
+          fineGold: goldItems.find((item: any) => item.metal_type === 'fine' && item.unit === 'tola')?.price || '0',
+          standardGold: goldItems.find((item: any) => item.metal_type === 'hallmark' && item.unit === 'tola')?.price || '0'
+        },
+        silver: {
+          standardSilver: silverItems.find((item: any) => item.unit === 'tola')?.price || '0'
+        },
+        source: 'real_data'
+      };
+    }
+    console.error("Unexpected API response format from metals API");
+    throw new Error("Invalid API response format");
+  } catch (error) {
+    console.error("Error fetching metals data:", error);
+    throw error; // Re-throw the error to be handled by the component
   }
-  return { gold: {}, silver: {} };
 };
 
 export const getRashifal = async () => {
   try {
-    // Get data from the updated API format for rashifal
+    // Get data from the API for rashifal
     const response = await api.get('/rashifal');
     
     if (response.data && response.data.rashifal) {
-      // Use the new format where data is in the 'rashifal' property
+      // Use the format where data is in the 'rashifal' property
       const mappedPredictions = response.data.rashifal.map((item: any) => {
         // Extract English sign name from sign_nepali (e.g., "वृश्चिक Scorpio" -> "Scorpio")
         const englishSign = item.sign_nepali ? 
@@ -241,52 +248,17 @@ export const getRashifal = async () => {
       
       return {
         predictions: mappedPredictions,
-        todayEvent: response.data.source || "Daily Rashifal"
+        todayEvent: response.data.source || "Daily Rashifal",
+        source: 'real_data'
       };
     }
     
-    // If we don't have the expected format, return a structured response
-    console.log("Generating rashifal fallback data");
-    const zodiacSigns = [
-      { sign: 'Aries', prediction: 'A favorable day for new beginnings and personal projects.' },
-      { sign: 'Taurus', prediction: 'Focus on financial stability and material comfort today.' },
-      { sign: 'Gemini', prediction: 'Communication will flow smoothly. Express your ideas clearly.' },
-      { sign: 'Cancer', prediction: 'Emotional connections are highlighted. Spend time with loved ones.' },
-      { sign: 'Leo', prediction: 'Your creative energy is high. Showcase your talents confidently.' },
-      { sign: 'Virgo', prediction: 'Pay attention to details in your work and daily routines.' },
-      { sign: 'Libra', prediction: 'Balance in relationships is key today. Maintain harmony.' },
-      { sign: 'Scorpio', prediction: 'Transformation is possible. Embrace change and growth.' },
-      { sign: 'Sagittarius', prediction: 'Explore new concepts and expand your horizons.' },
-      { sign: 'Capricorn', prediction: 'Professional matters require your focus and dedication.' },
-      { sign: 'Aquarius', prediction: 'Innovation and original thinking will bring positive results.' },
-      { sign: 'Pisces', prediction: 'Trust your intuition and be compassionate to others.' }
-    ];
-    
-    return {
-      predictions: zodiacSigns,
-      todayEvent: "Daily Rashifal"
-    };
+    // If we don't have the expected format, throw an error
+    console.error("Unexpected API response format from rashifal API");
+    throw new Error("Invalid rashifal API response format");
   } catch (error) {
-    console.error("Error in rashifal generation:", error);
-    
-    // Return minimum viable data to prevent UI crashes
-    return {
-      predictions: [
-        { sign: 'Aries', prediction: 'Data currently unavailable.' },
-        { sign: 'Taurus', prediction: 'Data currently unavailable.' },
-        { sign: 'Gemini', prediction: 'Data currently unavailable.' },
-        { sign: 'Cancer', prediction: 'Data currently unavailable.' },
-        { sign: 'Leo', prediction: 'Data currently unavailable.' },
-        { sign: 'Virgo', prediction: 'Data currently unavailable.' },
-        { sign: 'Libra', prediction: 'Data currently unavailable.' },
-        { sign: 'Scorpio', prediction: 'Data currently unavailable.' },
-        { sign: 'Sagittarius', prediction: 'Data currently unavailable.' },
-        { sign: 'Capricorn', prediction: 'Data currently unavailable.' },
-        { sign: 'Aquarius', prediction: 'Data currently unavailable.' },
-        { sign: 'Pisces', prediction: 'Data currently unavailable.' }
-      ],
-      todayEvent: "Daily Rashifal"
-    };
+    console.error("Error fetching rashifal data:", error);
+    throw error; // Re-throw the error to be handled by the component
   }
 };
 
@@ -324,50 +296,17 @@ export const getForex = async (params: { from?: string; to?: string; page?: numb
           middleRate: (parseFloat(item.buy) + parseFloat(item.sell)) / 2
         })),
         totalPages: Math.ceil((response.data.count || 0) / (params.per_page || 10)),
-        currentPage: params.page || 1
+        currentPage: params.page || 1,
+        source: 'real_data'
       };
     }
     
-    // If the API fails or returns unexpected format, provide fallback data
-    console.warn("API returned unexpected forex data format, providing minimal structure");
-    
-    // Generate some sample forex rates for demonstration
-    const currencies = ['USD', 'EUR', 'GBP', 'INR', 'CNY', 'JPY', 'AUD'];
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0];
-    
-    const sampleForexRates = currencies.map(currency => ({
-      date: formattedDate,
-      currency,
-      unit: currency === 'INR' ? 100 : 1,
-      buyingRate: currency === 'USD' ? 132.56 : 
-                 currency === 'EUR' ? 143.21 :
-                 currency === 'GBP' ? 167.82 :
-                 currency === 'INR' ? 159.73 :
-                 currency === 'CNY' ? 18.29 :
-                 currency === 'JPY' ? 0.87 : 89.45,
-      sellingRate: currency === 'USD' ? 133.16 : 
-                  currency === 'EUR' ? 143.91 :
-                  currency === 'GBP' ? 168.52 :
-                  currency === 'INR' ? 160.93 :
-                  currency === 'CNY' ? 18.49 :
-                  currency === 'JPY' ? 0.89 : 90.15,
-      middleRate: currency === 'USD' ? 132.86 : 
-                 currency === 'EUR' ? 143.56 :
-                 currency === 'GBP' ? 168.17 :
-                 currency === 'INR' ? 160.33 :
-                 currency === 'CNY' ? 18.39 :
-                 currency === 'JPY' ? 0.88 : 89.80
-    }));
-    
-    return {
-      rates: sampleForexRates,
-      totalPages: 1,
-      currentPage: 1
-    };
+    // If the API fails or returns unexpected format, throw an error
+    console.error("Unexpected API response format from forex API");
+    throw new Error("Invalid forex API response format");
   } catch (error) {
     console.error("Error fetching forex data:", error);
-    throw new Error("Failed to fetch forex data");
+    throw error; // Re-throw the error to be handled by the component
   }
 };
 

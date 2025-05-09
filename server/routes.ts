@@ -71,12 +71,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`Fetching calendar for year=${year}, month_name=${monthName}`);
       
-      // Use the detailed-calendar endpoint with year_bs and month_name as query params
-      // Make a direct request to the API with the exact structure from the documentation
-      console.log(`Using parameters: year_bs=${year}, month_name=${monthName}`);
+      // Use the detailed-calendar endpoint with the correct parameters
+      // The API seems to expect "year" not "year_bs" despite what the docs say
+      console.log(`Using parameters: year=${year}, month_name=${monthName}`);
       const response = await axios.get(`${API_BASE_URL}detailed-calendar/`, {
         params: {
-          year_bs: year, 
+          year: year, 
           month_name: monthName
         }
       });
