@@ -591,41 +591,99 @@ const Calendar = () => {
                   </div>
                 </div>
 
-                {/* Legend */}
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="p-3 rounded-lg flex items-center">
-                    <div className="text-primary-dark text-[8px] mr-2">पर्व/जात्रा</div>
-                    <span className="text-sm">Event/Festival</span>
-                  </div>
-                  <div className="bg-red-50 p-3 rounded-lg flex items-center">
-                    <div className="w-4 h-4 bg-red-50 border border-gray-200 rounded mr-2"></div>
-                    <span className="text-sm">Public Holiday</span>
-                  </div>
-                  <div className="p-3 rounded-lg flex items-center">
-                    <div className="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
-                    <span className="text-sm">Today</span>
-                  </div>
-                  <div className="p-3 rounded-lg flex items-center">
-                    <div className="flex gap-2 mr-2">
-                      <span className="text-red-500 font-bold">शनि</span>
-                      <span className="text-primary font-bold">आइत</span>
+                {/* Monthly Events Section */}
+                <div className="mt-6 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                  <h4 className="text-lg font-semibold text-primary mb-4">Key Events in {getMonthName(parseInt(month))}</h4>
+                  
+                  {data && data.days && data.days.filter(day => day.events && day.events.length > 0).length > 0 ? (
+                    <div className="space-y-3">
+                      {Array.from(new Set(data.days.filter(day => day.events && day.events.length > 0)
+                        .flatMap(day => day.events)))
+                        .map((event, index) => (
+                          <div key={index} className="flex items-start">
+                            <div className="text-primary mr-2 mt-0.5">•</div>
+                            <div>
+                              <span className="text-sm text-gray-700">{event}</span>
+                              <span className="text-xs text-gray-500 ml-2">
+                                ({data.days.filter(day => day.events && day.events.includes(event))
+                                  .map(day => day.bs.nepaliDay)
+                                  .join(', ')} {getMonthName(parseInt(month))})
+                              </span>
+                            </div>
+                          </div>
+                        ))
+                      }
                     </div>
-                    <span className="text-sm">Weekend Days</span>
-                  </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">No major events recorded for this month.</p>
+                  )}
                 </div>
                 
                 {/* Month Summary */}
-                <div className="mt-8 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div className="mt-6 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                   <h3 className="text-xl font-semibold text-primary mb-3">About {getMonthName(parseInt(month))} Month</h3>
+                  
                   <p className="text-neutral mb-4">
-                    {getMonthName(parseInt(month))} is the {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'} month in the Nepali Bikram Sambat calendar. 
+                    {getMonthName(parseInt(month))} (Nepali: {
+                      ['बैशाख', 'जेठ', 'असार', 'साउन', 'भदौ', 'असोज', 'कार्तिक', 'मंसिर', 'पुष', 'माघ', 'फागुन', 'चैत'][parseInt(month) - 1]
+                    }) is the {parseInt(month)}{parseInt(month) === 1 ? 'st' : parseInt(month) === 2 ? 'nd' : parseInt(month) === 3 ? 'rd' : 'th'} month in the Nepali Bikram Sambat calendar. 
                     This month typically falls during {
                       ['April-May', 'May-June', 'June-July', 'July-August', 'August-September', 'September-October', 
                        'October-November', 'November-December', 'December-January', 'January-February', 'February-March', 'March-April'][parseInt(month) - 1]
                     } in the Gregorian calendar.
                   </p>
+                  
+                  <p className="text-neutral mb-4">
+                    In {getMonthName(parseInt(month))}, the average temperature in Nepal ranges from {
+                      ['18-30°C in the Terai region and 12-22°C in the hilly regions', 
+                       '22-33°C in the Terai region and 15-26°C in the hilly regions',
+                       '25-35°C in the Terai region and 18-28°C in the hilly regions',
+                       '25-33°C in the Terai region and 19-27°C in the hilly regions',
+                       '24-32°C in the Terai region and 18-26°C in the hilly regions',
+                       '23-31°C in the Terai region and 17-25°C in the hilly regions',
+                       '18-28°C in the Terai region and 14-22°C in the hilly regions',
+                       '15-24°C in the Terai region and 10-18°C in the hilly regions',
+                       '12-22°C in the Terai region and 8-15°C in the hilly regions',
+                       '10-20°C in the Terai region and 5-15°C in the hilly regions',
+                       '12-22°C in the Terai region and 8-18°C in the hilly regions',
+                       '15-25°C in the Terai region and 10-20°C in the hilly regions'][parseInt(month) - 1]
+                    }. This month is known for {
+                      ['the start of summer and the celebration of Nepali New Year',
+                       'increasingly warmer days and preparation for monsoon season',
+                       'the onset of monsoon rains and rice planting activities',
+                       'heavy monsoon rainfall and lush greenery across the country',
+                       'continued monsoon and the beginning of major festival preparations',
+                       'the end of monsoon and the start of festival season including Dashain',
+                       'post-Dashain celebrations and clearer skies',
+                       'cooler temperatures and the start of winter clothing',
+                       'winter season and cultural ceremonies like Yomari Punhi',
+                       'the coldest month with clear Himalayan views',
+                       'the late winter with warming trends and celebration of Holi',
+                       'the end of winter and preparations for the New Year'][parseInt(month) - 1]
+                    }.
+                  </p>
+                  
+                  <p className="text-neutral mb-4">
+                    {getMonthName(parseInt(month))} has {
+                      [30, 31, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30][parseInt(month) - 1]
+                    } days in most years of the Nepali calendar. The agricultural activities during this month include {
+                      ['preparation of fields for rice cultivation and harvesting of wheat',
+                       'preparation for paddy plantation and vegetable farming',
+                       'rice plantation and tending to summer crops',
+                       'weeding rice fields and planting vegetables',
+                       'monitoring of paddy growth and early harvests of some vegetables',
+                       'harvesting early rice varieties and planting winter vegetables',
+                       'rice harvesting and preparation of fields for winter crops',
+                       'planting winter crops like wheat, barley, and mustard',
+                       'tending to winter crops and vegetable harvesting',
+                       'limited agricultural activities due to cold conditions in many regions',
+                       'preparing fields for spring crops and tending to fruit trees',
+                       'harvesting winter crops and preparing for summer vegetables'][parseInt(month) - 1]
+                    }.
+                  </p>
+                  
                   <p className="text-neutral">
-                    The calendar used in Nepal is based on the Vikram Samvat (BS) which is approximately 56.7 years ahead of the Gregorian calendar (AD).
+                    The Nepali calendar, officially known as Bikram Sambat (BS), is approximately 56.7 years ahead of the Gregorian calendar (AD) and is the official calendar of Nepal. It was introduced by King Bikramaditya and has been in use for over 2,000 years, making it one of the oldest continuously used calendars in the world.
                   </p>
                 </div>
               </TabsContent>
