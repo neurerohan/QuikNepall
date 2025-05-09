@@ -206,37 +206,20 @@ const Calendar = () => {
                         </div>
                       ) : (
                         // Calendar grid with actual data
-                        data?.days?.map((day: any, index: number) => {
-                          // Check if we need empty cells at the beginning (for proper day alignment)
-                          if (index === 0 && day.dayOfWeek > 0) {
-                            const emptyCells = Array(day.dayOfWeek).fill(null).map((_, i) => (
-                              <div key={`empty-${i}`} className="aspect-square"></div>
-                            ));
-                            return [
-                              ...emptyCells,
-                              <div 
-                                key={index}
-                                className={`aspect-square border border-gray-100 rounded p-1 hover:bg-gray-50 ${
-                                  day.isHoliday ? 'bg-red-50' : day.events?.length ? 'bg-primary-light/10' : ''
-                                } transition-colors`}
-                              >
-                                <div className="flex flex-col h-full">
-                                  <div className="text-xs text-gray-500">{day.bs.day}</div>
-                                  <div className="text-sm font-medium">{day.ad.day}</div>
-                                  {day.tithi && (
-                                    <div className="text-[9px] text-gray-500 italic">{day.tithi}</div>
-                                  )}
-                                  {day.events?.length > 0 && (
-                                    <div className="mt-auto text-xs text-primary-dark truncate">{day.events[0]}</div>
-                                  )}
-                                </div>
-                              </div>
-                            ];
-                          }
+                        (() => {
+                          if (!data?.days?.length) return null;
                           
-                          return (
+                          // First, create and render empty cells for proper day alignment
+                          const firstDay = data.days[0];
+                          const emptyCellCount = firstDay.dayOfWeek;
+                          const emptyCells = Array(emptyCellCount).fill(null).map((_, i) => (
+                            <div key={`empty-${i}`} className="aspect-square"></div>
+                          ));
+                          
+                          // Then render all the day cells
+                          const dayCells = data.days.map((day, index) => (
                             <div 
-                              key={index}
+                              key={`day-${index}`}
                               className={`aspect-square border border-gray-100 rounded p-1 hover:bg-gray-50 ${
                                 day.isHoliday ? 'bg-red-50' : day.events?.length ? 'bg-primary-light/10' : ''
                               } transition-colors`}
@@ -252,8 +235,11 @@ const Calendar = () => {
                                 )}
                               </div>
                             </div>
-                          );
-                        })
+                          ));
+                          
+                          // Return all cells - empty cells first, then day cells
+                          return [...emptyCells, ...dayCells];
+                        })()
                       )}
                     </div>
                   </div>
