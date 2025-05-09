@@ -23,8 +23,9 @@ const Forex = () => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['/api/forex', { from: fromDate, to: toDate, page: currentPage, per_page: perPage }],
     queryFn: () => getForex({ from: fromDate, to: toDate, page: currentPage, per_page: perPage }),
-    enabled: false,
-    staleTime: 3600000
+    enabled: true,
+    staleTime: 3600000,
+    retry: 2
   });
 
   const handleSearch = () => {
@@ -146,6 +147,21 @@ const Forex = () => {
                 })}
               </div>
             ) : (
+              {isLoading ? (
+                <div className="p-8 text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                  <p className="mt-4 text-gray-600">Loading forex rates...</p>
+                </div>
+              ) : error ? (
+                <div className="p-8">
+                  <Alert variant="destructive">
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>
+                      Failed to load forex data. Please try again later.
+                    </AlertDescription>
+                  </Alert>
+                </div>
+              ) : (
               <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -176,6 +192,7 @@ const Forex = () => {
                   </table>
                 </div>
               </div>
+              )}
             )}
 
             {/* Historical Rate Search */}
