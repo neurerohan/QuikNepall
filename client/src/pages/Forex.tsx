@@ -17,6 +17,7 @@ const Forex = () => {
   const [toDate, setToDate] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [view, setView<'card' | 'list'>('card');
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
   const { data, isLoading, error, refetch } = useQuery({
@@ -46,12 +47,12 @@ const Forex = () => {
   ];
 
   const popularCurrencies = [
-    { code: 'USD', name: 'US Dollar', flag: '🇺🇸', trends: { daily: -0.2, weekly: 1.5 } },
-    { code: 'EUR', name: 'Euro', flag: '🇪🇺', trends: { daily: 0.3, weekly: -0.8 } },
-    { code: 'GBP', name: 'British Pound', flag: '🇬🇧', trends: { daily: 0.1, weekly: 0.5 } },
-    { code: 'AUD', name: 'Australian Dollar', flag: '🇦🇺', trends: { daily: -0.4, weekly: -1.2 } },
-    { code: 'JPY', name: 'Japanese Yen', flag: '🇯🇵', trends: { daily: 0.2, weekly: 0.7 } },
-    { code: 'CNY', name: 'Chinese Yuan', flag: '🇨🇳', trends: { daily: -0.1, weekly: -0.3 } }
+    { code: 'USD', name: 'US Dollar', flag: '🇺🇸' },
+    { code: 'EUR', name: 'Euro', flag: '🇪🇺' },
+    { code: 'GBP', name: 'British Pound', flag: '🇬🇧' },
+    { code: 'AUD', name: 'Australian Dollar', flag: '🇦🇺' },
+    { code: 'JPY', name: 'Japanese Yen', flag: '🇯🇵' },
+    { code: 'CNY', name: 'Chinese Yuan', flag: '🇨🇳' }
   ];
 
   const marketInsights = [
@@ -59,6 +60,10 @@ const Forex = () => {
     { title: 'Rate Updates', content: 'NRB updates rates twice daily at 10:00 AM and 3:00 PM NPT' },
     { title: 'Weekend Rates', content: 'Weekend rates are set on Friday and remain unchanged until Sunday' }
   ];
+
+  const getCurrencyData = (currencyCode: string) => {
+    return data?.rates?.find(rate => rate.currency === currencyCode);
+  };
 
   return (
     <MainLayout
@@ -89,7 +94,91 @@ const Forex = () => {
               </AlertDescription>
             </Alert>
 
-            {/* Currency Tabs */}
+            <div className="flex justify-end mb-4 space-x-2">
+              <Button
+                variant={view === 'card' ? 'default' : 'outline'}
+                onClick={() => setView('card')}
+                className="w-10 h-10 p-0"
+              >
+                <i className="ri-grid-fill"></i>
+              </Button>
+              <Button
+                variant={view === 'list' ? 'default' : 'outline'}
+                onClick={() => setView('list')}
+                className="w-10 h-10 p-0"
+              >
+                <i className="ri-list-unordered"></i>
+              </Button>
+            </div>
+
+            {view === 'card' ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                {popularCurrencies.map((currency) => {
+                  const rateData = getCurrencyData(currency.code);
+                  return (
+                    <Card key={currency.code} className="p-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <span className="text-2xl">{currency.flag}</span>
+                          <div>
+                            <h3 className="font-semibold text-lg">{currency.code}</h3>
+                            <p className="text-sm text-gray-600">{currency.name}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 pt-3 border-t">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Buy:</span>
+                          <span className="font-medium">NPR {rateData?.buyingRate?.toFixed(2) || '---'}</span>
+                        </div>
+                        <div className="flex justify-between text-sm mt-1">
+                          <span className="text-gray-600">Sell:</span>
+                          <span className="font-medium">NPR {rateData?.sellingRate?.toFixed(2) || '---'}</span>
+                        </div>
+                        <div className="flex justify-between text-sm mt-1">
+                          <span className="text-gray-600">Middle Rate:</span>
+                          <span className="font-medium">NPR {rateData?.middleRate?.toFixed(2) || '---'}</span>
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-primary text-white">
+                        <th className="px-6 py-3 text-left">Currency</th>
+                        <th className="px-6 py-3 text-right">Unit</th>
+                        <th className="px-6 py-3 text-right">Buying Rate</th>
+                        <th className="px-6 py-3 text-right">Selling Rate</th>
+                        <th className="px-6 py-3 text-right">Middle Rate</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data?.rates?.map((rate, index) => (
+                        <tr key={index} className="border-b hover:bg-gray-50">
+                          <td className="px-6 py-4">
+                            <div className="flex items-center space-x-2">
+                              <span className="font-medium">{rate.currency}</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-right">{rate.unit}</td>
+                          <td className="px-6 py-4 text-right">NPR {rate.buyingRate.toFixed(2)}</td>
+                          <td className="px-6 py-4 text-right">NPR {rate.sellingRate.toFixed(2)}</td>
+                          <td className="px-6 py-4 text-right">NPR {rate.middleRate.toFixed(2)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Historical Rate Search */}
             <Tabs defaultValue="popular" className="mb-8">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="popular">Popular Currencies</TabsTrigger>
@@ -99,8 +188,8 @@ const Forex = () => {
               <TabsContent value="popular">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {popularCurrencies.map((currency) => (
-                    <Card 
-                      key={currency.code} 
+                    <Card
+                      key={currency.code}
                       className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${selectedCurrency === currency.code ? 'border-primary' : ''}`}
                       onClick={() => setSelectedCurrency(currency.code)}
                     >
@@ -112,16 +201,7 @@ const Forex = () => {
                             <p className="text-sm text-gray-600">{currency.name}</p>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className={`text-sm ${currency.trends.daily >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {currency.trends.daily >= 0 ? '↑' : '↓'} {Math.abs(currency.trends.daily)}%
-                            <span className="text-xs ml-1">24h</span>
-                          </div>
-                          <div className={`text-sm ${currency.trends.weekly >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {currency.trends.weekly >= 0 ? '↑' : '↓'} {Math.abs(currency.trends.weekly)}%
-                            <span className="text-xs ml-1">7d</span>
-                          </div>
-                        </div>
+                        {/* Removed trends section from popular currencies card */}
                       </div>
 
                       <div className="mt-3 pt-3 border-t">
@@ -140,7 +220,6 @@ const Forex = () => {
               </TabsContent>
 
               <TabsContent value="all">
-                {/* Historical Rate Search */}
                 <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 mb-8">
                   <div className="bg-primary p-4">
                     <h2 className="text-xl font-semibold text-white">Historical Forex Rates</h2>
@@ -151,24 +230,24 @@ const Forex = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                       <div>
                         <Label htmlFor="from-date" className="mb-1 block">From Date</Label>
-                        <Input 
-                          id="from-date" 
-                          type="date" 
-                          value={fromDate} 
+                        <Input
+                          id="from-date"
+                          type="date"
+                          value={fromDate}
                           onChange={(e) => setFromDate(e.target.value)}
                         />
                       </div>
                       <div>
                         <Label htmlFor="to-date" className="mb-1 block">To Date</Label>
-                        <Input 
-                          id="to-date" 
-                          type="date" 
-                          value={toDate} 
+                        <Input
+                          id="to-date"
+                          type="date"
+                          value={toDate}
                           onChange={(e) => setToDate(e.target.value)}
                         />
                       </div>
                       <div className="flex items-end">
-                        <Button 
+                        <Button
                           onClick={handleSearch}
                           className="bg-primary hover:bg-primary-dark w-full"
                           disabled={isLoading}
@@ -191,7 +270,7 @@ const Forex = () => {
                             <Pagination>
                               <PaginationContent>
                                 <PaginationItem>
-                                  <PaginationPrevious 
+                                  <PaginationPrevious
                                     onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
                                     className={currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                                   />
@@ -204,7 +283,7 @@ const Forex = () => {
 
                                   return (
                                     <PaginationItem key={i}>
-                                      <PaginationLink 
+                                      <PaginationLink
                                         onClick={() => handlePageChange(pageNum)}
                                         isActive={currentPage === pageNum}
                                       >
@@ -215,7 +294,7 @@ const Forex = () => {
                                 })}
 
                                 <PaginationItem>
-                                  <PaginationNext 
+                                  <PaginationNext
                                     onClick={() => handlePageChange(Math.min(currentPage + 1, data.totalPages))}
                                     className={currentPage === data.totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                                   />
