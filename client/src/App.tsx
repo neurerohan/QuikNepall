@@ -20,6 +20,8 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/calendar/:year/:month" component={Calendar} />
       <Route path="/calendar" component={Calendar} />
+      <Route path="/nepalicalendar/:year/:month" component={Calendar} />
+      <Route path="/nepalicalendar" component={Calendar} />
       <Route path="/date-converter" component={DateConverter} />
       <Route path="/vegetables" component={Vegetables} />
       <Route path="/metals" component={Metals} />

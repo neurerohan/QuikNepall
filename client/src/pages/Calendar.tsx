@@ -197,14 +197,37 @@ const Calendar = () => {
   useEffect(() => {
     if (!params.year || !params.month) {
       const today = new Date();
-      const currentYear = today.getFullYear();
+      // Get current Nepali year (roughly AD + 56/57 years)
+      const currentNepaliYear = today.getFullYear() + 57;
       const currentMonth = today.getMonth() + 1; // JavaScript months are 0-based
-      setLocation(`/calendar/${currentYear}/${currentMonth}`);
+      
+      // We'll use the /nepalicalendar path format with month name
+      const nepaliMonthName = getMonthName(currentMonth);
+      setLocation(`/nepalicalendar/${currentNepaliYear}/${nepaliMonthName.toLowerCase()}`);
     }
   }, [params, setLocation]);
-
-  const year = params.year || new Date().getFullYear().toString();
-  const month = params.month || (new Date().getMonth() + 1).toString();
+  
+  // Helper function to get month number from name
+  const getMonthNumberFromName = (monthName: string): number => {
+    const nepaliMonths = [
+      'baishakh', 'jestha', 'ashadh', 'shrawan', 
+      'bhadra', 'ashwin', 'kartik', 'mangsir', 
+      'poush', 'magh', 'falgun', 'chaitra'
+    ];
+    const index = nepaliMonths.findIndex(m => 
+      m.toLowerCase() === monthName?.toLowerCase()
+    );
+    return index !== -1 ? index + 1 : 1;
+  };
+  
+  // Support both numeric month and month name formats
+  let year = params.year || new Date().getFullYear().toString();
+  let month = params.month || '1';
+  
+  // Check if month is a string name (like "baishakh") and convert to number
+  if (isNaN(parseInt(month))) {
+    month = getMonthNumberFromName(month).toString();
+  }
 
   const { data, isLoading, error } = useQuery({
     queryKey: [`/api/calendar/${year}/${month}`],
@@ -216,13 +239,15 @@ const Calendar = () => {
   const handlePreviousMonth = () => {
     const prevMonth = parseInt(month) === 1 ? 12 : parseInt(month) - 1;
     const prevYear = parseInt(month) === 1 ? parseInt(year) - 1 : parseInt(year);
-    setLocation(`/calendar/${prevYear}/${prevMonth}`);
+    const prevMonthName = getMonthName(prevMonth).toLowerCase();
+    setLocation(`/nepalicalendar/${prevYear}/${prevMonthName}`);
   };
 
   const handleNextMonth = () => {
     const nextMonth = parseInt(month) === 12 ? 1 : parseInt(month) + 1;
     const nextYear = parseInt(month) === 12 ? parseInt(year) + 1 : parseInt(year);
-    setLocation(`/calendar/${nextYear}/${nextMonth}`);
+    const nextMonthName = getMonthName(nextMonth).toLowerCase();
+    setLocation(`/nepalicalendar/${nextYear}/${nextMonthName}`);
   };
 
   // Get today's date to highlight
@@ -258,9 +283,11 @@ const Calendar = () => {
                   className="px-3 py-1.5 bg-primary text-white text-sm rounded-md hover:bg-primary-dark transition-colors"
                   onClick={() => {
                     const today = new Date();
-                    const currentYear = today.getFullYear();
+                    // Get Nepali year (roughly AD + 57)
+                    const currentNepaliYear = today.getFullYear() + 57;
                     const currentMonth = today.getMonth() + 1;
-                    setLocation(`/calendar/${currentYear}/${currentMonth}`);
+                    const nepaliMonthName = getMonthName(currentMonth).toLowerCase();
+                    setLocation(`/nepalicalendar/${currentNepaliYear}/${nepaliMonthName}`);
                   }}
                 >
                   Go to Today
@@ -271,7 +298,8 @@ const Calendar = () => {
                     className="px-2 py-1.5 border border-gray-200 rounded-md text-sm"
                     defaultValue={month}
                     onChange={(e) => {
-                      setLocation(`/calendar/${year}/${e.target.value}`);
+                      const monthName = getMonthName(parseInt(e.target.value)).toLowerCase();
+                      setLocation(`/nepalicalendar/${year}/${monthName}`);
                     }}
                   >
                     {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
@@ -283,10 +311,12 @@ const Calendar = () => {
                     className="px-2 py-1.5 border border-gray-200 rounded-md text-sm"
                     defaultValue={year}
                     onChange={(e) => {
-                      setLocation(`/calendar/${e.target.value}/${month}`);
+                      const monthName = getMonthName(parseInt(month)).toLowerCase();
+                      setLocation(`/nepalicalendar/${e.target.value}/${monthName}`);
                     }}
                   >
-                    {Array.from({ length: 10 }, (_, i) => 2080 - 5 + i).map((y) => (
+                    {/* Range from 2000 BS to current year plus a few years */}
+                    {Array.from({ length: 83 }, (_, i) => 2000 + i).map((y) => (
                       <option key={y} value={y}>{y}</option>
                     ))}
                   </select>
