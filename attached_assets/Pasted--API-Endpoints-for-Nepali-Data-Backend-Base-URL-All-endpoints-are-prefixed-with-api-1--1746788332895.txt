@@ -1,0 +1,144 @@
+# API Endpoints for Nepali Data Backend
+
+## Base URL
+All endpoints are prefixed with `/api/`.
+
+## 1. Calendar Events (Upcoming from Ashesh / Yearly from NepaliPatro)
+- **Endpoint:** `/calendar/`
+- **Method:** `GET`
+- **Description:**
+    - If no query parameters are provided, fetches upcoming events (default: future events from today) primarily sourced from Ashesh.com.np's upcoming events page.
+    - If `year_bs` is provided, fetches holidays and public events for that specific Nepali year, primarily sourced from NepaliPatro.
+- **Query Parameters:**
+    - **For Ashesh Upcoming Events (default behavior):**
+        - No parameters needed to get default upcoming events.
+    - **For NepaliPatro Yearly Events:**
+        - `year_bs=<nepali_year>`: (Integer, e.g., `2081`) Filters events for the specified Nepali Bikram Sambat year from NepaliPatro.
+        - `month_bs=<nepali_month_number>`: (Integer, e.g., `1` for Baishakh) Optional. If provided with `year_bs`, filters for a specific month within that year from NepaliPatro.
+- **Example Requests:**
+    - `/api/calendar/` (for Ashesh upcoming events)
+    - `/api/calendar/?year_bs=2081` (for NepaliPatro events of 2081 BS)
+    - `/api/calendar/?year_bs=2081&month_bs=1` (for NepaliPatro events of Baishakh 2081 BS)
+- **Success Response (200 OK):**
+  ```json
+  {
+      "calendar_events": [
+          {
+              "title": "Event Title",
+              "description": "Optional event description.",
+              "date_bs": "DD.MM.YYYY", // BS Date (Format for display, from DB)
+              "date_ad": "YYYY-MM-DD", // AD Date
+              "day_of_week": "Saturday",
+              "type": "upcoming_event_ashesh" // or e.g., "public_holiday" if from NepaliPatro
+          }
+          // ... more events
+      ],
+      "source": "ashesh_upcoming" // or "nepalipatro_yearly"
+  }
+  ```
+
+## 2. Rashifal (Daily Horoscope)
+- **Endpoint:** `/rashifal/`
+- **Method:** `GET`
+- **Description:** Fetches daily horoscope (Rashifal) data, sourced from Ashesh.com.np.
+- **Query Parameters:**
+    - `date=<YYYY-MM-DD>`: (String, e.g., `2023-10-26`) Optional. Filters Rashifal for a specific AD date. If omitted, returns the latest available (usually today's).
+    - `sign=<english_sign_name>`: (String, e.g., `Mesh`, `Taurus`) Optional. Filters for a specific zodiac sign.
+- **Success Response (200 OK):**
+  ```json
+  {
+      "rashifal": [
+          {
+              "sign": "Mesh",
+              "sign_nepali": "मेष",
+              "prediction": "Today's horoscope prediction for Mesh...",
+              "date": "YYYY-MM-DD" // AD Date
+          }
+          // ... more rashifal entries
+      ],
+      "source": "real_data"
+  }
+  ```
+
+## 3. Detailed Daily Calendar Data (Full Month View)
+- **Endpoint:** `/detailed-calendar/`
+- **Method:** `GET`
+- **Description:** Fetches comprehensive daily calendar details for a specific Nepali month, including tithi, events for the day, AD/BS dates, etc., sourced from Ashesh.com.np's full calendar page.
+- **Query Parameters (Required):**
+    - `year_bs=<nepali_year>`: (Integer, e.g., `2082`) The Nepali Bikram Sambat year.
+    - `month_name=<nepali_month_name>`: (String, e.g., `Baishakh`, `Jestha`) The Nepali month name.
+- **Example Request:** `/api/detailed-calendar/?year_bs=2082&month_name=Baishakh`
+- **Success Response (200 OK):**
+  ```json
+  {
+      "year": 2082,
+      "month_name": "Baishakh",
+      "days": [
+          {
+              "bs_year": 2082,
+              "bs_month_name": "Baishakh",
+              "bs_day_nepali": "१",
+              "bs_day_english_equivalent": 1,
+              "ad_date_full": "YYYY-MM-DD",
+              "ad_day": 13,
+              "ad_month_name": "April",
+              "ad_year": 2025,
+              "day_of_week": "Saturday",
+              "tithi": "प्रतिपदा",
+              "events_raw": ["Event for the day 1", "Another event"], // List of strings
+              "meta_header_nepali": "BAISHAKH २०८२",
+              "meta_header_english": "APR-MAY 2025",
+              "fetched_at": "iso_timestamp_string"
+          }
+          // ... more days in the month
+      ]
+  }
+  ```
+
+## 4. Metal Prices (Gold & Silver)
+- **Endpoint:** `/metals/`
+- **Method:** `GET`
+- **Description:** Fetches gold and silver prices, sourced from Ashesh.com.np. This is a DRF ModelViewSet.
+- **Query Parameters:**
+    - `date=<YYYY-MM-DD>`: (String) Filters prices for a specific AD date.
+    - `metal=<gold|silver>`: (String) Filters by metal type.
+    - `metal_type=<hallmark|tajabi|fine|standard>`: (String) Filters by specific metal purity/type.
+    - `unit=<tola|10gram>`: (String) Filters by unit of measurement.
+    - `latest=true`: (Boolean string "true") Gets the latest available prices.
+- **Example Request:** `/api/metals/?date=2023-10-26&metal=gold`
+- **Success Response (200 OK):**
+  ```json
+  [ // List of metal price objects
+      {
+          "id": 1,
+          "date": "YYYY-MM-DD",
+          "metal": "gold",
+          "metal_type": "hallmark",
+          "unit": "tola",
+          "price": "100000.00",
+          "timestamp": "iso_timestamp_string",
+          "updated_at": "iso_timestamp_string"
+      }
+      // ... more metal price entries
+  ]
+  ```
+
+## 5. Vegetable Prices
+- **Endpoint:** `/vegetables/`
+- **Method:** `GET`
+- **Description:** Fetches vegetable market prices. (DRF ModelViewSet)
+- **Query Parameters:**
+    - `date=<YYYY-MM-DD>`: Filters by scrape date.
+    - `name=<vegetable_name>`: Filters by vegetable name (supports partial match, case-insensitive).
+    - `latest=true`: (Boolean string "true") Gets prices for the most recent scrape date.
+- **Success Response (200 OK):** List of vegetable objects with fields: `id`, `name`, `name_nepali`, `unit`, `min_price`, `max_price`, `avg_price`, `scrape_date`, `timestamp`.
+
+## 6. Forex Rates (Foreign Exchange)
+- **Endpoint:** `/forex/`
+- **Method:** `GET`
+- **Description:** Fetches foreign exchange rates against NPR. (DRF ModelViewSet)
+- **Query Parameters:**
+    - `date=<YYYY-MM-DD>`: Filters by date.
+    - `currency=<ISO3_code>`: (e.g., `USD`, `EUR`) Filters by currency code.
+    - `latest=true`: (Boolean string "true") Gets the latest available rates.
+- **Success Response (200 OK):** List of forex rate objects with fields: `id`, `date`, `currency`, `unit`, `buy`, `sell`, `timestamp`, `updated_at`.
