@@ -41,6 +41,10 @@
     animation: slideInUp 0.4s forwards;
   }
   
+  .animate-twinkle {
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  
   /* Custom ease curves */
   .ease-smooth-out {
     transition-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
@@ -62,12 +66,15 @@
 @keyframes float {
   0% {
     transform: translateY(0px);
+    opacity: 0.7;
   }
   50% {
-    transform: translateY(-15px);
+    transform: translateY(-10px);
+    opacity: 1;
   }
   100% {
     transform: translateY(0px);
+    opacity: 0.7;
   }
 }
 
@@ -80,58 +87,20 @@
     opacity: 1;
     transform: translateY(0);
   }
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.9);
   }
-  
-  .animate-twinkle {
-    animation: twinkle 4s ease-in-out infinite;
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
   }
-  
-  .animate-gradient {
-    animation: gradientMove 3s linear infinite;
-  }
-  
-  @keyframes float {
-    0% {
-      transform: translateY(0px);
-      opacity: 0.2;
-    }
-    50% {
-      transform: translateY(-10px);
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateY(0px);
-      opacity: 0.2;
-    }
-  }
-  
-  @keyframes twinkle {
-    0% {
-      opacity: 0.2;
-      transform: scale(0.8);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.2);
-    }
-    100% {
-      opacity: 0.2;
-      transform: scale(0.8);
-    }
-  }
-  
-  @keyframes gradientMove {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
+  100% {
+    opacity: 0.2;
+    transform: scale(0.9);
   }
 }
 

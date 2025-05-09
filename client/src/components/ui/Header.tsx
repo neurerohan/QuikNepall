@@ -119,7 +119,7 @@ const Header = () => {
       {/* Mobile Menu - Enhanced with cooler Gen Z style */}
       <div 
         className={`${mobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'} 
-          md:hidden w-full overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] backdrop-blur-md ${
+          md:hidden w-full overflow-hidden transition-all duration-500 ease-smooth-out backdrop-blur-md ${
             isScrolled ? 'bg-white/95 border-t border-gray-100' : 'bg-gradient-to-r from-[#57c84d]/95 to-[#83d475]/95'
           }`}
       >
