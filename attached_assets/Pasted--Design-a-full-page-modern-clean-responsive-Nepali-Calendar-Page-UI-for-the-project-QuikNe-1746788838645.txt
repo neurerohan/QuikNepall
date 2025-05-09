@@ -1,0 +1,111 @@
+🎨 Design a full-page modern, clean, responsive **Nepali Calendar Page** UI for the project **QuikNepal**. It should be inspired by the attached screenshot and follow the following specs:
+
+---
+
+📄 Page Title: Nepali Calendar 2082 – Baisakh (नेपाली पात्रो बैशाख 2082)
+
+🛠️ Route: /calendar/2082/baishakh
+
+---
+
+🖼️ Layout Structure:
+
+1. **Sticky Header (Shared Across Site)**  
+   - Logo (left), Nav Links: Calendar, Veg Prices, Converter, Metals, Forex, Rashifal  
+   - Right: Search icon, Language switcher, Social icons  
+   - Sticky on scroll
+
+---
+
+2. **Month Header Section**  
+   - Month and Year shown in large, centered title (e.g., "Nepali Calendar 2082 – Baisakh")  
+   - Subtext in Nepali  
+   - Today’s Date, Day, and Bikram Sambat at top left  
+   - Two mini buttons: "Go to Today", and calendar switcher for BS/AD  
+   - Dropdown for month and year selection with `Go` button
+
+---
+
+3. **Main Calendar Grid**  
+   - 7-column layout (Sun to Sat)  
+   - Each cell:
+     - Date in red/green/gray depending on type  
+     - Highlight Today in green circle  
+     - Holiday dates marked with badge or icon  
+   - Hover effect: soft shadow or background fill  
+   - Mobile: collapse into vertical list
+
+---
+
+4. **Event Highlights Section** (Below calendar)  
+   - Titled: “Major Events & Holidays – Baisakh 2082”  
+   - Vertical list of all major events, styled in cards  
+   - Each event card:
+     - 📅 Date (both BS and AD)
+     - 🏷️ Event title (in Nepali and English)
+     - Tag: e.g., "Holiday", "Festival", or "Govt Holiday"
+     - Optional: colored badge (green, orange)
+
+---
+
+5. **Month Summary Section**  
+   - Description block summarizing the Nepali calendar month and its cultural relevance  
+   - Two paragraphs in both English and Nepali  
+
+---
+
+6. **Tips / Notices**  
+   - Information card showing how to use this calendar  
+   - Display note about syncing with backend (optional text block)
+
+---
+
+7. **FAQs Accordion Section**  
+   - Include top 3–5 questions like:  
+     – “How to check today’s Nepali date?”  
+     – “How do I view events for a month?”  
+     – “Is this similar to Mero Patro?”
+
+---
+
+8. **Explore Other Tools (Cards/Buttons)**  
+   - CTA links to:  
+     – View Veg Prices  
+     – Use Date Converter  
+     – View Rashifal  
+   - Design them as cards or pill-style buttons (use green/yellow)
+
+---
+
+9. **Footer**  
+   - Match style of homepage footer  
+   - Include:  
+     – Quick Links  
+     – Alchi Fun tools  
+     – Contact info  
+     – Social icons  
+     – Copy notice (© 2025 QuikNepal)
+
+---
+
+🎨 Design System Notes:
+
+• Use dark green (`#006400`) as primary color  
+• Calendar days use color codes:  
+  – Sunday: red  
+  – Saturday: green  
+  – Regular weekdays: black  
+• CTA buttons: yellow-green (`#CDDC39`)  
+• Font: DM Sans or Inter  
+• Background: white, soft green for highlights  
+• Cards: soft shadows, rounded corners (lg radius)  
+• Mobile-first: stack everything vertically
+
+---
+
+🧪 Deliverables:
+
+• Figma / Visual layout file  
+• Optional: Tailwind CSS-ready components  
+• Responsive views (desktop/tablet/mobile)  
+• Exportable icons if custom used  
