@@ -217,9 +217,9 @@ const CalendarWidget = () => {
                         </div>
                       )}
                       
-                      {/* Multiple events indicator */}
+                      {/* Multiple events indicator - using orange/red instead of green */}
                       {day.events?.length > 1 && (
-                        <div className="absolute bottom-1 right-1 w-2 h-2 bg-primary rounded-full"></div>
+                        <div className="absolute bottom-1 right-1 w-2 h-2 bg-orange-500 rounded-full"></div>
                       )}
                     </div>
                   </div>

@@ -131,16 +131,15 @@ const Home = () => {
           
           <FadeIn delay={0.2}>
             <div className="flex flex-wrap justify-center gap-6">
-              <Bounce>
-                <Link 
-                  href="/calendar" 
-                  className="bg-white text-primary font-bold py-4 px-10 rounded-xl transform hover:scale-105 hover:shadow-xl transition-all duration-300 flex items-center shadow-md" 
-                  aria-label="Explore Nepali Calendar"
-                >
-                  <i className="ri-calendar-2-line mr-3 text-xl"></i> 
-                  <span>Explore Calendar</span>
-                </Link>
-              </Bounce>
+              <Link 
+                href="/calendar" 
+                className="bg-white text-primary font-bold py-4 px-10 rounded-xl transform hover:scale-105 hover:shadow-xl transition-all duration-300 flex items-center shadow-md" 
+                aria-label="Explore Nepali Calendar"
+              >
+                <i className="ri-calendar-2-line mr-3 text-xl"></i> 
+                <span>Explore Calendar</span>
+              </Link>
+              
               <Link 
                 href="#features" 
                 className="bg-primary-dark/20 text-white backdrop-blur-lg font-medium py-4 px-10 rounded-xl hover:bg-primary-dark/40 transition-all duration-300 flex items-center border border-white/20 shadow-md group" 
