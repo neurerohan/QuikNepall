@@ -501,12 +501,12 @@ const Calendar = () => {
                     </button>
                   </div>
                   
-                  <div className="p-4">
-                    <div className="grid grid-cols-7 mb-2">
+                  <div className="p-4 md:p-5">
+                    <div className="grid grid-cols-7 mb-3">
                       {weekdays.map((day, index) => (
                         <div 
                           key={index} 
-                          className={`text-center font-medium py-2 
+                          className={`text-center font-medium py-2.5 text-sm md:text-base
                             ${index === 0 ? 'text-red-500' : ''} 
                             ${index === 6 ? 'text-green-600' : ''}
                           `}
@@ -516,7 +516,7 @@ const Calendar = () => {
                       ))}
                     </div>
                     
-                    <div className="grid grid-cols-7 gap-2">
+                    <div className="grid grid-cols-7 gap-2 md:gap-3">
                       {isLoading ? (
                         // Loading skeleton
                         Array(35).fill(null).map((_, i) => (
@@ -544,30 +544,37 @@ const Calendar = () => {
                             const isTodayHighlight = isToday(day.bs.day, day.bs.month, day.bs.year);
                             const isSunday = day.dayOfWeek === 0;
                             const isSaturday = day.dayOfWeek === 6;
+                            // Create our own holiday detection logic based on event names
+                            const isHoliday = day.events && day.events.some((event: string) => 
+                              event.toLowerCase().includes('holiday') || 
+                              event.toLowerCase().includes('दिवस') ||
+                              event.toLowerCase().includes('जात्रा') || 
+                              event.toLowerCase().includes('पर्व')
+                            );
                             
                             return (
                               <div 
                                 key={`day-${index}`}
-                                className={`aspect-square border border-gray-100 rounded p-1.5 hover:bg-gray-50 
-                                  ${day.isHoliday === true ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : ''}
+                                className={`aspect-square border border-gray-100 rounded p-2 hover:bg-gray-50 
+                                  ${day.isHoliday === true || isHoliday ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : ''}
                                   ${isTodayHighlight ? 'ring-2 ring-green-500' : ''}
                                   transition-all cursor-pointer`}
                                 onClick={() => setSelectedDay(day)}
                               >
                                 <div className="flex flex-col h-full relative">
                                   {/* Nepali date - emphasized */}
-                                  <div className={`text-xl font-bold ${day.isHoliday ? 'text-red-500' : isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto' : ''}`}>
+                                  <div className={`text-xl md:text-2xl font-bold text-center ${day.isHoliday || isHoliday ? 'text-red-500' : isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-9 h-9 flex items-center justify-center mx-auto' : ''}`}>
                                     {day.bs.nepaliDay}
                                   </div>
                                   
                                   {/* English date - smaller, positioned in corner */}
-                                  <div className="text-[9px] text-gray-500 absolute top-0 right-0 px-0.5">
+                                  <div className="text-[10px] md:text-xs text-gray-500 absolute top-0 right-0 px-0.5">
                                     {day.ad.day}
                                   </div>
                                   
                                   {/* Tithi information in Devanagari */}
                                   {day.tithi && (
-                                    <div className="text-[8px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
+                                    <div className="text-[9px] md:text-[10px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
                                       <h4 className="sr-only">Tithi: {day.tithi}</h4>
                                       तिथि: {convertTithiToNepali(day.tithi)}
                                     </div>
@@ -575,7 +582,7 @@ const Calendar = () => {
                                   
                                   {/* Event indicator */}
                                   {day.events?.length > 0 && (
-                                    <div className="mt-auto text-[8px] text-primary-dark truncate px-1 py-0.5 text-center">
+                                    <div className="mt-auto text-[9px] md:text-[10px] text-primary-dark truncate px-1 py-0.5 text-center">
                                       <h4 className="sr-only">Event: {day.events.join(', ')}</h4>
                                       {day.events[0]}
                                     </div>
@@ -593,13 +600,13 @@ const Calendar = () => {
                   </div>
                 </div>
 
-                {/* Monthly Events Section */}
-                <div className="mt-6 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                  <h4 className="text-lg font-semibold text-primary mb-4">Key Events in {getMonthName(parseInt(month))}</h4>
+                {/* Monthly Events Section - Enlarged */}
+                <div className="mt-6 bg-white rounded-xl shadow-sm p-6 md:p-7 border border-gray-100">
+                  <h4 className="text-xl font-semibold text-primary mb-5">Key Events in {getMonthName(parseInt(month))}</h4>
                   
                   {/* Current month events from API data */}
                   {data && data.days && data.days.filter((day: any) => day.events && day.events.length > 0).length > 0 ? (
-                    <div className="space-y-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {(() => {
                         // Safely extract all events with proper type handling
                         const allEvents: string[] = [];
@@ -613,28 +620,52 @@ const Calendar = () => {
                           }
                         });
                         
-                        return allEvents.map((event: string, index) => (
-                          <div key={index} className="flex items-start">
-                            <div className="text-primary mr-2 mt-0.5">•</div>
-                            <div>
-                              <span className="text-sm text-gray-700">{event}</span>
-                              <span className="text-xs text-gray-500 ml-2">
-                                ({data.days
-                                  .filter((day: any) => 
-                                    day.events && 
-                                    Array.isArray(day.events) && 
-                                    day.events.includes(event)
-                                  )
-                                  .map((day: any) => day.bs.nepaliDay)
-                                  .join(', ')} {getMonthName(parseInt(month))})
-                              </span>
+                        return allEvents.map((event: string, index) => {
+                          // Get days for this event
+                          const eventDays = data.days
+                            .filter((day: any) => 
+                              day.events && 
+                              Array.isArray(day.events) && 
+                              day.events.includes(event)
+                            )
+                            .map((day: any) => day.bs.nepaliDay)
+                            .join(', ');
+                            
+                          // Determine if the event is a holiday
+                          const isEventHoliday = event.toLowerCase().includes('holiday') || 
+                                               event.toLowerCase().includes('दिवस') ||
+                                               event.toLowerCase().includes('जात्रा') || 
+                                               event.toLowerCase().includes('पर्व');
+                          
+                          return (
+                            <div 
+                              key={index} 
+                              className={`flex items-start p-3 rounded-lg border ${
+                                isEventHoliday 
+                                  ? 'bg-red-50/40 border-red-100' 
+                                  : 'bg-white border-gray-100'
+                              }`}
+                            >
+                              <div className={`text-lg mr-3 mt-0.5 ${
+                                isEventHoliday ? 'text-red-500' : 'text-primary'
+                              }`}>•</div>
+                              <div>
+                                <span className={`text-sm md:text-base font-medium ${
+                                  isEventHoliday ? 'text-red-700' : 'text-gray-700'
+                                }`}>
+                                  {event}
+                                </span>
+                                <div className="text-xs md:text-sm text-gray-500 mt-1">
+                                  {eventDays} {getMonthName(parseInt(month))}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        ));
+                          );
+                        });
                       })()}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-500">No major events recorded for this month.</p>
+                    <p className="text-base text-gray-500 bg-gray-50 p-4 rounded-lg">No major events recorded for this month.</p>
                   )}
                   
                   {/* Traditional festivals associated with this month */}
