@@ -552,7 +552,7 @@ const Calendar = () => {
                                   transition-all cursor-pointer`}
                                 onClick={() => setSelectedDay(day)}
                               >
-                                <div className="flex flex-col h-full">
+                                <div className="flex flex-col h-full relative">
                                   {/* Nepali date - emphasized */}
                                   <div className={`text-xl font-bold ${day.isHoliday ? 'text-red-500' : isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto' : ''}`}>
                                     {day.bs.nepaliDay}

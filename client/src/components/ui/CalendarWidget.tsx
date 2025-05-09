@@ -165,7 +165,7 @@ const CalendarWidget = () => {
                   <div 
                     key={`day-${index}`}
                     className={`aspect-square border border-gray-100 rounded-lg p-1
-                      ${day.isHoliday === true ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : day.events?.length ? 'bg-primary-light/10' : ''}
+                      ${day.isHoliday === true ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : ''}
                       hover:bg-gray-50 transition-all cursor-pointer`}
                     onClick={() => setSelectedDay(day)}
                   >
