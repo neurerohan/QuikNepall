@@ -6,7 +6,13 @@ import FeatureCard from '@/components/ui/FeatureCard';
 import DataTable from '@/components/ui/DataTable';
 import { Link } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
-import { getVegetables, getMetals, getRashifal } from '@/lib/api';
+import { 
+  getVegetables, 
+  getMetals, 
+  getRashifal, 
+  getTodayNepaliDate,
+  getCalendarEvents 
+} from '@/lib/api';
 
 const Home = () => {
   // Get sample vegetable data for the preview
@@ -30,12 +36,26 @@ const Home = () => {
     staleTime: 3600000 // 1 hour
   });
 
-  // Get current date in AD and BS format (using sample data for now)
+  // Get current date in AD format
   const today = new Date();
   const formattedDate = today.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
+  });
+  
+  // Get today's Nepali date
+  const { data: nepaliToday, isLoading: loadingNepaliToday } = useQuery({
+    queryKey: ['/api/today'],
+    queryFn: getTodayNepaliDate,
+    staleTime: 60 * 60 * 1000, // 1 hour
+  });
+  
+  // Get today's events
+  const { data: eventsData } = useQuery({
+    queryKey: ['/api/calendar-events'],
+    queryFn: () => getCalendarEvents({}),
+    staleTime: 24 * 60 * 60 * 1000, // Cache for 24 hours
   });
 
   const vegetableColumns = [
@@ -83,15 +103,61 @@ const Home = () => {
             
             <div className="mt-6 bg-primary-light/20 rounded-lg p-4 flex items-start gap-4">
               <div className="text-primary-dark rounded-full bg-white p-2 mt-1">
-                <i className="ri-information-line text-xl"></i>
+                <i className="ri-calendar-line text-xl"></i>
               </div>
-              <div>
-                <h3 className="font-medium text-primary-dark">Today's Date</h3>
-                <p className="text-neutral text-sm">{formattedDate}</p>
-                {/* This will be replaced with actual event data from the API */}
-                <p className="text-primary-dark text-sm mt-1">
-                  <span className="font-medium">Today's Event:</span> {rashifalQuery.data?.todayEvent || 'No special events today'}
-                </p>
+              <div className="flex-1">
+                <h3 className="font-medium text-primary-dark text-lg mb-1">Today's Date</h3>
+                
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                  <div className="bg-white rounded-lg p-2 shadow-sm flex-1">
+                    <p className="text-xs text-gray-500">Gregorian (AD)</p>
+                    <p className="text-primary-dark font-medium">{formattedDate}</p>
+                  </div>
+                  
+                  {nepaliToday ? (
+                    <div className="bg-white rounded-lg p-2 shadow-sm flex-1">
+                      <p className="text-xs text-gray-500">Bikram Sambat (BS)</p>
+                      <p className="text-primary-dark font-medium">
+                        {nepaliToday.day} {nepaliToday.month_name} {nepaliToday.year}
+                      </p>
+                    </div>
+                  ) : loadingNepaliToday ? (
+                    <div className="bg-white rounded-lg p-2 shadow-sm flex-1 animate-pulse">
+                      <p className="text-xs text-gray-300">Loading Nepali date...</p>
+                    </div>
+                  ) : (
+                    <div className="bg-white rounded-lg p-2 shadow-sm flex-1">
+                      <p className="text-xs text-gray-500">Bikram Sambat (BS)</p>
+                      <p className="text-red-400 text-sm">Error loading Nepali date</p>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Display today's events if available */}
+                {eventsData?.calendar_events?.length > 0 && (
+                  <div className="mt-3 bg-white p-2 rounded-lg shadow-sm">
+                    <h4 className="text-sm font-medium text-primary-dark mb-1">Today's Events</h4>
+                    <ul className="space-y-1">
+                      {eventsData.calendar_events.slice(0, 2).map((event: any, index: number) => (
+                        <li key={index} className="text-xs text-neutral flex items-center">
+                          <span className="w-1.5 h-1.5 bg-primary rounded-full mr-2"></span>
+                          {event.title || event.name}
+                        </li>
+                      ))}
+                    </ul>
+                    {eventsData.calendar_events.length > 2 && (
+                      <Link href="/calendar" className="text-xs text-primary hover:underline mt-1 inline-block">
+                        + {eventsData.calendar_events.length - 2} more events
+                      </Link>
+                    )}
+                  </div>
+                )}
+                
+                <div className="mt-2 text-right">
+                  <Link href="/nepalicalendar/2082/baishakh" className="text-primary text-xs font-medium hover:underline">
+                    View Full Calendar →
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
