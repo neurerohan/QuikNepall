@@ -123,28 +123,31 @@ const CalendarWidget = () => {
         </button>
       </div>
       
-      <div className="p-4">
-        <div className="grid grid-cols-7 mb-2">
+      <div className="p-5">
+        {/* Weekday headers with larger text and better visibility */}
+        <div className="grid grid-cols-7 gap-2 mb-3">
           {weekdays.map((day, index) => (
-            <div key={index} className={`text-center font-medium py-2 text-xs 
-              ${index === 0 ? 'text-red-500' : ''} 
-              ${index === 6 ? 'text-green-600' : ''}`}
+            <div key={index} className={`text-center font-bold py-3 text-sm md:text-base rounded-lg
+              ${index === 0 ? 'text-red-500 bg-red-50/70' : ''} 
+              ${index === 6 ? 'text-green-600 bg-green-50/70' : 'bg-gray-50/70'}`}
             >
               {day}
             </div>
           ))}
         </div>
         
-        <div className="grid grid-cols-7 gap-1">
+        {/* Calendar grid with larger cells and improved spacing */}
+        <div className="grid grid-cols-7 gap-2">
           {showLoading ? (
-            // Loading skeleton
+            // Loading skeleton with improved styling
             Array(35).fill(null).map((_, i) => (
-              <div key={i} className="relative aspect-square border border-gray-100 rounded bg-gray-50 animate-pulse"></div>
+              <div key={i} className="relative aspect-square border border-gray-100 rounded-lg bg-gray-50/80 animate-pulse shadow-sm"></div>
             ))
           ) : error ? (
-            // Error state
-            <div className="col-span-7 text-center py-8 text-red-500 text-sm">
-              Failed to load calendar
+            // Error state with better visibility
+            <div className="col-span-7 text-center py-12 text-red-600 font-medium bg-red-50/50 rounded-xl">
+              <i className="ri-error-warning-line text-2xl mb-2"></i>
+              <p>Failed to load calendar</p>
             </div>
           ) : (
             <>
@@ -153,49 +156,70 @@ const CalendarWidget = () => {
                 <div key={`empty-${i}`} className="aspect-square"></div>
               ))}
               
-              {/* Then render all day cells */}
+              {/* Then render all day cells with enhanced styling */}
               {data?.days?.map((day: any, index: number) => {
                 // Determine if the day is today
                 const isTodayHighlight = isToday(day.bs.day, day.bs.month, day.bs.year);
-                // Check if it's a weekend
+                // Check if it's a weekend or holiday
                 const isSunday = day.dayOfWeek === 0;
                 const isSaturday = day.dayOfWeek === 6;
+                const isHoliday = day.isHoliday === true;
                 
                 return (
                   <div 
                     key={`day-${index}`}
-                    className={`aspect-square border border-gray-100 rounded p-2 hover:bg-gray-50 
-                      ${day.isHoliday === true ? 'bg-red-50' : day.dayOfWeek === 6 ? 'bg-red-50/30' : ''}
-                      ${isTodayHighlight ? 'ring-2 ring-green-500' : ''}
-                      transition-all cursor-pointer`}
+                    className={`aspect-square border rounded-lg p-2 md:p-3 hover:shadow-md group
+                      ${isHoliday ? 'bg-red-50 border-red-100' : 
+                        isSaturday ? 'bg-red-50/30 border-red-100/30' : 
+                        'border-gray-100 hover:bg-gray-50/80'}
+                      ${isTodayHighlight ? 'ring-2 ring-green-500 shadow-sm' : ''}
+                      transition-all duration-300 cursor-pointer relative overflow-hidden`}
                     onClick={() => setSelectedDay(day)}
                   >
-                    <div className="flex flex-col h-full relative">
-                      {/* Nepali date - emphasized */}
-                      <div className={`text-xl md:text-2xl font-bold text-center 
-                        ${day.isHoliday ? 'text-red-500' : isSaturday ? 'text-red-500' : isSunday ? 'text-primary' : 'text-gray-700'} 
-                        ${isTodayHighlight ? 'bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto' : ''}`}
+                    {/* Subtle hover effect */}
+                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    <div className="flex flex-col h-full relative z-10">
+                      <div className="flex justify-between items-start mb-1">
+                        {/* English date - better positioned and more visible */}
+                        <div className="text-xs md:text-sm text-gray-500 font-medium">
+                          {day.ad.day}
+                        </div>
+                        
+                        {/* Holiday indicator */}
+                        {isHoliday && (
+                          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                        )}
+                      </div>
+                      
+                      {/* Nepali date - larger and more prominent */}
+                      <div className={`text-2xl md:text-3xl font-bold text-center my-1 md:my-2
+                        ${isHoliday ? 'text-red-600' : 
+                          isSaturday ? 'text-red-500' : 
+                          isSunday ? 'text-primary-dark' : 'text-gray-800'} 
+                        ${isTodayHighlight ? 
+                          'bg-green-500 text-white rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center mx-auto' : ''}`}
                       >
                         {day.bs.nepaliDay || day.bs.day}
                       </div>
                       
-                      {/* English date - smaller and positioned in corner */}
-                      <div className="text-[10px] md:text-xs text-gray-500 absolute top-0 right-0 px-0.5">
-                        {day.ad.day}
-                      </div>
-                      
-                      {/* Tithi information in Devanagari - center aligned */}
+                      {/* Tithi information in Devanagari - improved visibility */}
                       {day.tithi && (
-                        <div className="text-[9px] md:text-[10px] text-gray-500 mt-1 text-center max-w-full px-1 truncate">
-                          तिथि: {convertTithiToNepali(day.tithi)}
+                        <div className="text-[10px] md:text-xs text-gray-600 font-medium text-center max-w-full px-1 truncate bg-gray-50/80 rounded-sm">
+                          {convertTithiToNepali(day.tithi)}
                         </div>
                       )}
                       
-                      {/* Event indicator */}
+                      {/* Event indicator with better styling */}
                       {day.events?.length > 0 && (
-                        <div className="mt-auto text-[9px] md:text-[10px] text-primary-dark truncate px-1 py-0.5 text-center">
+                        <div className="mt-auto text-[10px] md:text-xs text-primary-dark font-medium truncate px-1 py-0.5 text-center bg-primary-light/10 rounded-sm mt-1">
                           {day.events[0]}
                         </div>
+                      )}
+                      
+                      {/* Multiple events indicator */}
+                      {day.events?.length > 1 && (
+                        <div className="absolute bottom-1 right-1 w-2 h-2 bg-primary rounded-full"></div>
                       )}
                     </div>
                   </div>

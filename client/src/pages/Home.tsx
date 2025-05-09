@@ -72,59 +72,90 @@ const Home = () => {
       description="Access Nepali calendars, vegetable rates, metal prices, rashifal readings and more at QuikNepal, your comprehensive Nepali information portal."
     >
       {/* Hero Section - Enhanced with animation and gradient */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#57c84d] to-[#83d475] py-20">
+      <section className="relative overflow-hidden py-24 bg-gradient-to-r from-[#57c84d] via-[#65cc56] to-[#83d475]">
         {/* Animated background elements */}
-        <div className="absolute inset-0 w-full h-full">
-          <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full animate-ping" style={{ animationDuration: '8s' }}></div>
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/5 rounded-full animate-ping" style={{ animationDuration: '15s' }}></div>
-          <div className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/10 rounded-full animate-ping" style={{ animationDuration: '10s', animationDelay: '2s' }}></div>
-          <div className="absolute top-3/4 left-1/3 w-24 h-24 bg-white/5 rounded-full animate-ping" style={{ animationDuration: '12s', animationDelay: '1s' }}></div>
+        <div className="absolute inset-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0yaDF2MmgtMXYtMnoiLz48cGF0aCBkPSJNMzUuMDY4IDM0aC0yLjEzNXYtMmgyLjEzNXYyem0tMy0yaC0yLjEzNnYyaDIuMTM2di0yem0tMyAwaC0yLjEzNnYyaDIuMTM2di0yem0tMyAwaC0yLjEzNnYyaDIuMTM2di0yem0tMyAwaC0yLjEzNnYyaDIuMTM2di0yem0tMyAwaC0yLjEzNnYyaDIuMTM2di0yeiIvPjxwYXRoIGQ9Ik0xNi4wNjggMzRoLTIuMTM1di0yaDIuMTM1djJ6bS0zLTJoLTIuMTM2djJoMi4xMzZ2LTJ6Ii8+PHBhdGggZD0iTTEwLjA2OCAzNGgtMi4xMzV2LTJoMi4xMzV2MnptMjQtN2g0djFoLTR2LTF6bTAgMmgxdjJoLTF2LTJ6Ii8+PHBhdGggZD0iTTM1LjA2OCAyOWgtMi4xMzV2LTJoMi4xMzV2MnptLTMtMmgtMi4xMzZ2MmgyLjEzNnYtMnptLTMgMGgtMi4xMzZ2MmgyLjEzNnYtMnptLTMgMGgtMi4xMzZ2MmgyLjEzNnYtMnptLTMgMGgtMi4xMzZ2MmgyLjEzNnYtMnptLTMgMGgtMi4xMzZ2MmgyLjEzNnYtMnoiLz48cGF0aCBkPSJNMTYuMDY4IDI5aC0yLjEzNXYtMmgyLjEzNXYyem0tMyAyaC0yLjEzNnYyaDIuMTM2di0yeiIvPjwvZz48L2c+PC9zdmc+')]">
+          <div className="absolute top-16 left-20 w-36 h-36 bg-white/20 rounded-full blur-2xl opacity-20"></div>
+          <div className="absolute bottom-16 right-20 w-60 h-60 bg-white/10 rounded-full blur-3xl opacity-10"></div>
+          
+          {/* Animated particle elements */}
+          <div className="absolute inset-0">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div 
+                key={i}
+                className="absolute rounded-full bg-white/20 blur-sm animate-float"
+                style={{ 
+                  width: `${Math.random() * 30 + 10}px`,
+                  height: `${Math.random() * 30 + 10}px`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  animationDuration: `${5 + Math.random() * 10}s`,
+                  animationDelay: `${i * 0.5}s`
+                }}
+              />
+            ))}
+          </div>
         </div>
         
         {/* Floating decorative elements */}
-        <div className="absolute top-20 right-[10%] text-4xl text-white/20 animate-bounce" style={{ animationDuration: '4s' }}>
+        <div className="absolute top-1/4 right-[15%] text-5xl text-white/30 animate-float" style={{ animationDuration: '4s' }}>
           <i className="ri-calendar-line"></i>
         </div>
-        <div className="absolute bottom-20 left-[15%] text-5xl text-white/20 animate-bounce" style={{ animationDuration: '5s', animationDelay: '1s' }}>
+        <div className="absolute bottom-1/4 left-[10%] text-6xl text-white/20 animate-float" style={{ animationDuration: '5s', animationDelay: '1s' }}>
           <i className="ri-coins-line"></i>
+        </div>
+        <div className="absolute top-1/3 left-[20%] text-4xl text-white/20 animate-float" style={{ animationDuration: '6s', animationDelay: '0.5s' }}>
+          <i className="ri-star-line"></i>
+        </div>
+        <div className="absolute bottom-1/3 right-[25%] text-4xl text-white/20 animate-float" style={{ animationDuration: '7s', animationDelay: '1.5s' }}>
+          <i className="ri-shopping-basket-line"></i>
         </div>
         
         <div className="container relative z-10 mx-auto px-4 text-center text-white">
           <FadeIn>
-            <div className="inline-block relative mb-2">
-              <span className="text-lg font-medium bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full">नमस्ते नेपाल</span>
+            <div className="inline-block relative mb-4">
+              <span className="text-lg md:text-xl font-medium bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full border border-white/10 shadow-lg">
+                <span className="text-yellow-200 font-semibold">नमस्ते</span> नेपाल
+              </span>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-poppins mb-6 text-shadow-sm">Essential Nepali Information Hub</h1>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold font-poppins mb-8 text-shadow-md tracking-tight">
+              Essential Nepali Information Hub
+            </h1>
           </FadeIn>
           
           <FadeIn delay={0.1}>
-            <p className="text-xl md:text-2xl max-w-3xl mx-auto font-light mb-12">Your comprehensive resource for Nepali calendars, vegetable rates, metal prices, rashifal readings and more</p>
+            <p className="text-xl md:text-2xl max-w-3xl mx-auto font-light mb-14 text-white/90 leading-relaxed">
+              Your comprehensive resource for Nepali calendars, vegetable rates, metal prices, rashifal readings and more
+            </p>
           </FadeIn>
           
           <FadeIn delay={0.2}>
-            <div className="flex flex-wrap justify-center gap-5">
+            <div className="flex flex-wrap justify-center gap-6">
               <Bounce>
                 <Link 
                   href="/calendar" 
-                  className="bg-white text-primary font-bold py-4 px-8 rounded-lg transform hover:scale-105 hover:shadow-lg transition duration-300 flex items-center" 
+                  className="bg-white text-primary font-bold py-4 px-10 rounded-xl transform hover:scale-105 hover:shadow-xl transition-all duration-300 flex items-center shadow-md" 
                   aria-label="Explore Nepali Calendar"
                 >
-                  <i className="ri-calendar-2-line mr-2"></i> Explore Calendar
+                  <i className="ri-calendar-2-line mr-3 text-xl"></i> 
+                  <span>Explore Calendar</span>
                 </Link>
               </Bounce>
               <Link 
                 href="#features" 
-                className="bg-primary-dark/30 backdrop-blur-sm text-white border border-white/20 font-medium py-4 px-8 rounded-lg hover:bg-primary-dark/50 transition duration-300 flex items-center" 
+                className="bg-primary-dark/20 text-white backdrop-blur-lg font-medium py-4 px-10 rounded-xl hover:bg-primary-dark/40 transition-all duration-300 flex items-center border border-white/20 shadow-md group" 
                 aria-label="Discover Features"
               >
-                <i className="ri-apps-line mr-2"></i> Discover Features
+                <i className="ri-apps-line mr-3 text-xl"></i> 
+                <span>Discover Features</span>
+                <i className="ri-arrow-right-line ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300"></i>
               </Link>
             </div>
           </FadeIn>
           
           {/* Wave effect at bottom */}
           <div className="absolute bottom-0 left-0 w-full overflow-hidden">
-            <svg className="relative block w-full h-10 md:h-16" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <svg className="relative block w-full h-12 md:h-20" viewBox="0 0 1200 120" preserveAspectRatio="none">
               <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C172,20,295,50,321.39,56.44Z" 
                 className="fill-white"></path>
             </svg>
@@ -648,53 +679,162 @@ const Home = () => {
         </div>
       </section>
 
-      {/* SEO-friendly Informational Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-primary font-poppins mb-8 text-center">
-              The Ultimate Nepali Information Resource
-            </h2>
+      {/* SEO-friendly Informational Section - Enhanced and Dynamic */}
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-primary/10"></div>
+          <div className="absolute top-1/3 -left-24 w-80 h-80 rounded-full bg-primary/5"></div>
+          <div className="absolute -bottom-20 right-1/4 w-72 h-72 rounded-full bg-primary/5"></div>
+        </div>
+        
+        {/* Decorative icons */}
+        <div className="absolute top-20 right-16 text-primary/10 text-6xl transform rotate-12">
+          <i className="ri-calendar-2-line"></i>
+        </div>
+        <div className="absolute bottom-16 left-10 text-primary/10 text-5xl transform -rotate-12">
+          <i className="ri-coin-line"></i>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-5xl mx-auto">
+            <FadeIn>
+              <div className="flex flex-col items-center">
+                <span className="inline-block bg-primary/10 text-primary-dark font-medium px-4 py-2 rounded-full text-sm mb-4">
+                  NEPALI INFORMATION HUB
+                </span>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary font-poppins mb-4 text-center">
+                  The Ultimate Nepali Information Resource
+                </h2>
+                <div className="w-24 h-1 bg-gradient-to-r from-[#57c84d] to-[#83d475] rounded-full mb-8"></div>
+              </div>
+            </FadeIn>
             
             <div className="prose prose-lg max-w-none text-neutral">
-              <p>
-                QuikNepal provides comprehensive Nepali information resources designed specifically for the unique needs of Nepali citizens and anyone interested in Nepal. Our platform integrates essential daily utilities with cultural context to make everyday life easier for Nepali users.
-              </p>
-              
-              <h3 className="text-primary font-semibold mt-8 mb-4">The Importance of Nepali Calendar (Bikram Sambat)</h3>
-              <p>
-                The Bikram Sambat calendar holds immense cultural significance in Nepal, serving as the country's official calendar system. It's not just a way to track dates—it's integral to planning festivals, religious ceremonies, and agricultural activities. Our detailed calendar presentation includes:
-              </p>
-              <ul>
-                <li>Traditional festivals and celebrations highlighted throughout the year</li>
-                <li>Important national holidays and observances clearly marked</li>
-                <li>Tithi information for religious and cultural practices</li>
-                <li>Seasonal contextual information for each month</li>
-              </ul>
-              
-              <h3 className="text-primary font-semibold mt-8 mb-4">Practical Daily Information</h3>
-              <p>
-                QuikNepal goes beyond calendar services to provide practical information that impacts daily life in Nepal. Our vegetable price tracker helps families budget effectively by providing up-to-date information on market prices, while our metal prices section allows users to track the value of investments in gold and silver—traditional stores of value in Nepali culture.
-              </p>
-              
-              <h3 className="text-primary font-semibold mt-8 mb-4">Cultural Alignment</h3>
-              <p>
-                Our platform respectfully integrates traditional Nepali practices with modern technology. The Rashifal (horoscope) section honors the astrological traditions important to many Nepali citizens, while our intuitive design makes this cultural information accessible to users of all ages.
-              </p>
-              
-              <div className="bg-primary-light/10 p-6 rounded-xl my-8 border border-primary-light/20">
-                <h4 className="text-primary font-semibold mb-4">Why QuikNepal?</h4>
-                <p className="mb-0">
-                  QuikNepal stands out by providing authentic, accurate information specifically tailored to the Nepali context. Unlike general information sites, our platform deeply understands the cultural significance behind the data we present. We're committed to preserving cultural heritage while making essential information easily accessible for the modern Nepali user.
+              <FadeIn>
+                <p className="text-lg md:text-xl leading-relaxed">
+                  QuikNepal provides comprehensive Nepali information resources designed specifically for the unique needs of Nepali citizens and anyone interested in Nepal. Our platform integrates essential daily utilities with cultural context to make everyday life easier for Nepali users.
                 </p>
+              </FadeIn>
+              
+              {/* Calendar section with image and text in card layout */}
+              <div className="bg-white rounded-2xl shadow-md overflow-hidden mt-12 md:mt-16 hover:shadow-lg transition-shadow duration-300">
+                <div className="md:flex">
+                  <div className="md:w-2/5 bg-gradient-to-br from-[#57c84d] to-[#83d475] p-8 md:p-10 flex items-center justify-center">
+                    <div className="flex flex-col items-center text-white">
+                      <div className="text-7xl mb-4">
+                        <i className="ri-calendar-2-line"></i>
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-bold text-center mb-2">Bikram Sambat Calendar</h3>
+                      <div className="bg-white/20 px-4 py-2 rounded-lg mt-2">
+                        <span className="text-white font-medium">२०८०</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="md:w-3/5 p-8 md:p-10">
+                    <FadeIn delay={0.1}>
+                      <h3 className="text-primary font-bold text-2xl md:text-3xl mb-4">The Importance of Nepali Calendar</h3>
+                      <p className="mb-4">
+                        The Bikram Sambat calendar holds immense cultural significance in Nepal, serving as the country's official calendar system. It's not just a way to track dates—it's integral to planning festivals, religious ceremonies, and agricultural activities.
+                      </p>
+                      <div className="bg-gray-50 rounded-xl p-5 mt-4">
+                        <h4 className="font-semibold text-gray-800 mb-3">Our detailed calendar features:</h4>
+                        <ul className="space-y-2">
+                          {[
+                            'Traditional festivals and celebrations highlighted throughout the year',
+                            'Important national holidays and observances clearly marked',
+                            'Tithi information for religious and cultural practices',
+                            'Seasonal contextual information for each month'
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start">
+                              <span className="text-primary mr-2 mt-1"><i className="ri-check-line"></i></span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </FadeIn>
+                  </div>
+                </div>
               </div>
+              
+              {/* Practical Information Section */}
+              <FadeIn delay={0.2}>
+                <div className="mt-12 md:mt-16">
+                  <h3 className="text-primary font-bold text-2xl md:text-3xl mb-6 flex items-center">
+                    <i className="ri-information-line mr-3 p-2 bg-primary-light/20 rounded-lg text-primary"></i>
+                    Practical Daily Information
+                  </h3>
+                  <div className="bg-white p-6 rounded-xl shadow-sm">
+                    <p className="mb-6 text-lg">
+                      QuikNepal goes beyond calendar services to provide practical information that impacts daily life in Nepal. Our vegetable price tracker helps families budget effectively by providing up-to-date information on market prices, while our metal prices section allows users to track the value of investments in gold and silver—traditional stores of value in Nepali culture.
+                    </p>
+                    
+                    <div className="grid md:grid-cols-2 gap-6 mt-8">
+                      <div className="bg-gray-50 p-5 rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <div className="flex items-center mb-3">
+                          <i className="ri-shopping-basket-line text-2xl text-primary mr-3"></i>
+                          <h4 className="font-bold text-gray-800">Vegetable Prices</h4>
+                        </div>
+                        <p className="text-gray-600">Track daily updated prices from Kalimati market to make informed shopping decisions.</p>
+                      </div>
+                      
+                      <div className="bg-gray-50 p-5 rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <div className="flex items-center mb-3">
+                          <i className="ri-coin-line text-2xl text-primary mr-3"></i>
+                          <h4 className="font-bold text-gray-800">Metal Rates</h4>
+                        </div>
+                        <p className="text-gray-600">Monitor gold and silver rates that serve as traditional stores of value in Nepali culture.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+              
+              {/* Cultural Section */}
+              <FadeIn delay={0.3}>
+                <div className="mt-12 md:mt-16">
+                  <h3 className="text-primary font-bold text-2xl md:text-3xl mb-6 flex items-center">
+                    <i className="ri-heart-line mr-3 p-2 bg-primary-light/20 rounded-lg text-primary"></i>
+                    Cultural Alignment
+                  </h3>
+                  <p className="text-lg">
+                    Our platform respectfully integrates traditional Nepali practices with modern technology. The Rashifal (horoscope) section honors the astrological traditions important to many Nepali citizens, while our intuitive design makes this cultural information accessible to users of all ages.
+                  </p>
+                </div>
+              </FadeIn>
+              
+              {/* Why QuikNepal Section */}
+              <FadeIn delay={0.4}>
+                <div className="bg-gradient-to-r from-[#57c84d]/10 to-[#83d475]/10 p-8 md:p-10 rounded-2xl my-12 md:my-16 border border-primary/10 relative overflow-hidden group hover:shadow-md transition-all duration-300">
+                  {/* Subtle animations */}
+                  <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-primary/10 group-hover:scale-110 transition-transform duration-700"></div>
+                  <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-primary/5 group-hover:scale-110 transition-transform duration-700"></div>
+                  
+                  <div className="relative z-10">
+                    <h4 className="text-primary font-bold text-2xl mb-4 flex items-center">
+                      <i className="ri-question-line mr-3 p-2 bg-white rounded-lg text-primary"></i>
+                      Why QuikNepal?
+                    </h4>
+                    <p className="mb-0 text-lg">
+                      QuikNepal stands out by providing authentic, accurate information specifically tailored to the Nepali context. Unlike general information sites, our platform deeply understands the cultural significance behind the data we present. We're committed to preserving cultural heritage while making essential information easily accessible for the modern Nepali user.
+                    </p>
+                  </div>
+                </div>
+              </FadeIn>
             </div>
             
-            <div className="mt-8 flex justify-center">
-              <Link href="#features" className="inline-flex items-center bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors">
-                Explore All Services <i className="ri-arrow-right-line ml-2"></i>
-              </Link>
-            </div>
+            <FadeIn delay={0.5}>
+              <div className="mt-10 flex justify-center">
+                <Link 
+                  href="#features" 
+                  className="inline-flex items-center bg-gradient-to-r from-[#57c84d] to-[#83d475] text-white font-medium py-4 px-8 rounded-xl hover:shadow-lg transition-all duration-300 group"
+                >
+                  <span className="mr-2">Explore All Services</span>
+                  <i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
+                </Link>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
